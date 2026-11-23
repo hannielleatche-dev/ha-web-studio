@@ -1,0 +1,1198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Tell HA Web Studio about the website you want and receive your quote.">
+<title>HA Web Studio Questionnaire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+html, body { margin: 0; } img { max-width: 100%; } [hidden] { display: none !important; }
+
+/* Layout: fixed video hero, a wine panel rises over it carrying question cards that zigzag and scale in, a linen outro with a "send" pill. Single deliberate look (wine + sand). */
+:root {
+  --wine: #531B24;
+  --merlot: #6A2931;
+  --taupe: #C6B7A2;
+  --sand: #E7D8C3;
+  --linen: #F3ECE2;
+  --ink: #2A0E13;
+  --font: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --serif: "Instrument Serif", "Times New Roman", Georgia, serif;
+  --ease: cubic-bezier(.25,.1,.25,1);
+  --gut: max(16px, env(safe-area-inset-left, 0px));
+  --gut-r: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 1024px) { :root { --gut: max(32px, env(safe-area-inset-left, 0px)); --gut-r: max(32px, env(safe-area-inset-right, 0px)); } }
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--wine);
+  color: var(--linen);
+  font-family: var(--font);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+@media (hover: hover) and (pointer: fine) and (min-width: 1024px) {
+  body.has-cursor, body.has-cursor a, body.has-cursor button, body.has-cursor label { cursor: none; }
+  body.has-cursor input, body.has-cursor textarea { cursor: text; }
+}
+:focus-visible { outline: 2px solid var(--taupe); outline-offset: 3px; }
+
+/* ---------- Custom cursor ---------- */
+#cursor {
+  position: fixed; left: 0; top: 0; z-index: 60; pointer-events: none;
+  width: 48px; height: 48px; transform: translate(-50%, -50%);
+  transition: width .25s var(--ease), height .25s var(--ease), opacity .2s;
+  display: none; opacity: 0;
+}
+#cursor svg { width: 100%; height: 100%; display: block; }
+#cursor.small { width: 14px; height: 14px; }
+#cursor.small .glyph { opacity: 0; }
+@media (hover: hover) and (pointer: fine) and (min-width: 1024px) { #cursor { display: block; } }
+
+/* ---------- Video ---------- */
+#main-canvas {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  background: var(--merlot);
+}
+#main-canvas video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 70% center;
+}
+#main-canvas::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(83,27,36,.72) 0%, rgba(83,27,36,.25) 45%, rgba(83,27,36,0) 70%),
+              linear-gradient(0deg, rgba(83,27,36,.55) 0%, rgba(83,27,36,0) 35%);
+}
+@media (max-width: 639px) {
+  #main-canvas video { object-position: 78% center; }
+  #main-canvas::after { background: linear-gradient(180deg, rgba(83,27,36,.85) 0%, rgba(83,27,36,.35) 40%, rgba(83,27,36,.2) 60%, rgba(83,27,36,.8) 100%); }
+}
+
+/* ---------- Fixed hero UI ---------- */
+.fx { position: fixed; z-index: 20; pointer-events: none; }
+.rise { opacity: 0; transform: translateY(12px); animation: rise .6s var(--ease) forwards; }
+@keyframes rise { to { opacity: 1; transform: none; } }
+
+#logo {
+  top: calc(16px + env(safe-area-inset-top, 0px)); left: var(--gut);
+  line-height: .86; letter-spacing: -0.06em;
+}
+#logo .ha { font-size: 84px; font-weight: 600; display: block; }
+#logo .ws { font-size: 15px; letter-spacing: .18em; font-weight: 500; display: block; margin-top: 10px; color: var(--sand); }
+@media (min-width: 640px) { #logo .ha { font-size: 150px; } }
+@media (min-width: 1024px) { #logo { top: calc(32px + env(safe-area-inset-top, 0px)); } #logo .ha { font-size: 190px; } #logo .ws { font-size: 17px; } }
+
+#caption {
+  left: var(--gut); top: calc(148px + env(safe-area-inset-top, 0px));
+  width: calc(100vw - 32px); max-width: 520px;
+  font-size: 13px; line-height: 1.45; letter-spacing: -0.02em; color: var(--sand);
+  animation-delay: .3s;
+}
+#caption b { color: var(--linen); font-weight: 600; }
+@media (min-width: 640px) { #caption { top: calc(230px + env(safe-area-inset-top, 0px)); width: calc(50vw - 48px); font-size: 14px; } }
+@media (min-width: 1024px) { #caption { top: calc(300px + env(safe-area-inset-top, 0px)); } }
+
+#nav {
+  top: calc(16px + env(safe-area-inset-top, 0px)); right: var(--gut-r);
+  display: flex; align-items: center; gap: 20px; height: 30px;
+  pointer-events: auto; animation-delay: .15s;
+}
+@media (min-width: 1024px) { #nav { top: calc(32px + env(safe-area-inset-top, 0px)); gap: 44px; } }
+.navbtn {
+  background: none; border: 0; padding: 4px 0; color: var(--linen);
+  font: 500 13px/1 var(--font); letter-spacing: .02em; text-transform: uppercase;
+}
+@media (min-width: 1024px) { .navbtn { font-size: 15px; } }
+#about-btn { display: none; }
+@media (min-width: 640px) { #about-btn { display: inline-block; } }
+#menu-btn { width: 28px; height: 28px; padding: 0; }
+#menu-btn svg { width: 100%; height: 100%; display: block; }
+
+#outro-info {
+  right: var(--gut-r); bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+  width: 330px; max-width: calc(100vw - 32px);
+  display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
+  animation-delay: .45s;
+}
+@media (max-width: 639px) { #outro-info { left: var(--gut); right: var(--gut-r); width: auto; max-width: none; } }
+.circle { position: relative; width: 30px; height: 30px; }
+.circle svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+#circle-symbol {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: 13px; letter-spacing: -0.04em; text-transform: uppercase;
+}
+.coll { font-size: 26px; line-height: 1; letter-spacing: -0.04em; text-transform: uppercase; }
+.coll span { color: var(--taupe); }
+.price { font-size: 72px; line-height: .9; letter-spacing: -0.05em; }
+.price small { font-size: 22px; letter-spacing: -0.02em; color: var(--sand); margin-left: 6px; }
+@media (min-width: 1024px) { .coll { font-size: 30px; } .price { font-size: 88px; } }
+.scrollhint { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--sand); display: flex; align-items: center; gap: 10px; }
+.scrollhint i { display: inline-block; width: 34px; height: 1px; background: var(--sand); transform-origin: left; animation: hint 1.8s var(--ease) infinite; }
+@keyframes hint { 0% { transform: scaleX(0); } 60% { transform: scaleX(1); } 100% { transform: scaleX(1); opacity: 0; } }
+
+/* Compact bar shown once the panel covers the hero */
+#bar {
+  position: fixed; z-index: 30; top: 0; left: 0; right: 0;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) var(--gut-r) 12px var(--gut);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: rgba(83,27,36,.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(198,183,162,.18);
+  transform: translateY(-100%); transition: transform .45s var(--ease), background .4s, color .4s;
+}
+#bar.on { transform: none; }
+#bar .mark { font-size: 20px; font-weight: 600; letter-spacing: -0.05em; color: var(--linen); text-decoration: none; }
+#bar .mark span { font-size: 11px; letter-spacing: .16em; font-weight: 500; color: var(--taupe); margin-left: 8px; }
+#bar .right { display: flex; align-items: center; gap: 16px; }
+.prog { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--sand); font-variant-numeric: tabular-nums; }
+.prog .track { width: 90px; height: 3px; background: rgba(198,183,162,.25); border-radius: 3px; overflow: hidden; }
+.prog .fill { height: 100%; width: 0; background: var(--sand); transition: width .4s var(--ease); }
+@media (max-width: 420px) { .prog .track { width: 50px; } #bar .mark span { display: none; } }
+
+/* ---------- Scroll content ---------- */
+#scroll-spacer { position: relative; user-select: none; }
+#scroll-spacer input, #scroll-spacer textarea { user-select: text; }
+.hero-space { height: 100vh; height: 100svh; }
+
+#panel {
+  position: relative; z-index: 10; background: var(--wine);
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -30px 80px rgba(42,14,19,.45);
+  padding-top: min(260px, 26vh); padding-bottom: 30vh;
+}
+.wrap { padding-left: var(--gut); padding-right: var(--gut-r); }
+
+.intro { max-width: 1180px; margin: 0 auto 18vh; }
+.eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--taupe); }
+.intro h1 {
+  font-size: clamp(44px, 8.4vw, 132px); line-height: .92; letter-spacing: -0.055em; font-weight: 500;
+  margin: 18px 0 28px; text-wrap: balance;
+}
+.intro h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.03em; color: var(--sand); }
+.intro p.lead { max-width: 58ch; font-size: 17px; line-height: 1.55; color: var(--sand); font-weight: 400; letter-spacing: -0.01em; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; margin-top: 48px; }
+@media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+.step { border-top: 1px solid rgba(198,183,162,.35); padding-top: 16px; display: grid; gap: 8px; }
+.step b { font-size: 13px; letter-spacing: .12em; color: var(--taupe); font-weight: 500; }
+.step span { font-size: 19px; line-height: 1.3; letter-spacing: -0.03em; }
+.step small { font-size: 14px; line-height: 1.5; color: var(--sand); font-weight: 400; }
+
+/* Cards */
+#cards { display: flex; flex-direction: column; gap: 14vh; max-width: 1400px; margin: 0 auto; }
+.bp-card {
+  will-change: transform, opacity;
+  width: min(640px, 100%);
+  background: var(--linen); color: var(--ink);
+  border-radius: 26px;
+  padding: 30px 26px 30px;
+  box-shadow: 0 40px 80px -30px rgba(20,5,8,.6);
+  transform-origin: left bottom;
+}
+@media (min-width: 900px) {
+  .bp-card { padding: 42px 44px 44px; width: min(660px, 56vw); }
+  .bp-card.pos-0 { margin-left: 0; transform-origin: right bottom; }
+  .bp-card.pos-1 { margin-left: auto; transform-origin: left bottom; }
+  .bp-card.pos-2 { margin-left: 18%; transform-origin: right bottom; }
+}
+.bp-card.feature { background: var(--sand); }
+.card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
+.card-head .num { font-size: 13px; letter-spacing: .14em; color: var(--merlot); font-variant-numeric: tabular-nums; }
+.card-head .count { font-size: 12px; color: #8a6a63; font-variant-numeric: tabular-nums; }
+.bp-card h2 { font-family: var(--serif); font-size: clamp(40px, 5vw, 62px); line-height: .95; letter-spacing: -0.02em; font-weight: 400; margin: 6px 0 10px; color: var(--wine); text-wrap: balance; }
+.bp-card .note { font-size: 15px; line-height: 1.5; color: #7a5952; font-weight: 400; margin: 0 0 8px; max-width: 52ch; }
+.q { display: grid; gap: 12px; padding: 22px 0; border-top: 1px solid rgba(106,41,49,.14); }
+.q:first-of-type { border-top: 0; }
+.q > label, .q > .ql { font-family: var(--serif); font-size: 23px; line-height: 1.18; letter-spacing: -0.005em; color: var(--ink); font-weight: 400; text-wrap: pretty; }
+@media (max-width: 639px) { .q > label, .q > .ql { font-size: 21px; } }
+.q .hint { font-size: 13.5px; line-height: 1.45; color: #8a6a63; font-weight: 400; font-style: italic; margin-top: -4px; }
+.req { color: var(--merlot); }
+.field {
+  width: 100%; border: 0; border-bottom: 1.5px solid rgba(106,41,49,.35);
+  background: transparent; color: var(--ink); padding: 8px 0 10px;
+  font: 400 17px/1.45 var(--font); letter-spacing: -0.01em; border-radius: 0;
+  transition: border-color .2s;
+}
+.field::placeholder { color: #a89089; }
+.field:focus { outline: none; border-bottom-color: var(--merlot); }
+textarea.field { resize: vertical; min-height: 84px; }
+textarea.field.big {
+  min-height: 320px; border: 1.5px solid rgba(106,41,49,.3); border-radius: 18px; padding: 16px 18px;
+  background: rgba(243,236,226,.55);
+}
+textarea.field.big:focus { border-color: var(--merlot); }
+.field.invalid { border-bottom-color: #b3261e; }
+
+.pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { position: relative; }
+.pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.pill span {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px; border-radius: 999px;
+  border: 1.5px solid rgba(106,41,49,.3);
+  font-size: 14px; line-height: 1.2; color: var(--wine); letter-spacing: -0.01em;
+  transition: background .2s, color .2s, border-color .2s, transform .15s;
+  user-select: none;
+}
+.pill span::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  border: 1.5px solid currentColor; transition: background .2s;
+}
+.pill:hover span { border-color: var(--merlot); }
+.pill input:checked + span { background: var(--merlot); color: var(--linen); border-color: var(--merlot); }
+.pill input:checked + span::before { background: var(--sand); border-color: var(--sand); }
+.pill input:focus-visible + span { outline: 2px solid var(--merlot); outline-offset: 2px; }
+.other { margin-top: 2px; }
+
+
+/* ---------- Artistic gallery (scattered grid, scales in and out) ---------- */
+.gal-head { max-width: 1400px; margin: 0 auto 8vh; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+.gal-head h2 { font-size: clamp(34px, 5vw, 72px); line-height: .95; letter-spacing: -0.05em; font-weight: 500; margin: 10px 0 0; max-width: 14ch; text-wrap: balance; }
+.gal-head h2 em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.02em; color: var(--sand); }
+.gal-head p { max-width: 38ch; font-size: 15px; line-height: 1.55; color: var(--sand); font-weight: 400; margin: 0; }
+#gallery { max-width: 1400px; margin: 0 auto 22vh; display: grid; gap: 0; }
+.g-row { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
+.g-cell { aspect-ratio: 2 / 3; max-width: 100%; min-width: 0; }
+.g-tile {
+  position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 4px;
+  transform: scale(0); will-change: transform; background: var(--merlot);
+}
+.g-tile img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.18); will-change: transform; }
+.g-tile figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 14px 12px;
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 8px;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--linen);
+  background: linear-gradient(0deg, rgba(42,14,19,.7), rgba(42,14,19,0));
+}
+.g-tile figcaption b { font-weight: 500; font-variant-numeric: tabular-nums; color: var(--taupe); }
+.mock { position: absolute; inset: 0; padding: 9% 9% 18%; display: flex; flex-direction: column; gap: 6%; }
+.mock.l { background: var(--linen); } .mock.s { background: var(--sand); } .mock.t { background: var(--taupe); } .mock.w { background: var(--merlot); }
+.mock .chrome { display: flex; gap: 5px; align-items: center; }
+.mock .chrome i { width: 7px; height: 7px; border-radius: 50%; background: var(--merlot); opacity: .35; }
+.mock .chrome u { flex: 1; height: 7px; border-radius: 7px; background: var(--wine); opacity: .12; margin-left: 6px; }
+.mock .bar { height: 8px; border-radius: 8px; background: var(--wine); }
+.mock .bar.f { opacity: .25; }
+.mock .hl { font-size: clamp(18px, 2.3vw, 34px); line-height: .92; letter-spacing: -0.05em; color: var(--wine); font-weight: 500; }
+.mock.w .hl { color: var(--linen); }
+.mock .img { flex: 1; border-radius: 6px; background:
+  radial-gradient(circle at 70% 30%, var(--taupe) 0 18%, transparent 19%),
+  linear-gradient(160deg, var(--merlot), var(--wine)); }
+.mock .pill2 { align-self: flex-start; padding: 6px 12px; border-radius: 999px; background: var(--wine); color: var(--linen); font-size: 10px; letter-spacing: .06em; }
+.mock.w .pill2 { background: var(--sand); color: var(--wine); }
+.mock .grid2 { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mock .grid2 span { border-radius: 6px; background: var(--taupe); position: relative; }
+.mock .grid2 span:nth-child(2n) { background: var(--merlot); }
+.mock .grid2 span::after { content: ""; position: absolute; left: 8%; bottom: 8%; width: 40%; height: 7px; border-radius: 7px; background: var(--linen); opacity: .8; }
+.mock .cal { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; align-content: start; }
+.mock .cal span { aspect-ratio: 1; border-radius: 50%; background: var(--wine); opacity: .1; }
+.mock .cal span.on { opacity: 1; background: var(--merlot); }
+.mock .cal span.mid { opacity: .45; background: var(--taupe); }
+.mock .masonry { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 6px; }
+.mock .masonry span { background: var(--sand); border-radius: 4px; opacity: .85; }
+.mock .masonry span:nth-child(1) { grid-row: span 2; background: var(--taupe); }
+.mock .masonry span:nth-child(4) { grid-column: span 2; background: var(--linen); opacity: .5; }
+.mock .phone { flex: 1; align-self: center; width: 62%; border-radius: 18px; border: 3px solid var(--wine); padding: 12% 10%; display: flex; flex-direction: column; gap: 8px; background: var(--linen); }
+.mock .phone .bar { height: 6px; }
+.mock .qr { width: 38%; aspect-ratio: 1; align-self: center; margin-top: auto;
+  background:
+    linear-gradient(90deg, var(--wine) 50%, transparent 0) 0 0 / 25% 25%,
+    linear-gradient(var(--wine) 50%, transparent 0) 0 0 / 25% 25%;
+  opacity: .85; border: 3px solid var(--wine); }
+@media (prefers-reduced-motion: reduce) { .g-tile { transform: none; will-change: auto; } }
+
+
+/* ---------- Kinetic type: words rise from a mask ---------- */
+.rv .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
+.rv .w > span { display: inline-block; will-change: transform; }
+
+/* ---------- Giant scrolling band ---------- */
+.band { position: relative; margin: 0 calc(-1 * var(--gut-r)) 18vh calc(-1 * var(--gut)); overflow: hidden; display: grid; gap: 1vh; }
+.band .row { white-space: nowrap; font-size: clamp(56px, 11vw, 190px); line-height: .95; letter-spacing: -0.05em; font-weight: 500; will-change: transform; }
+.band .row i { font-family: var(--serif); font-weight: 400; letter-spacing: -0.02em; color: var(--sand); }
+.band .row b { font-weight: 500; color: transparent; -webkit-text-stroke: 1.5px var(--taupe); }
+.band .row .dot { display: inline-block; width: .32em; height: .32em; border-radius: 50%; background: var(--merlot); margin: 0 .35em; vertical-align: .18em; }
+
+
+/* ---------- Full-screen "every detail" moment (glass over video) ---------- */
+.words-hero {
+  position: relative; margin: 0 calc(-1 * var(--gut-r)) 0 calc(-1 * var(--gut));
+  min-height: 100vh; min-height: 100svh; overflow: hidden; border-radius: 28px;
+  display: flex; color: var(--linen); background: var(--merlot);
+}
+.wh-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 80% center; }
+@media (min-width: 768px) { .wh-video { object-position: right center; } }
+@media (min-width: 1024px) { .wh-video { object-position: center center; } }
+.wh-inner { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; padding: 16px var(--gut-r) 16px var(--gut); }
+@media (min-width: 640px) { .wh-inner { padding: 32px 40px 48px; } }
+@media (min-width: 1024px) { .wh-inner { padding: 32px 48px 64px; } }
+.glass { background: rgba(42,14,19,.34); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(243,236,226,.14); }
+.wh-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.wh-tag { display: inline-flex; align-items: center; gap: 14px; padding: 10px 18px; border-radius: 16px; font-size: 13px; letter-spacing: .04em; }
+.wh-tag .num { color: var(--taupe); letter-spacing: .14em; font-variant-numeric: tabular-nums; }
+.words-hero .count { font-size: 12px; color: var(--sand); }
+.wh-main { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 20px; padding-top: 10vh; }
+@media (min-width: 640px) { .wh-main { flex-direction: row; align-items: flex-end; justify-content: space-between; } }
+.wh-left { display: grid; gap: 18px; max-width: 700px; width: 100%; min-width: 0; }
+.words-hero h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(44px, 7vw, 96px); line-height: 1.02; letter-spacing: -0.02em; margin: 0; }
+.words-hero h2 em { font-style: italic; color: var(--sand); }
+.wh-sub { margin: 0; max-width: 520px; font-size: 16px; line-height: 1.6; color: rgba(243,236,226,.78); font-weight: 400; }
+.wh-box { border-radius: 26px; padding: 18px 18px 16px; display: grid; gap: 10px; }
+.wh-label { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--taupe); padding: 0 6px; }
+.wh-field {
+  width: 100%; min-height: 220px; resize: vertical; border: 0; background: transparent; color: var(--linen);
+  font: 400 17px/1.6 var(--font); letter-spacing: -0.01em; padding: 6px; user-select: text;
+}
+.wh-field::placeholder { color: rgba(243,236,226,.5); }
+.wh-field:focus { outline: none; }
+.wh-box:focus-within { border-color: rgba(231,216,195,.5); }
+.wh-next { justify-self: end; background: var(--linen); color: var(--wine); border: 0; border-radius: 999px; padding: 12px 24px; font: 500 14px/1 var(--font); transition: background .2s; }
+.wh-next:hover { background: var(--sand); }
+.wh-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (min-width: 640px) { .wh-pills { flex-direction: column; align-items: flex-end; max-width: 300px; } }
+.wh-pill { padding: 8px 16px; border-radius: 999px; font-size: 13px; color: var(--linen); }
+
+/* ---------- Outro ---------- */
+#outro-overlay { position: fixed; inset: 0; z-index: 12; pointer-events: none; background: var(--linen); opacity: 0; }
+#outro {
+  position: relative; z-index: 15; min-height: 100vh; min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center;
+  color: var(--wine); padding-block: 18vh 30vh;
+}
+#outro .wrap { max-width: 1400px; margin: 0 auto; width: 100%; }
+#outro h2 { font-size: clamp(44px, 8vw, 120px); line-height: .92; letter-spacing: -0.055em; font-weight: 500; margin: 14px 0 20px; text-wrap: balance; max-width: 12ch; }
+#outro p { font-size: 17px; line-height: 1.55; color: var(--merlot); max-width: 52ch; font-weight: 400; }
+#outro .eyebrow { color: var(--merlot); }
+#outro .miss { margin-top: 18px; font-size: 14px; color: #8a2a2a; min-height: 1.4em; }
+
+#outro-buy {
+  position: fixed; z-index: 25; right: var(--gut-r); bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  width: 330px; height: 150px; border-radius: 1335px; border: 0;
+  background: var(--wine); color: var(--linen);
+  display: flex; align-items: center; justify-content: center;
+  font: 500 96px/1 var(--font); letter-spacing: -0.05em;
+  transform: scale(0); transform-origin: right bottom; pointer-events: none;
+  transition: background .25s;
+}
+#outro-buy:hover { background: var(--merlot); }
+#outro-buy.live { pointer-events: auto; }
+@media (max-width: 639px) { #outro-buy { left: var(--gut); right: var(--gut-r); width: auto; height: 96px; font-size: 64px; bottom: calc(64px + env(safe-area-inset-bottom, 0px)); } }
+
+#outro-footer {
+  position: fixed; z-index: 24; left: var(--gut); right: var(--gut-r);
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  display: flex; gap: 40px; flex-wrap: wrap; opacity: 0; pointer-events: none;
+  font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--merlot);
+}
+@media (max-width: 639px) { #outro-footer { justify-content: space-between; gap: 8px; font-size: 10px; } }
+
+/* ---------- Sheets (menu, contact, send) ---------- */
+.sheet {
+  position: fixed; inset: 0; z-index: 70; display: flex; justify-content: flex-end;
+  background: rgba(42,14,19,.5); opacity: 0; pointer-events: none; transition: opacity .35s var(--ease);
+}
+.sheet.open { opacity: 1; pointer-events: auto; }
+.sheet .inner {
+  width: min(520px, 100%); height: 100%; overflow-y: auto;
+  background: var(--linen); color: var(--wine);
+  padding: calc(28px + env(safe-area-inset-top, 0px)) var(--gut-r) calc(32px + env(safe-area-inset-bottom, 0px)) max(28px, var(--gut));
+  transform: translateX(40px); transition: transform .45s var(--ease);
+  display: flex; flex-direction: column; gap: 22px;
+}
+.sheet.open .inner { transform: none; }
+.sheet .top { display: flex; justify-content: space-between; align-items: center; }
+.sheet .close { background: none; border: 0; font: 500 13px/1 var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--wine); padding: 6px 0; }
+.sheet h3 { font-family: var(--serif); font-size: 48px; line-height: .95; letter-spacing: -0.02em; font-weight: 400; margin: 0; }
+.sheet p { font-size: 15px; line-height: 1.55; color: var(--merlot); font-weight: 400; margin: 0; }
+.menu-list { list-style: none; padding: 0; margin: 0; display: grid; }
+.menu-list button {
+  width: 100%; text-align: left; background: none; border: 0; border-top: 1px solid rgba(106,41,49,.16);
+  padding: 14px 0; display: flex; justify-content: space-between; gap: 12px;
+  font: 500 20px/1.2 var(--font); letter-spacing: -0.03em; color: var(--wine);
+}
+.menu-list button small { font-size: 12px; color: #8a6a63; font-variant-numeric: tabular-nums; letter-spacing: 0; }
+.menu-list button:hover { color: var(--merlot); }
+.menu-list .done small { color: var(--merlot); }
+
+.contact-row {
+  display: grid; gap: 6px; padding: 16px 18px; border-radius: 18px; background: var(--sand);
+}
+.contact-row .lbl { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--merlot); }
+.contact-row .val { font-size: 20px; letter-spacing: -0.03em; user-select: all; word-break: break-word; }
+.contact-row .acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 20px; border-radius: 999px; border: 1.5px solid var(--wine);
+  background: var(--wine); color: var(--linen); text-decoration: none;
+  font: 500 14px/1 var(--font); letter-spacing: -0.01em;
+  transition: background .2s, color .2s;
+}
+.btn:hover { background: var(--merlot); border-color: var(--merlot); }
+.btn.ghost { background: transparent; color: var(--wine); }
+.btn.ghost:hover { background: var(--wine); color: var(--linen); }
+.btn.big { padding: 18px 26px; font-size: 17px; width: 100%; }
+.summary {
+  font: 400 13px/1.5 var(--font); white-space: pre-wrap; background: #fff8ef; color: var(--ink);
+  border: 1px solid rgba(106,41,49,.18); border-radius: 16px; padding: 16px; max-height: 34vh; overflow: auto;
+  user-select: text;
+}
+.toast { font-size: 13px; color: var(--merlot); min-height: 1.3em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bp-card { will-change: auto; }
+  .rise { animation: none; opacity: 1; transform: none; }
+  .scrollhint i { animation: none; transform: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+
+<div id="cursor" aria-hidden="true">
+  <svg viewBox="0 0 48 48" fill="none">
+    <circle cx="24" cy="24" r="22.75" stroke="#531B24" stroke-width="4.5" opacity=".55"/>
+    <circle cx="24" cy="24" r="22.75" stroke="#F3ECE2" stroke-width="2.5"/>
+    <g class="glyph" style="transition:opacity .2s">
+      <text x="24" y="29" text-anchor="middle" font-family="Inter Tight, Arial, sans-serif" font-weight="600" font-size="14" letter-spacing="-0.6" fill="#F3ECE2" stroke="#531B24" stroke-width="0.6" paint-order="stroke">ha</text>
+    </g>
+  </svg>
+</div>
+
+<div id="main-canvas">
+  <video id="vidL" src="hero-l.mp4" poster="poster-l.jpg" muted playsinline preload="auto" style="display:none"></video>
+  <video id="vidR" src="hero.mp4" poster="poster.jpg" muted playsinline preload="auto"></video>
+</div>
+
+<div id="logo" class="fx rise" aria-label="HA Web Studio">
+  <span class="ha">ha.</span>
+  <span class="ws">WEB STUDIO</span>
+</div>
+
+<p id="caption" class="fx rise">
+  <b>Tell us about your website, in every detail.</b> This questionnaire takes about fifteen minutes. Your answers help us understand your business, prepare an accurate quote and plan a site that brings you real customers. Not sure about an answer? Skip it, we will figure it out together.
+</p>
+
+<nav id="nav" class="fx rise" aria-label="Main">
+  <button class="navbtn" id="about-btn" type="button">About</button>
+  <button class="navbtn" id="menu-btn" type="button" aria-label="Open section list">
+    <svg viewBox="0 0 40 40" fill="none"><path d="M0 14H40" stroke="#F3ECE2" stroke-width="2.5"/><path d="M0 26H40" stroke="#F3ECE2" stroke-width="2.5"/></svg>
+  </button>
+  <button class="navbtn" id="contact-btn" type="button">[ Contact ]</button>
+</nav>
+
+<div id="outro-info" class="fx rise">
+  <div class="circle" aria-hidden="true">
+    <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18.75" stroke="#F3ECE2" stroke-width="2.5"/></svg>
+    <span id="circle-symbol">?</span>
+  </div>
+  <div class="coll">Website project<br><span>"Questionnaire"</span></div>
+  <div class="price">15<small>min</small></div>
+  <div class="scrollhint"><i></i>Scroll to begin</div>
+</div>
+
+<header id="bar" aria-label="Progress">
+  <a class="mark" href="#panel">ha.<span>WEB STUDIO</span></a>
+  <div class="right">
+    <div class="prog" aria-live="polite"><div class="track"><div class="fill" id="fill"></div></div><span id="progtext">0 / 0</span></div>
+    <button class="navbtn" id="menu-btn-2" type="button" style="color:var(--linen)">Sections</button>
+  </div>
+</header>
+
+<div id="outro-overlay"></div>
+
+<main id="scroll-spacer">
+  <div class="hero-space"></div>
+  <section id="panel">
+    <div class="wrap">
+      <div class="intro" id="intro">
+        <div class="eyebrow">HA Web Studio · Web design &amp; development</div>
+        <h1>Let's plan the website <em>your business deserves.</em></h1>
+        <p class="lead">HA Web Studio designs fast, secure, mobile-first websites for businesses and brands, wherever they are. Before we quote, we want to understand you: who you serve, what you sell and what your site should achieve.</p>
+        <div class="steps">
+          <div class="step"><b>STEP 1</b><span>You answer</span><small>Give us every detail you can about the website you want. Your answers are kept in this browser while you work.</small></div>
+          <div class="step"><b>STEP 2</b><span>We send a quote</span><small>Within 48 hours you receive a detailed quote and timeline on WhatsApp or by email.</small></div>
+          <div class="step"><b>STEP 3</b><span>We build</span><small>Design, build, security checks, Google setup, then launch and a handover session.</small></div>
+        </div>
+      </div>
+      <div class="gal-head">
+        <div><div class="eyebrow">Directions</div><h2>Sites with a <em>point of view.</em></h2></div>
+        <p>Showcase sites, online stores, booking pages, portfolios, digital menus. Each one designed for its owner, fast on a phone and secure from day one. Keep scrolling to tell us which one is yours.</p>
+      </div>
+      <div id="gallery" aria-label="Examples of websites HA Web Studio builds"></div>
+      <div class="band" aria-hidden="true">
+        <div class="row" data-dir="-1">Showcase sites<span class="dot"></span><i>online stores</i><span class="dot"></span><b>Booking</b><span class="dot"></span><i>beauty stores</i><span class="dot"></span>Portfolios<span class="dot"></span><i>digital menus</i><span class="dot"></span>Showcase sites<span class="dot"></span><i>online stores</i><span class="dot"></span></div>
+        <div class="row" data-dir="1"><b>Worldwide</b><span class="dot"></span><i>any industry</i><span class="dot"></span>Fast on mobile<span class="dot"></span><i>secure</i><span class="dot"></span><b>Found on Google</b><span class="dot"></span><i>made to sell</i><span class="dot"></span><b>Worldwide</b><span class="dot"></span><i>any industry</i><span class="dot"></span></div>
+      </div>
+      <form id="cards" novalidate></form>
+    </div>
+  </section>
+  <section id="outro">
+    <div class="wrap">
+      <div class="eyebrow">Last step</div>
+      <h2>Ready when <em style="font-family:var(--serif);font-weight:400;letter-spacing:-0.03em">you are.</em></h2>
+      <p>Before you send, check card 02: have you given every detail of the website you want? Then press <b>send</b> to review your answers, then send them to HA Web Studio on WhatsApp in one tap. We reply with your quote within 48 hours.</p>
+      <div class="miss" id="miss" role="status"></div>
+    </div>
+  </section>
+</main>
+
+<button id="outro-buy" type="button" aria-label="Review and send your answers">send</button>
+
+<footer id="outro-footer">
+  <span>HA Web Studio © 2026 · A HAVRE Group company</span>
+  <span>WhatsApp +225 07 18 71 32 74</span>
+  <span>havregroup@gmail.com</span>
+</footer>
+
+<!-- Static copy of the questionnaire form, so Netlify Forms detects it at deploy -->
+<form name="questionnaire" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="questionnaire">
+  <input type="text" name="name">
+  <input type="text" name="business">
+  <input type="text" name="phone">
+  <input type="email" name="email">
+  <input type="hidden" name="subject">
+  <textarea name="answers"></textarea>
+  <input name="bot-field">
+</form>
+
+<!-- Sheets -->
+<div class="sheet" id="menu-sheet" role="dialog" aria-modal="true" aria-label="Sections">
+  <div class="inner">
+    <div class="top"><span class="eyebrow" style="color:var(--merlot)">Sections</span><button class="close" type="button" data-close>Close</button></div>
+    <h3>Jump to a section</h3>
+    <ul class="menu-list" id="menu-list"></ul>
+  </div>
+</div>
+
+<div class="sheet" id="contact-sheet" role="dialog" aria-modal="true" aria-label="Contact">
+  <div class="inner">
+    <div class="top"><span class="eyebrow" style="color:var(--merlot)">Contact</span><button class="close" type="button" data-close>Close</button></div>
+    <h3>Talk to HA Web Studio</h3>
+    <p>A question before you start? Write to us on WhatsApp or by email. We usually answer the same day.</p>
+    <div class="contact-row">
+      <span class="lbl">WhatsApp · HAVRE Group</span>
+      <span class="val">+225 07 18 71 32 74</span>
+      <div class="acts">
+        <a class="btn" href="https://wa.me/2250718713274?text=Hello%20HA%20Web%20Studio%2C%20I%20have%20a%20question%20about%20my%20website%20project." target="_blank" rel="noopener">Open WhatsApp</a>
+        <button class="btn ghost" type="button" data-copy="+225 07 18 71 32 74">Copy number</button>
+      </div>
+    </div>
+    <div class="contact-row">
+      <span class="lbl">Email</span>
+      <span class="val">havregroup@gmail.com</span>
+      <div class="acts">
+        <a class="btn" href="mailto:havregroup@gmail.com?subject=Website%20project">Write an email</a>
+        <button class="btn ghost" type="button" data-copy="havregroup@gmail.com">Copy email</button>
+      </div>
+    </div>
+    <div class="toast" data-toast></div>
+  </div>
+</div>
+
+<div class="sheet" id="send-sheet" role="dialog" aria-modal="true" aria-label="Send your answers">
+  <div class="inner">
+    <div class="top"><span class="eyebrow" style="color:var(--merlot)">Review</span><button class="close" type="button" data-close>Close</button></div>
+    <h3 id="send-title">Send your answers</h3>
+    <p id="send-intro">Check the summary below, then send it to HA Web Studio. We reply with your quote within 48 hours.</p>
+    <button class="btn big" type="button" id="net-send">Send my answers</button>
+    <a class="btn big ghost" id="wa-send" href="#" target="_blank" rel="noopener">Send on WhatsApp instead</a>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn ghost" type="button" id="copy-all">Copy my answers</button>
+      <a class="btn ghost" id="mail-send" href="#">Send by email</a>
+    </div>
+    <p style="font-size:13px">No WhatsApp? Copy your answers and email them to <b style="user-select:all">havregroup@gmail.com</b>.</p>
+    <div class="toast" data-toast></div>
+    <div class="summary" id="summary"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  let lastY = -1;
+  const WA = '2250718713274';
+  const EMAIL = 'havregroup@gmail.com';
+  const FORMSPREE = ''; // Formspree form ID, e.g. the code after formspree.io/f/
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* ---------------- Questions ---------------- */
+  const S = [
+    { id: 'details', title: 'Your details', note: 'So we know who to send the quote to.', qs: [
+      { id: 'name', t: 'text', l: 'Your full name', req: true, ph: 'First and last name' },
+      { id: 'business', t: 'text', l: 'Business name', req: true, ph: 'Your business or brand' },
+      { id: 'phone', t: 'text', l: 'WhatsApp number', req: true, ph: 'With country code', type: 'tel' },
+      { id: 'email', t: 'text', l: 'Email address', ph: 'you@example.com', type: 'email' },
+      { id: 'city', t: 'text', l: 'City and country', ph: 'Where your business is based' },
+      { id: 'reachme', t: 'radio', l: 'How should we contact you?', o: ['WhatsApp message', 'Phone call', 'Email'] },
+    ]},
+    { id: 'words', title: 'Your project, in your own words', feature: true, note: 'The more details you give, the more accurate your quote and the closer the final website will be to what you imagine. No detail is too small.', qs: [
+      { id: 'story', t: 'big', l: 'Describe the website you want, with every detail', h: 'Pages and what goes on each one · colours, fonts and mood · features · websites you like and why · what to avoid · your customers · your deadline · anything that matters to you.', ph: 'Write every detail of your website here…' },
+    ]},
+    { id: 'business', title: 'About your business', qs: [
+      { id: 'what', t: 'area', l: 'What exactly do you do or sell?' },
+      { id: 'reach', t: 'radio', l: 'Where are your customers?', o: ['In my city', 'Across the country', 'Internationally', 'Mostly online'] },
+      { id: 'ideal', t: 'area', l: 'Who is your ideal customer?', h: 'Age, gender, location, profession, budget…' },
+      { id: 'compet', t: 'area', l: 'Who are your main competitors, and what makes you different?' },
+      { id: 'oldsite', t: 'text', l: 'Do you already have a website? If yes, share the link and what you dislike about it.' },
+      { id: 'socials', t: 'area', l: 'Links to your social media pages', h: 'Instagram, TikTok, Facebook, LinkedIn…' },
+    ]},
+    { id: 'goals', title: 'Goals of the website', qs: [
+      { id: 'goal', t: 'check', l: 'What should the website do for you?', o: ['Make my business look professional', 'Get more calls and WhatsApp messages', 'Sell products online', 'Take bookings or appointments', 'Show my portfolio or past work', 'Share news or articles'], other: true },
+      { id: 'action', t: 'text', l: 'What is the ONE thing visitors should do on your site?', ph: 'The main action you expect' },
+      { id: 'success', t: 'text', l: 'What would success look like six months after launch?', ph: 'Your goal in numbers or words' },
+      { id: 'future', t: 'area', l: 'Where do you see the business in 1 to 2 years?', h: 'New products, a second location, other countries, a mobile app… so we build a site that can grow with you.' },
+    ]},
+    { id: 'type', title: 'Type of website and pages', qs: [
+      { id: 'kind', t: 'radio', l: 'Which type of website do you need?', o: ['One-page website', 'Business website (4 to 8 pages)', 'Small online store', 'Large multi-brand store (like Sephora or Jumia)', 'Booking website', 'Portfolio or personal website', 'Event website', 'Not sure, please advise me'] },
+      { id: 'pages', t: 'check', l: 'Which pages would you like?', o: ['Home', 'About us', 'Services', 'Products / Shop', 'Gallery', 'Reviews', 'Blog / News', 'FAQ', 'Pricing', 'Team', 'Contact', 'Privacy policy'] },
+    ]},
+    { id: 'features', title: 'Features', qs: [
+      { id: 'feat', t: 'check', l: 'Which features do you need?', o: ['WhatsApp button', 'Contact form', 'Google Maps location', 'Instagram feed', 'Booking calendar', 'Newsletter sign-up', 'Customer accounts', 'Online payments', 'Live chat', 'Videos', 'Promo codes', 'Product reviews', 'Wishlist', 'Loyalty points', 'Downloadable brochure or menu'], other: true },
+      { id: 'langs', t: 'check', l: 'In which languages should the website be?', o: ['English', 'French', 'Both English and French'], other: true },
+      { id: 'tools', t: 'area', l: 'Which tools do you already use that the website should connect to?', h: 'Booking, delivery, payment, accounting, spreadsheets, CRM or any other tool.' },
+    ]},
+    { id: 'store', title: 'Online store', note: 'Only if you want to sell online. Otherwise, skip this card.', qs: [
+      { id: 'products', t: 'text', l: 'How many products at launch, and in one year?' },
+      { id: 'variants', t: 'text', l: 'Do your products have sizes, colours or other variations?' },
+      { id: 'pay', t: 'check', l: 'Which payment methods do you want?', o: ['Mobile Money', 'Visa / Mastercard', 'Payment on delivery', 'Bank transfer'] },
+      { id: 'payacct', t: 'text', l: 'Do you already have an online payment account? Which one? Is your business registered?' },
+      { id: 'delivery', t: 'area', l: 'How do you deliver?', h: 'Cities covered, delivery fees, pickup, international shipping' },
+      { id: 'orders', t: 'text', l: 'Who will manage orders and update products?' },
+      { id: 'catalog', t: 'text', l: 'How many categories and brands will you have?', ph: 'Number of categories and brands' },
+      { id: 'shopfx', t: 'check', l: 'Which store features do you need?', o: ['Filters (price, brand, category)', 'Search bar', 'Customer accounts and order history', 'Order tracking', 'Abandoned cart reminders', 'Stock alerts (low stock, back in stock)', 'Bundles and gift sets', 'Gift cards', 'Discount and influencer codes', 'Several currencies'], other: true },
+      { id: 'zones', t: 'check', l: 'Where will you ship?', o: ['My city only', 'Whole country', 'Neighbouring countries', 'My whole region', 'Worldwide'] },
+      { id: 'returns', t: 'text', l: 'What is your return and exchange policy?', ph: 'Your return and exchange conditions' },
+      { id: 'shop', t: 'radio', l: 'Do you also have a physical shop whose stock should match the website?', o: ['Yes, sync the stock', 'Yes, but I manage it separately', 'No, online only'] },
+    ]},
+    { id: 'beauty', title: 'Beauty, skincare and fashion stores', note: 'For brands and shops like Sephora, skincare lines, cosmetics, hair and fashion. Skip this card if it does not apply.', qs: [
+      { id: 'cat', t: 'check', l: 'What do you sell?', o: ['Skincare', 'Makeup', 'Haircare and wigs', 'Fragrance', 'Body care', 'Wellness and supplements', 'Fashion and accessories', 'Tools and devices'], other: true },
+      { id: 'brandmix', t: 'radio', l: 'Whose products are they?', o: ['My own brand', 'Other brands I resell', 'Both'] },
+      { id: 'pinfo', t: 'check', l: 'What should each product page show?', o: ['Ingredients list', 'How to use', 'Skin or hair type', 'Concerns it treats', 'Size and volume', 'Before and after photos', 'Shelf life and expiry', 'Certifications (organic, cruelty-free, vegan)'] },
+      { id: 'tools', t: 'check', l: 'Which shopping experiences would you like?', o: ['Skin quiz with product recommendations', 'Shop by concern (acne, dark spots, dryness…)', 'Shade finder for makeup', 'Routines (morning, night) and kits', 'Reviews with customer photos', 'Loyalty points and VIP tiers', 'Free samples with orders', 'Monthly subscription box', 'Book a skin consultation', 'Beauty tips blog'], other: true },
+      { id: 'fda', t: 'radio', l: 'Are your products registered with the product safety authority in your country?', h: 'Some payment providers and marketplaces ask for it.', o: ['Yes', 'In progress', 'No', 'Not sure'] },
+      { id: 'creators', t: 'radio', l: 'Do you work with influencers or want an affiliate program?', o: ['Yes, with personal discount codes', 'Maybe later', 'No'] },
+    ]},
+    { id: 'content', title: 'Content', qs: [
+      { id: 'have', t: 'check', l: 'What do you already have?', o: ['Logo', 'Brand colours and fonts', 'Texts about the business', 'Professional photos', 'Videos', 'Customer testimonials', 'Nothing yet'] },
+      { id: 'copy', t: 'radio', l: 'Who will write the texts?', o: ['I will provide them', 'Please write them for me', 'A mix of both'] },
+      { id: 'photos', t: 'radio', l: 'Do you need help with photos?', o: ['My photos are ready', 'I need a photographer', 'Use good-quality stock photos for now'] },
+      { id: 'logo', t: 'radio', l: 'Do you need a logo or a brand refresh?', o: ['No, my logo is final', 'Yes, I need a new logo', 'My logo needs a refresh'] },
+    ]},
+    { id: 'design', title: 'Design and style', qs: [
+      { id: 'love', t: 'area', l: 'Share 2 or 3 websites you love and tell us why.', h: 'Any industry. Instagram pages work too.' },
+      { id: 'avoid', t: 'text', l: 'Any styles or colours you want to avoid?' },
+      { id: 'mood', t: 'check', l: 'Which words describe the feeling you want?', o: ['Luxury', 'Modern', 'Minimal', 'Fun and colourful', 'Warm and friendly', 'Corporate', 'Natural', 'Feminine', 'Bold'] },
+    ]},
+    { id: 'domain', title: 'Domain name and email', qs: [
+      { id: 'dom', t: 'text', l: 'Do you own a domain name (yourbusiness.com)? If not, which name would you like?' },
+      { id: 'mails', t: 'text', l: 'Do you need professional email addresses (hello@yourbusiness.com)? How many?' },
+      { id: 'owner', t: 'radio', l: 'In whose name should the domain and hosting accounts be?', h: 'We recommend your name, so the website always belongs to you.', o: ['In my name or my business name', 'Let HA Web Studio manage them for me'] },
+      { id: 'running', t: 'radio', l: 'A website has yearly running costs (domain, hosting). What suits you?', o: ['Pay once a year myself', 'Include it in a monthly plan', 'Not sure, please explain'] },
+    ]},
+    { id: 'security', title: 'Security and data', note: 'Every HA Web Studio site comes with HTTPS, spam protection on forms and secure admin access.', qs: [
+      { id: 'data', t: 'check', l: 'Will the website collect any of this information?', o: ['Names and phone numbers', 'Delivery addresses', 'Payments (through a secure provider)', 'ID documents', 'None of these'] },
+      { id: 'access', t: 'text', l: 'Who on your team should be able to manage the website?' },
+      { id: 'secx', t: 'check', l: 'Which of these matter to you?', o: ['Regular backups', 'Privacy policy', 'Two-step login for admins', 'Staff accounts with limited access'] },
+    ]},
+    { id: 'google', title: 'Visibility on Google', qs: [
+      { id: 'kw', t: 'area', l: 'What would people type on Google to find a business like yours?', h: 'List 3 to 5 searches your customers would type.' },
+      { id: 'gbp', t: 'radio', l: 'Is your business on Google Maps (Google Business profile)?', o: ['Yes', 'No', 'Not sure'] },
+      { id: 'grow', t: 'check', l: 'Would you like help with any of these after launch?', o: ['Ranking higher on Google', 'Writing articles', 'Running ads', 'Monthly visitor report'] },
+      { id: 'track', t: 'check', l: 'Should we install visitor tracking?', o: ['Google Analytics', 'Meta (Facebook / Instagram) Pixel', 'TikTok Pixel', 'Not sure'] },
+    ]},
+    { id: 'budget', title: 'Budget and timeline', qs: [
+      { id: 'bud', t: 'radio', l: 'What budget have you planned?', h: 'In US dollars, or the equivalent in your currency.', o: ['Under $200', '$200 – $400', '$400 – $700', '$700 – $1,400', 'Above $1,400 (large store or platform)', 'Not sure, please advise me'] },
+      { id: 'when', t: 'text', l: 'When should the website be online? Is there an event behind that date?' },
+      { id: 'flex', t: 'radio', l: 'How firm is that date?', o: ['Fixed, it cannot move', 'A few weeks of flexibility', 'No rush, quality first'] },
+      { id: 'decide', t: 'text', l: 'Who makes the final decision on the project?' },
+    ]},
+    { id: 'after', title: 'After launch', qs: [
+      { id: 'care', t: 'radio', l: 'Once the site is live, would you like…', o: ['Monthly maintenance (updates, backups, small changes)', 'A training session to update it myself', 'To handle everything myself', 'Not sure yet'] },
+      { id: 'heard', t: 'radio', l: 'How did you hear about HA Web Studio?', o: ['A friend or family member', 'Instagram', 'TikTok', 'WhatsApp status', 'Google', 'HAVRE Group'], other: true },
+      { id: 'else', t: 'area', l: 'Anything else we should know?', h: 'Photos, logos or examples? Send them to us on WhatsApp after you submit.' },
+    ]},
+  ];
+
+  /* ---------------- Render ---------------- */
+  const form = document.getElementById('cards');
+  const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  let html = '';
+  S.forEach((s, si) => {
+    if (s.feature) {
+      const q = s.qs[0], fid = 'q-' + s.id + '-' + q.id;
+      html += `<section class="words-hero" id="sec-${s.id}" aria-labelledby="h-${s.id}">
+        <video class="wh-video" src="hero-l.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+        <div class="wh-inner">
+          <div class="wh-top"><span class="glass wh-tag"><span class="num">${String(si + 1).padStart(2, '0')} / ${String(S.length).padStart(2, '0')}</span><span>Your website, your words</span></span><span class="count" data-count="${s.id}"></span></div>
+          <div class="wh-main">
+            <div class="wh-left">
+              <h2 id="h-${s.id}">Every detail <em>counts.</em></h2>
+              <p class="wh-sub">${esc(s.note)}</p>
+              <div class="wh-box glass">
+                <label for="${fid}" class="wh-label">${esc(q.l)}</label>
+                <textarea class="wh-field" id="${fid}" name="${fid}" rows="9" placeholder="${esc(q.ph)}"></textarea>
+                <button type="button" class="wh-next" data-next>Continue</button>
+              </div>
+            </div>
+            <div class="wh-pills">${q.h.split(' · ').map(t => `<span class="glass wh-pill">${esc(t.charAt(0).toUpperCase() + t.slice(1))}</span>`).join('')}</div>
+          </div>
+        </div>
+      </section>`;
+      return;
+    }
+    const pos = si % 3;
+    html += `<section class="bp-card pos-${pos}${s.feature ? ' feature' : ''}" id="sec-${s.id}" aria-labelledby="h-${s.id}">
+      <div class="card-head"><span class="num">${String(si + 1).padStart(2, '0')} / ${String(S.length).padStart(2, '0')}</span><span class="count" data-count="${s.id}"></span></div>
+      <h2 id="h-${s.id}">${esc(s.title)}</h2>${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}`;
+    s.qs.forEach(q => {
+      const fid = 'q-' + s.id + '-' + q.id;
+      const lab = esc(q.l) + (q.req ? ' <span class="req">*</span>' : '');
+      const hint = q.h ? `<span class="hint">${esc(q.h)}</span>` : '';
+      if (q.t === 'text') {
+        html += `<div class="q"><label for="${fid}">${lab}</label>${hint}<input class="field" id="${fid}" name="${fid}" type="${q.type || 'text'}" ${q.req ? 'required' : ''} placeholder="${esc(q.ph || 'Your answer')}" autocomplete="off"></div>`;
+      } else if (q.t === 'area' || q.t === 'big') {
+        html += `<div class="q"><label for="${fid}">${lab}</label>${hint}<textarea class="field${q.t === 'big' ? ' big' : ''}" id="${fid}" name="${fid}" rows="${q.t === 'big' ? 8 : 3}" placeholder="${esc(q.ph || 'Your answer')}"></textarea></div>`;
+      } else {
+        const type = q.t === 'radio' ? 'radio' : 'checkbox';
+        html += `<div class="q" role="group" aria-labelledby="${fid}-l"><span class="ql" id="${fid}-l">${lab}</span>${hint}<div class="pills">`;
+        q.o.forEach((o, oi) => {
+          html += `<label class="pill"><input type="${type}" id="${fid}-${oi}" name="${fid}" value="${esc(o)}"><span>${esc(o)}</span></label>`;
+        });
+        html += `</div>`;
+        if (q.other) html += `<input class="field other" id="${fid}-other" name="${fid}-other" type="text" placeholder="Other: tell us" autocomplete="off">`;
+        html += `</div>`;
+      }
+    });
+    html += `</section>`;
+  });
+  form.innerHTML = html;
+  const cards = [...form.querySelectorAll('.bp-card')];
+
+
+  /* ---------------- Gallery: scattered grid ---------------- */
+  const TILES = [
+    { img: 'g/s1.jpg', cap: 'Scene · Arrival' },
+    { m: 'show', cap: 'Showcase site' },
+    { img: 'g/s3.jpg', cap: 'Scene · Turn' },
+    { m: 'store', cap: 'Online store' },
+    { m: 'book', cap: 'Booking' },
+    { img: 'g/s5.jpg', cap: 'Scene · Detail' },
+    { m: 'folio', cap: 'Portfolio' },
+    { img: 'g/s2.jpg', cap: 'Scene · Stride' },
+    { m: 'menu', cap: 'Digital menu' },
+    { m: 'beauty', cap: 'Beauty store' },
+    { img: 'g/s4.jpg', cap: 'Scene · This way' },
+  ];
+  const MOCK = {
+    show: `<div class="mock l"><div class="chrome"><i></i><i></i><i></i><u></u></div><div class="hl">Your brand,<br>online.</div><div class="bar f" style="width:70%"></div><div class="img"></div><span class="pill2">CONTACT ON WHATSAPP</span></div>`,
+    store: `<div class="mock s"><div class="chrome"><i></i><i></i><i></i><u></u></div><div class="hl">Shop</div><div class="grid2"><span></span><span></span><span></span><span></span></div><span class="pill2">CART · 2</span></div>`,
+    book: `<div class="mock w"><div class="hl">Book a<br>session</div><div class="cal">${Array.from({length: 28}, (_, i) => `<span class="${[9,10,17].includes(i) ? 'on' : [3,12,22,24].includes(i) ? 'mid' : ''}"></span>`).join('')}</div><span class="pill2">CONFIRM · 10:30</span></div>`,
+    folio: `<div class="mock t"><div class="chrome"><i></i><i></i><i></i><u></u></div><div class="hl">Selected<br>work</div><div class="masonry"><span></span><span></span><span></span><span></span></div></div>`,
+    beauty: `<div class="mock w"><div class="chrome"><i style="background:var(--sand)"></i><i style="background:var(--sand)"></i><i style="background:var(--sand)"></i><u style="background:var(--sand)"></u></div><div class="hl">Glow<br><span style="font-family:var(--serif);font-style:italic;font-weight:400">ritual</span></div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="pill2" style="background:transparent;border:1px solid var(--sand);color:var(--sand)">DRY SKIN</span><span class="pill2" style="background:transparent;border:1px solid var(--sand);color:var(--sand)">DARK SPOTS</span></div><div class="grid2"><span style="background:var(--sand)"></span><span style="background:var(--taupe)"></span></div><span class="pill2">TAKE THE SKIN QUIZ</span></div>`,
+    menu: `<div class="mock l"><div class="phone"><div class="hl" style="font-size:clamp(14px,1.6vw,22px)">Menu</div><div class="bar"></div><div class="bar f"></div><div class="bar f" style="width:80%"></div><div class="bar"></div><div class="bar f" style="width:60%"></div><div class="qr"></div></div></div>`,
+  };
+  const gallery = document.getElementById('gallery');
+  let gTiles = [], gCols = 0;
+  function buildLayout(count, cols) {
+    const rows = []; let placed = 0, r = 0;
+    while (placed < count) {
+      const row = new Array(cols).fill(-1);
+      const a = (r * 2 + (r % 2)) % cols;
+      row[a] = placed++;
+      if (r % 3 === 0 && placed < count) {
+        let b = (a + 2) % cols; if (b === a) b = (a + 1) % cols;
+        if (b !== a) row[b] = placed++;
+      }
+      rows.push(row); r++;
+    }
+    return rows;
+  }
+  function renderGallery() {
+    const w = innerWidth, cols = w < 640 ? 2 : w < 1024 ? 3 : 4;
+    if (cols === gCols) return; gCols = cols;
+    gallery.style.setProperty('--cols', cols);
+    gallery.innerHTML = buildLayout(TILES.length, cols).map(row => `<div class="g-row">${row.map((idx, ci) => {
+      if (idx < 0) return `<div class="g-cell" aria-hidden="true"></div>`;
+      const t = TILES[idx], origin = ci < cols / 2 ? 'right bottom' : 'left bottom';
+      const body = t.img ? `<img src="${t.img}" alt="" loading="lazy">` : MOCK[t.m];
+      return `<div class="g-cell"><figure class="g-tile" style="margin:0;transform-origin:${origin}">${body}<figcaption><span>${t.cap}</span><b>${String(idx + 1).padStart(2, '0')}</b></figcaption></figure></div>`;
+    }).join('')}</div>`).join('');
+    gTiles = [...gallery.querySelectorAll('.g-tile')];
+    lastY = -1;
+  }
+  renderGallery();
+  addEventListener('resize', renderGallery);
+
+  /* ---------------- Values / progress / draft ---------------- */
+  const KEY = 'ha-web-studio-questionnaire-v1';
+  function valueOf(s, q) {
+    const fid = 'q-' + s.id + '-' + q.id;
+    if (q.t === 'text' || q.t === 'area' || q.t === 'big') return (document.getElementById(fid).value || '').trim();
+    const vals = [...form.querySelectorAll(`input[name="${fid}"]:checked`)].map(i => i.value);
+    if (q.other) { const o = document.getElementById(fid + '-other').value.trim(); if (o) vals.push('Other: ' + o); }
+    return vals.join(', ');
+  }
+  const total = S.reduce((n, s) => n + s.qs.length, 0);
+  const fill = document.getElementById('fill'), progtext = document.getElementById('progtext');
+  function updateProgress() {
+    let done = 0;
+    S.forEach(s => {
+      let d = 0; s.qs.forEach(q => { if (valueOf(s, q)) d++; });
+      done += d;
+      const c = form.querySelector(`[data-count="${s.id}"]`);
+      c.textContent = d ? `${d} of ${s.qs.length} answered` : `${s.qs.length} question${s.qs.length > 1 ? 's' : ''}`;
+    });
+    fill.style.width = (done / total * 100) + '%';
+    progtext.textContent = `${done} / ${total}`;
+    return done;
+  }
+  function saveDraft() {
+    const data = {};
+    form.querySelectorAll('input, textarea').forEach(el => {
+      if (el.type === 'checkbox' || el.type === 'radio') { if (el.checked) data[el.id] = 1; }
+      else if (el.value) data[el.id] = el.value;
+    });
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+  }
+  function loadDraft() {
+    let data = null;
+    try { data = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+    if (!data) return;
+    Object.entries(data).forEach(([id, v]) => {
+      const el = document.getElementById(id); if (!el) return;
+      if (el.type === 'checkbox' || el.type === 'radio') el.checked = true; else el.value = v;
+    });
+  }
+  loadDraft();
+  updateProgress();
+  let saveT;
+  form.addEventListener('input', () => { updateProgress(); clearTimeout(saveT); saveT = setTimeout(saveDraft, 300); });
+  form.addEventListener('change', () => { updateProgress(); saveDraft(); });
+  form.addEventListener('submit', e => e.preventDefault());
+  form.addEventListener('click', e => {
+    if (!e.target.closest('[data-next]')) return;
+    const next = document.getElementById('sec-' + S[2].id);
+    scrollTo({ top: next.getBoundingClientRect().top + scrollY - 90, behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+  /* ---------------- Summary ---------------- */
+  function buildSummary() {
+    let out = '*HA Web Studio · Website questionnaire*\n';
+    S.forEach(s => {
+      const lines = [];
+      s.qs.forEach(q => { const v = valueOf(s, q); if (v) lines.push(s.qs.length === 1 && q.t === 'big' ? v : `• ${q.l.replace(/…$/, '')}: ${v}`); });
+      if (lines.length) out += `\n*${s.title}*\n` + lines.join('\n') + '\n';
+    });
+    return out.trim();
+  }
+
+  /* ---------------- Sheets ---------------- */
+  const sheets = { menu: document.getElementById('menu-sheet'), contact: document.getElementById('contact-sheet'), send: document.getElementById('send-sheet') };
+  let lastFocus = null;
+  function openSheet(name) {
+    lastFocus = document.activeElement;
+    Object.values(sheets).forEach(s => s.classList.remove('open'));
+    sheets[name].classList.add('open');
+    setTimeout(() => sheets[name].querySelector('.close').focus(), 50);
+  }
+  function closeSheets() { Object.values(sheets).forEach(s => s.classList.remove('open')); if (lastFocus) lastFocus.focus({ preventScroll: true }); }
+  Object.values(sheets).forEach(s => {
+    s.addEventListener('click', e => { if (e.target === s || e.target.hasAttribute('data-close')) closeSheets(); });
+  });
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeSheets(); });
+
+  const menuList = document.getElementById('menu-list');
+  function renderMenu() {
+    menuList.innerHTML = S.map((s, i) => {
+      let d = 0; s.qs.forEach(q => { if (valueOf(s, q)) d++; });
+      return `<li class="${d === s.qs.length ? 'done' : ''}"><button type="button" data-go="sec-${s.id}"><span>${String(i + 1).padStart(2, '0')} · ${esc(s.title)}</span><small>${d}/${s.qs.length}</small></button></li>`;
+    }).join('') + `<li><button type="button" data-go="outro"><span>Review and send</span><small>→</small></button></li>`;
+  }
+  menuList.addEventListener('click', e => {
+    const b = e.target.closest('[data-go]'); if (!b) return;
+    closeSheets();
+    const el = document.getElementById(b.dataset.go);
+    setTimeout(() => {
+      const y = el.getBoundingClientRect().top + scrollY - (b.dataset.go === 'outro' ? 0 : 90);
+      scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+    }, 120);
+  });
+  const openMenu = () => { renderMenu(); openSheet('menu'); };
+  document.getElementById('menu-btn').addEventListener('click', openMenu);
+  document.getElementById('menu-btn-2').addEventListener('click', openMenu);
+  document.getElementById('contact-btn').addEventListener('click', () => openSheet('contact'));
+  document.getElementById('about-btn').addEventListener('click', () => {
+    const y = document.getElementById('intro').getBoundingClientRect().top + scrollY - 120;
+    scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+  function toast(scope, msg) {
+    const t = scope.querySelector('[data-toast]'); if (!t) return;
+    t.textContent = msg; clearTimeout(t._t); t._t = setTimeout(() => t.textContent = '', 3500);
+  }
+  async function copyText(text, scope, okMsg, selectEl) {
+    try { await navigator.clipboard.writeText(text); toast(scope, okMsg); }
+    catch (e) {
+      if (selectEl) { const r = document.createRange(); r.selectNodeContents(selectEl); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+      toast(scope, 'Copy is blocked here. The text is selected: press Ctrl+C or long-press to copy.');
+    }
+  }
+  document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
+    copyText(b.dataset.copy, b.closest('.inner'), 'Copied.', b.closest('.contact-row').querySelector('.val'));
+  }));
+
+  /* Send */
+  const miss = document.getElementById('miss');
+  const sendBtn = document.getElementById('outro-buy');
+  sendBtn.addEventListener('click', () => {
+    const req = [['details', 'name'], ['details', 'business'], ['details', 'phone']];
+    const missing = [];
+    req.forEach(([sid, qid]) => {
+      const el = document.getElementById(`q-${sid}-${qid}`);
+      const bad = !el.value.trim(); el.classList.toggle('invalid', bad);
+      if (bad) missing.push(S[0].qs.find(q => q.id === qid).l.toLowerCase());
+    });
+    if (missing.length) {
+      miss.textContent = `Please add your ${missing.join(', ')} in card 01 so we can reach you.`;
+      const el = document.getElementById('sec-details');
+      scrollTo({ top: el.getBoundingClientRect().top + scrollY - 90, behavior: reduce ? 'auto' : 'smooth' });
+      return;
+    }
+    miss.textContent = '';
+    const text = buildSummary();
+    document.getElementById('summary').textContent = text;
+    document.getElementById('wa-send').href = `https://wa.me/${WA}?text=${encodeURIComponent(text)}`;
+    const biz = document.getElementById('q-details-business').value.trim();
+    document.getElementById('mail-send').href = `mailto:${EMAIL}?subject=${encodeURIComponent('Website questionnaire · ' + biz)}&body=${encodeURIComponent(text.replace(/\*/g, ''))}`;
+    resetSend();
+    openSheet('send');
+  });
+
+  const netSend = document.getElementById('net-send'), sendTitle = document.getElementById('send-title'), sendIntro = document.getElementById('send-intro'), waSend = document.getElementById('wa-send');
+  function resetSend() {
+    sendTitle.textContent = 'Send your answers';
+    sendIntro.textContent = 'Check the summary below, then send it to HA Web Studio. We reply with your quote within 48 hours.';
+    netSend.hidden = false; netSend.disabled = false; netSend.textContent = 'Send my answers';
+    waSend.textContent = 'Send on WhatsApp instead';
+  }
+  netSend.addEventListener('click', async () => {
+    const v = id => document.getElementById('q-details-' + id).value.trim();
+    const body = new URLSearchParams({
+      'form-name': 'questionnaire', 'bot-field': '',
+      name: v('name'), business: v('business'), phone: v('phone'), email: v('email'),
+      subject: 'New website questionnaire · ' + v('business'),
+      answers: document.getElementById('summary').textContent.replace(/\*/g, ''),
+    });
+    netSend.disabled = true; netSend.textContent = 'Sending…';
+    let ok = false;
+    try {
+      if (FORMSPREE) {
+        const r = await fetch('https://formspree.io/f/' + FORMSPREE, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ name: v('name'), email: v('email'), business: v('business'), phone: v('phone'),
+            _subject: 'New website questionnaire · ' + v('business'), answers: body.get('answers'), _gotcha: '' }),
+        });
+        ok = r.ok;
+      } else {
+        const r = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
+        ok = r.ok;
+      }
+    } catch (e) {}
+    if (ok) {
+      sendTitle.textContent = 'Thank you!';
+      sendIntro.textContent = 'Your answers are with HA Web Studio. We will contact you with your quote within 48 hours.';
+      netSend.hidden = true;
+      waSend.textContent = 'Message us on WhatsApp';
+    } else {
+      netSend.disabled = false; netSend.textContent = 'Try again';
+      sendIntro.textContent = 'Your answers could not be sent online. Please send them on WhatsApp below, or copy them and email ' + EMAIL + '.';
+    }
+  });
+  document.getElementById('copy-all').addEventListener('click', e => {
+    copyText(document.getElementById('summary').textContent, e.target.closest('.inner'), 'Answers copied. Paste them into WhatsApp or an email.', document.getElementById('summary'));
+  });
+
+  /* ---------------- Video: two scenes, a dead zone in the centre ---------------- */
+  const vidL = document.getElementById('vidL'), vidR = document.getElementById('vidR');
+  const canvasEl = document.getElementById('main-canvas');
+  const touch = !finePointer || matchMedia('(max-width: 1023px)').matches;
+  let side = 'R', vid = vidR, targetT = 0, curT = 0, scrubbing = false, introDone = false;
+  function show(which) {
+    if (which === side) return;
+    side = which; vid = which === 'L' ? vidL : vidR;
+    vidL.style.display = which === 'L' ? 'block' : 'none';
+    vidR.style.display = which === 'R' ? 'block' : 'none';
+  }
+  vidR.addEventListener('loadeddata', () => { canvasEl.style.opacity = 1; });
+  if (reduce) {
+    vidR.addEventListener('loadedmetadata', () => { vidR.currentTime = Math.max(0, vidR.duration - 0.05); }, { once: true });
+  } else if (touch) {
+    // phones: the two scenes play one after the other, forever
+    const next = (from, to, w) => from.addEventListener('ended', () => { setTimeout(() => { show(w); to.currentTime = 0; to.play().catch(() => {}); }, 1200); });
+    next(vidR, vidL, 'L'); next(vidL, vidR, 'R');
+    vidR.play().catch(() => {});
+  } else {
+    // desktop: one walk-in, then the cursor drives the scene
+    vidR.play().catch(() => {});
+    vidR.addEventListener('ended', () => { introDone = true; curT = targetT = vidR.duration; });
+    addEventListener('mousemove', e => {
+      if (!vid.duration) return;
+      if (!scrubbing) {
+        if (!introDone && vidR.currentTime < vidR.duration * 0.9) return;
+        scrubbing = true; vidR.pause(); vidL.pause(); curT = vid.currentTime;
+      }
+      const w = innerWidth, c = w / 2, dead = Math.max(30, w * 0.05), x = e.clientX, range = c - dead;
+      if (x > c + dead) { if (side !== 'R') { show('R'); curT = 0; } targetT = Math.min(1, (x - c - dead) / range) * (vid.duration - 0.04); }
+      else if (x < c - dead) { if (side !== 'L') { show('L'); curT = 0; } targetT = Math.min(1, (c - dead - x) / range) * (vid.duration - 0.04); }
+      else targetT = 0; // dead zone: the character stands still, facing you
+    }, { passive: true });
+  }
+
+  /* ---------------- Cursor ---------------- */
+  const cursor = document.getElementById('cursor');
+  if (!touch) {
+    document.body.classList.add('has-cursor');
+    addEventListener('mousemove', e => { cursor.style.opacity = 1; cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; }, { passive: true });
+    document.addEventListener('mouseover', e => {
+      cursor.classList.toggle('small', !!e.target.closest('input, textarea, button, a, label'));
+    });
+    document.addEventListener('mouseleave', () => cursor.style.opacity = 0);
+    document.addEventListener('mouseenter', () => cursor.style.opacity = 1);
+  }
+
+  /* ---------------- Kinetic headlines ---------------- */
+  function splitWords(el) {
+    const walk = node => {
+      [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(part => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            const w = document.createElement('span'); w.className = 'w';
+            const inner = document.createElement('span'); inner.textContent = part;
+            w.appendChild(inner); frag.appendChild(w);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1 && !n.classList.contains('w')) walk(n);
+      });
+    };
+    walk(el); el.classList.add('rv');
+    return [...el.querySelectorAll('.w > span')];
+  }
+  const reveals = [...document.querySelectorAll('.intro h1, .gal-head h2, #outro h2, .bp-card h2, .words-hero h2')].map(el => ({ el, words: splitWords(el) }));
+  const bandRows = [...document.querySelectorAll('.band .row')];
+
+  /* ---------------- Scroll engine (RAF) ---------------- */
+  const logo = document.getElementById('logo'), caption = document.getElementById('caption'),
+        nav = document.getElementById('nav'), info = document.getElementById('outro-info'),
+        bar = document.getElementById('bar'), overlay = document.getElementById('outro-overlay'),
+        outro = document.getElementById('outro'), footer = document.getElementById('outro-footer'),
+        sym = document.getElementById('circle-symbol');
+  const SYMS = ['?', '!', '/', '%', '&', '@', '#'];
+  let lastSym = 0;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  function frame(now) {
+    const vh = innerHeight, y = scrollY;
+
+    // video scrub, only while hero is visible
+    if (scrubbing && y < vh && !vid.seeking && vid.readyState >= 2) {
+      curT += (targetT - curT) * 0.18;
+      if (Math.abs(vid.currentTime - curT) > 0.03) vid.currentTime = curT;
+    }
+
+    if (y !== lastY || now - lastSym > 600) {
+      const p1 = clamp(y / vh, 0, 1);
+      // hero UI drifts up and fades as the panel rises
+      const heroFade = 1 - clamp((p1 - 0.15) / 0.55, 0, 1);
+      logo.style.opacity = caption.style.opacity = info.style.opacity = heroFade;
+      logo.style.transform = `translateY(${-p1 * 60}px)`;
+      caption.style.transform = `translateY(${-p1 * 90}px)`;
+      info.style.transform = `translateY(${-p1 * 120}px)`;
+      nav.style.opacity = heroFade; nav.style.pointerEvents = heroFade < 0.2 ? 'none' : 'auto';
+      bar.classList.toggle('on', p1 > 0.85);
+      canvasEl.style.visibility = y > vh * 1.05 ? 'hidden' : 'visible';
+
+      if (y !== lastY && now - lastSym > 80 && y < vh) { sym.textContent = SYMS[(Math.random() * SYMS.length) | 0]; lastSym = now; }
+
+      // gallery tiles: scale 0 -> 1 on enter, 1 -> 0 on exit
+      for (const g of gTiles) {
+        const r = g.parentNode.getBoundingClientRect();
+        let sc = 0;
+        if (reduce) sc = 1;
+        else if (r.bottom > 0 && r.top < vh) sc = Math.max(0, Math.min(Math.min(1, (vh - r.top) / (vh * 0.6)), Math.min(1, r.bottom / (vh * 0.4))));
+        g.style.transform = `scale(${sc.toFixed(4)})`;
+        const img = g.querySelector('img');
+        if (img && !reduce && sc > 0) { const off = ((r.top + r.height / 2) - vh / 2) * -0.12; img.style.transform = `translateY(${off.toFixed(1)}px) scale(1.18)`; }
+      }
+
+      // giant band slides sideways with the scroll
+      for (const row of bandRows) {
+        if (reduce) break;
+        const r = row.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) continue;
+        const d = +row.dataset.dir, t = (vh - r.top) / (vh + r.height);
+        row.style.transform = `translateX(${(d < 0 ? -t * 38 : -38 + t * 38).toFixed(2)}%)`;
+      }
+
+      // headlines rise word by word
+      for (const rv of reveals) {
+        const r = rv.el.getBoundingClientRect();
+        const p = reduce ? 1 : clamp((vh * 0.95 - r.top) / (vh * 0.35), 0, 1);
+        if (rv.p === p) continue; rv.p = p;
+        const n = rv.words.length;
+        rv.words.forEach((w, i) => { const k = clamp(p * (1 + n * 0.06) - i * 0.06, 0, 1); w.style.transform = `translateY(${((1 - k) * 105).toFixed(1)}%)`; });
+      }
+
+      // cards scale in and out (skip the card being typed in)
+      const active = document.activeElement && document.activeElement.closest ? document.activeElement.closest('.bp-card') : null;
+      for (const c of cards) {
+        const r = c.getBoundingClientRect();
+        let s, o;
+        if (reduce || c === active) { s = 1; o = 1; }
+        else if (r.bottom <= 0 || r.top >= vh) { s = 0.7; o = 0; }
+        else {
+          const enter = Math.min(1, (vh - r.top) / (vh * 0.6));
+          const exit = Math.min(1, r.bottom / (vh * 0.4));
+          const k = Math.max(0, Math.min(enter, exit));
+          s = 0.7 + 0.3 * k; o = 0.15 + 0.85 * k;
+          c._rot = (1 - k) * (c.classList.contains('pos-1') ? 4 : -4);
+        }
+        c.style.transform = `scale(${s.toFixed(4)}) rotate(${(reduce || c === active ? 0 : (c._rot || 0)).toFixed(2)}deg)`;
+        c.style.opacity = o.toFixed(3);
+      }
+
+      // outro
+      const ot = outro.getBoundingClientRect().top;
+      const po = clamp((vh - ot) / (vh * 0.8), 0, 1);
+      overlay.style.opacity = po;
+      footer.style.opacity = clamp((po - 0.5) * 2, 0, 1);
+      const sb = clamp((po - 0.35) / 0.65, 0, 1);
+      sendBtn.style.transform = `scale(${reduce ? (sb > 0 ? 1 : 0) : sb.toFixed(4)})`;
+      sendBtn.classList.toggle('live', sb > 0.6);
+      bar.style.background = po > 0.5 ? 'rgba(243,236,226,.92)' : '';
+      bar.querySelector('.mark').style.color = po > 0.5 ? 'var(--wine)' : '';
+      bar.querySelector('.prog').style.color = po > 0.5 ? 'var(--merlot)' : '';
+      bar.querySelector('#menu-btn-2').style.color = po > 0.5 ? 'var(--wine)' : 'var(--linen)';
+      fill.style.background = po > 0.5 ? 'var(--merlot)' : '';
+
+      lastY = y;
+    }
+    requestAnimationFrame(frame);
+  }
+  document.querySelectorAll('.rise').forEach(el => el.addEventListener('animationend', () => { el.classList.remove('rise'); lastY = -1; }, { once: true }));
+  if (reduce) document.querySelectorAll('.rise').forEach(el => el.classList.remove('rise'));
+  requestAnimationFrame(frame);
+  form.addEventListener('focusin', () => { lastY = -1; });
+})();
+</script>
+
+</body>
+</html>
