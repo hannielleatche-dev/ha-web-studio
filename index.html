@@ -3,7 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Tell HA Web Studio about the website you want and receive your quote.">
+<meta name="description" content="Tell us about the website you want and get your quote within 48 hours. · Décrivez le site que vous voulez et recevez votre devis sous 48 heures.">
+<meta name="theme-color" content="#531B24">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="HA Web Studio">
+<meta property="og:title" content="HA Web Studio · Website questionnaire">
+<meta property="og:description" content="Tell us about the website you want and get your quote within 48 hours. · Décrivez le site que vous voulez et recevez votre devis sous 48 heures.">
+<meta property="og:url" content="https://hannielleatche-dev.github.io/ha-web-studio/">
+<meta property="og:image" content="https://hannielleatche-dev.github.io/ha-web-studio/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="HA Web Studio · Your website, every detail.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HA Web Studio · Website questionnaire">
+<meta name="twitter:description" content="Tell us about the website you want and get your quote within 48 hours. · Décrivez le site que vous voulez et recevez votre devis sous 48 heures.">
+<meta name="twitter:image" content="https://hannielleatche-dev.github.io/ha-web-studio/og.jpg">
 <title>HA Web Studio Questionnaire</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -448,6 +465,25 @@ textarea.field.big:focus { border-color: var(--merlot); }
   .scrollhint i { animation: none; transform: none; }
   html { scroll-behavior: auto; }
 }
+
+/* ---------- Consent, links, quick send, language ---------- */
+.consent { display: grid; gap: 8px; padding: 20px 0 4px; border-top: 1px solid rgba(106,41,49,.14); }
+.consent-row { display: flex; gap: 12px; align-items: flex-start; font-size: 14.5px; line-height: 1.5; color: var(--ink); font-weight: 400; cursor: pointer; }
+.consent-row input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--merlot); flex: none; }
+.consent.invalid .consent-row { color: #b3261e; }
+.linkish { background: none; border: 0; padding: 0; font: inherit; font-size: 13.5px; color: var(--merlot); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; justify-self: start; text-align: left; }
+#outro .linkish { font-size: 14px; }
+.wh-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.wh-quick { background: transparent; color: var(--linen); border: 1px solid rgba(243,236,226,.4); border-radius: 999px; padding: 11px 18px; font: 500 13px/1.2 var(--font); text-align: left; transition: background .2s; }
+.wh-quick:hover { background: rgba(243,236,226,.12); }
+#start-over { align-self: flex-start; }
+#start-over.armed { background: #8a2a2a; color: var(--linen); border-color: #8a2a2a; }
+.privacy p { font-size: 14.5px; line-height: 1.6; color: var(--ink); margin: 0 0 12px; font-weight: 400; }
+.privacy b { color: var(--wine); font-weight: 600; }
+#outro h2 em { font-family: var(--serif); font-weight: 400; letter-spacing: -0.03em; }
+html:lang(fr) #outro-buy { font-size: 70px; }
+@media (max-width: 639px) { html:lang(fr) #outro-buy { font-size: 46px; } }
+.barbtn { color: var(--linen); }
 </style>
 </head>
 <body>
@@ -464,8 +500,8 @@ textarea.field.big:focus { border-color: var(--merlot); }
 </div>
 
 <div id="main-canvas">
-  <video id="vidL" src="hero-l.mp4" poster="poster-l.jpg" muted playsinline preload="auto" style="display:none"></video>
-  <video id="vidR" src="hero.mp4" poster="poster.jpg" muted playsinline preload="auto"></video>
+  <video id="vidL" muted playsinline preload="auto" style="display:none"></video>
+  <video id="vidR" muted playsinline preload="auto"></video>
 </div>
 
 <div id="logo" class="fx rise" aria-label="HA Web Studio">
@@ -473,16 +509,15 @@ textarea.field.big:focus { border-color: var(--merlot); }
   <span class="ws">WEB STUDIO</span>
 </div>
 
-<p id="caption" class="fx rise">
-  <b>Tell us about your website, in every detail.</b> This questionnaire takes about fifteen minutes. Your answers help us understand your business, prepare an accurate quote and plan a site that brings you real customers. Not sure about an answer? Skip it, we will figure it out together.
-</p>
+<p id="caption" class="fx rise" data-i="caption"></p>
 
 <nav id="nav" class="fx rise" aria-label="Main">
-  <button class="navbtn" id="about-btn" type="button">About</button>
-  <button class="navbtn" id="menu-btn" type="button" aria-label="Open section list">
+  <button class="navbtn" id="about-btn" type="button" data-i="about"></button>
+  <button class="navbtn" id="lang-btn" type="button" data-i="langBtn" aria-label="Français / English"></button>
+  <button class="navbtn" id="menu-btn" type="button" aria-label="Sections">
     <svg viewBox="0 0 40 40" fill="none"><path d="M0 14H40" stroke="#F3ECE2" stroke-width="2.5"/><path d="M0 26H40" stroke="#F3ECE2" stroke-width="2.5"/></svg>
   </button>
-  <button class="navbtn" id="contact-btn" type="button">[ Contact ]</button>
+  <button class="navbtn" id="contact-btn" type="button" data-i="contact"></button>
 </nav>
 
 <div id="outro-info" class="fx rise">
@@ -490,16 +525,17 @@ textarea.field.big:focus { border-color: var(--merlot); }
     <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18.75" stroke="#F3ECE2" stroke-width="2.5"/></svg>
     <span id="circle-symbol">?</span>
   </div>
-  <div class="coll">Website project<br><span>"Questionnaire"</span></div>
+  <div class="coll" data-i="coll"></div>
   <div class="price">15<small>min</small></div>
-  <div class="scrollhint"><i></i>Scroll to begin</div>
+  <div class="scrollhint"><i></i><span data-i="scrollhint"></span></div>
 </div>
 
 <header id="bar" aria-label="Progress">
   <a class="mark" href="#panel">ha.<span>WEB STUDIO</span></a>
   <div class="right">
     <div class="prog" aria-live="polite"><div class="track"><div class="fill" id="fill"></div></div><span id="progtext">0 / 0</span></div>
-    <button class="navbtn" id="menu-btn-2" type="button" style="color:var(--linen)">Sections</button>
+    <button class="navbtn barbtn" id="lang-btn-2" type="button" data-i="langBar" aria-label="Français / English"></button>
+    <button class="navbtn barbtn" id="menu-btn-2" type="button" data-i="sections"></button>
   </div>
 </header>
 
@@ -510,105 +546,105 @@ textarea.field.big:focus { border-color: var(--merlot); }
   <section id="panel">
     <div class="wrap">
       <div class="intro" id="intro">
-        <div class="eyebrow">HA Web Studio · Web design &amp; development</div>
-        <h1>Let's plan the website <em>your business deserves.</em></h1>
-        <p class="lead">HA Web Studio designs fast, secure, mobile-first websites for businesses and brands, wherever they are. Before we quote, we want to understand you: who you serve, what you sell and what your site should achieve.</p>
+        <div class="eyebrow" data-i="eyebrow"></div>
+        <h1 data-i="h1"></h1>
+        <p class="lead" data-i="lead"></p>
         <div class="steps">
-          <div class="step"><b>STEP 1</b><span>You answer</span><small>Give us every detail you can about the website you want. Your answers are kept in this browser while you work.</small></div>
-          <div class="step"><b>STEP 2</b><span>We send a quote</span><small>Within 48 hours you receive a detailed quote and timeline on WhatsApp or by email.</small></div>
-          <div class="step"><b>STEP 3</b><span>We build</span><small>Design, build, security checks, Google setup, then launch and a handover session.</small></div>
+          <div class="step"><b><span data-i="step"></span> 1</b><span data-i="s1t"></span><small data-i="s1d"></small></div>
+          <div class="step"><b><span data-i="step"></span> 2</b><span data-i="s2t"></span><small data-i="s2d"></small></div>
+          <div class="step"><b><span data-i="step"></span> 3</b><span data-i="s3t"></span><small data-i="s3d"></small></div>
         </div>
       </div>
       <div class="gal-head">
-        <div><div class="eyebrow">Directions</div><h2>Sites with a <em>point of view.</em></h2></div>
-        <p>Showcase sites, online stores, booking pages, portfolios, digital menus. Each one designed for its owner, fast on a phone and secure from day one. Keep scrolling to tell us which one is yours.</p>
+        <div><div class="eyebrow" data-i="galEyebrow"></div><h2 data-i="galH2"></h2></div>
+        <p data-i="galP"></p>
       </div>
-      <div id="gallery" aria-label="Examples of websites HA Web Studio builds"></div>
+      <div id="gallery"></div>
       <div class="band" aria-hidden="true">
-        <div class="row" data-dir="-1">Showcase sites<span class="dot"></span><i>online stores</i><span class="dot"></span><b>Booking</b><span class="dot"></span><i>beauty stores</i><span class="dot"></span>Portfolios<span class="dot"></span><i>digital menus</i><span class="dot"></span>Showcase sites<span class="dot"></span><i>online stores</i><span class="dot"></span></div>
-        <div class="row" data-dir="1"><b>Worldwide</b><span class="dot"></span><i>any industry</i><span class="dot"></span>Fast on mobile<span class="dot"></span><i>secure</i><span class="dot"></span><b>Found on Google</b><span class="dot"></span><i>made to sell</i><span class="dot"></span><b>Worldwide</b><span class="dot"></span><i>any industry</i><span class="dot"></span></div>
+        <div class="row" data-dir="-1"></div>
+        <div class="row" data-dir="1"></div>
       </div>
       <form id="cards" novalidate></form>
     </div>
   </section>
   <section id="outro">
     <div class="wrap">
-      <div class="eyebrow">Last step</div>
-      <h2>Ready when <em style="font-family:var(--serif);font-weight:400;letter-spacing:-0.03em">you are.</em></h2>
-      <p>Before you send, check card 02: have you given every detail of the website you want? Then press <b>send</b> to review your answers, then send them to HA Web Studio on WhatsApp in one tap. We reply with your quote within 48 hours.</p>
+      <div class="eyebrow" data-i="outroEyebrow"></div>
+      <h2 data-i="outroH2"></h2>
+      <p data-i="outroP"></p>
+      <p><button type="button" class="linkish" data-privacy data-i="privacyLink"></button></p>
       <div class="miss" id="miss" role="status"></div>
     </div>
   </section>
 </main>
 
-<button id="outro-buy" type="button" aria-label="Review and send your answers">send</button>
+<button id="outro-buy" type="button" data-i="sendPill" data-i-aria="sendAria"></button>
 
 <footer id="outro-footer">
-  <span>HA Web Studio © 2026 · A HAVRE Group company</span>
+  <span data-i="footer"></span>
   <span>WhatsApp +225 07 18 71 32 74</span>
   <span>havregroup@gmail.com</span>
 </footer>
 
-<!-- Static copy of the questionnaire form, so Netlify Forms detects it at deploy -->
-<form name="questionnaire" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="questionnaire">
-  <input type="text" name="name">
-  <input type="text" name="business">
-  <input type="text" name="phone">
-  <input type="email" name="email">
-  <input type="hidden" name="subject">
-  <textarea name="answers"></textarea>
-  <input name="bot-field">
-</form>
-
 <!-- Sheets -->
 <div class="sheet" id="menu-sheet" role="dialog" aria-modal="true" aria-label="Sections">
   <div class="inner">
-    <div class="top"><span class="eyebrow" style="color:var(--merlot)">Sections</span><button class="close" type="button" data-close>Close</button></div>
-    <h3>Jump to a section</h3>
+    <div class="top"><span class="eyebrow" style="color:var(--merlot)" data-i="sections"></span><button class="close" type="button" data-close data-i="close"></button></div>
+    <h3 data-i="menuTitle"></h3>
     <ul class="menu-list" id="menu-list"></ul>
+    <button type="button" class="btn ghost" id="start-over"></button>
+    <div class="toast" data-toast></div>
   </div>
 </div>
 
 <div class="sheet" id="contact-sheet" role="dialog" aria-modal="true" aria-label="Contact">
   <div class="inner">
-    <div class="top"><span class="eyebrow" style="color:var(--merlot)">Contact</span><button class="close" type="button" data-close>Close</button></div>
-    <h3>Talk to HA Web Studio</h3>
-    <p>A question before you start? Write to us on WhatsApp or by email. We usually answer the same day.</p>
+    <div class="top"><span class="eyebrow" style="color:var(--merlot)">Contact</span><button class="close" type="button" data-close data-i="close"></button></div>
+    <h3 data-i="contactTitle"></h3>
+    <p data-i="contactP"></p>
     <div class="contact-row">
       <span class="lbl">WhatsApp · HAVRE Group</span>
       <span class="val">+225 07 18 71 32 74</span>
       <div class="acts">
-        <a class="btn" href="https://wa.me/2250718713274?text=Hello%20HA%20Web%20Studio%2C%20I%20have%20a%20question%20about%20my%20website%20project." target="_blank" rel="noopener">Open WhatsApp</a>
-        <button class="btn ghost" type="button" data-copy="+225 07 18 71 32 74">Copy number</button>
+        <a class="btn" id="wa-contact" href="https://wa.me/2250718713274" target="_blank" rel="noopener" data-i="openWa"></a>
+        <button class="btn ghost" type="button" data-copy="+225 07 18 71 32 74" data-i="copyNum"></button>
       </div>
     </div>
     <div class="contact-row">
       <span class="lbl">Email</span>
       <span class="val">havregroup@gmail.com</span>
       <div class="acts">
-        <a class="btn" href="mailto:havregroup@gmail.com?subject=Website%20project">Write an email</a>
-        <button class="btn ghost" type="button" data-copy="havregroup@gmail.com">Copy email</button>
+        <a class="btn" href="mailto:havregroup@gmail.com?subject=Website%20project" data-i="writeMail"></a>
+        <button class="btn ghost" type="button" data-copy="havregroup@gmail.com" data-i="copyMail"></button>
       </div>
     </div>
+    <p><button type="button" class="linkish" data-privacy data-i="privacyLink"></button></p>
     <div class="toast" data-toast></div>
   </div>
 </div>
 
-<div class="sheet" id="send-sheet" role="dialog" aria-modal="true" aria-label="Send your answers">
+<div class="sheet" id="send-sheet" role="dialog" aria-modal="true" aria-label="Send">
   <div class="inner">
-    <div class="top"><span class="eyebrow" style="color:var(--merlot)">Review</span><button class="close" type="button" data-close>Close</button></div>
-    <h3 id="send-title">Send your answers</h3>
-    <p id="send-intro">Check the summary below, then send it to HA Web Studio. We reply with your quote within 48 hours.</p>
-    <button class="btn big" type="button" id="net-send">Send my answers</button>
-    <a class="btn big ghost" id="wa-send" href="#" target="_blank" rel="noopener">Send on WhatsApp instead</a>
+    <div class="top"><span class="eyebrow" style="color:var(--merlot)" data-i="reviewEyebrow"></span><button class="close" type="button" data-close data-i="close"></button></div>
+    <h3 id="send-title"></h3>
+    <p id="send-intro"></p>
+    <button class="btn big" type="button" id="net-send"></button>
+    <a class="btn big ghost" id="wa-send" href="#" target="_blank" rel="noopener"></a>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn ghost" type="button" id="copy-all">Copy my answers</button>
-      <a class="btn ghost" id="mail-send" href="#">Send by email</a>
+      <button class="btn ghost" type="button" id="copy-all" data-i="copyAll"></button>
+      <a class="btn ghost" id="mail-send" href="#" data-i="byMail"></a>
     </div>
-    <p style="font-size:13px">No WhatsApp? Copy your answers and email them to <b style="user-select:all">havregroup@gmail.com</b>.</p>
+    <p style="font-size:13px"><span data-i="noWa"></span> <b style="user-select:all">havregroup@gmail.com</b>.</p>
     <div class="toast" data-toast></div>
     <div class="summary" id="summary"></div>
+  </div>
+</div>
+
+<div class="sheet" id="privacy-sheet" role="dialog" aria-modal="true" aria-label="Privacy">
+  <div class="inner">
+    <div class="top"><span class="eyebrow" style="color:var(--merlot)">HA Web Studio</span><button class="close" type="button" data-close data-i="close"></button></div>
+    <h3 data-i="privacyTitle"></h3>
+    <div class="privacy" data-i="privacyBody"></div>
   </div>
 </div>
 
@@ -719,75 +755,532 @@ textarea.field.big:focus { border-color: var(--merlot); }
     ]},
   ];
 
-  /* ---------------- Render ---------------- */
-  const form = document.getElementById('cards');
-  const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  let html = '';
-  S.forEach((s, si) => {
-    if (s.feature) {
-      const q = s.qs[0], fid = 'q-' + s.id + '-' + q.id;
-      html += `<section class="words-hero" id="sec-${s.id}" aria-labelledby="h-${s.id}">
-        <video class="wh-video" src="hero-l.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
-        <div class="wh-inner">
-          <div class="wh-top"><span class="glass wh-tag"><span class="num">${String(si + 1).padStart(2, '0')} / ${String(S.length).padStart(2, '0')}</span><span>Your website, your words</span></span><span class="count" data-count="${s.id}"></span></div>
-          <div class="wh-main">
-            <div class="wh-left">
-              <h2 id="h-${s.id}">Every detail <em>counts.</em></h2>
-              <p class="wh-sub">${esc(s.note)}</p>
-              <div class="wh-box glass">
-                <label for="${fid}" class="wh-label">${esc(q.l)}</label>
-                <textarea class="wh-field" id="${fid}" name="${fid}" rows="9" placeholder="${esc(q.ph)}"></textarea>
-                <button type="button" class="wh-next" data-next>Continue</button>
-              </div>
-            </div>
-            <div class="wh-pills">${q.h.split(' · ').map(t => `<span class="glass wh-pill">${esc(t.charAt(0).toUpperCase() + t.slice(1))}</span>`).join('')}</div>
-          </div>
-        </div>
-      </section>`;
-      return;
-    }
-    const pos = si % 3;
-    html += `<section class="bp-card pos-${pos}${s.feature ? ' feature' : ''}" id="sec-${s.id}" aria-labelledby="h-${s.id}">
-      <div class="card-head"><span class="num">${String(si + 1).padStart(2, '0')} / ${String(S.length).padStart(2, '0')}</span><span class="count" data-count="${s.id}"></span></div>
-      <h2 id="h-${s.id}">${esc(s.title)}</h2>${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}`;
-    s.qs.forEach(q => {
-      const fid = 'q-' + s.id + '-' + q.id;
-      const lab = esc(q.l) + (q.req ? ' <span class="req">*</span>' : '');
-      const hint = q.h ? `<span class="hint">${esc(q.h)}</span>` : '';
-      if (q.t === 'text') {
-        html += `<div class="q"><label for="${fid}">${lab}</label>${hint}<input class="field" id="${fid}" name="${fid}" type="${q.type || 'text'}" ${q.req ? 'required' : ''} placeholder="${esc(q.ph || 'Your answer')}" autocomplete="off"></div>`;
-      } else if (q.t === 'area' || q.t === 'big') {
-        html += `<div class="q"><label for="${fid}">${lab}</label>${hint}<textarea class="field${q.t === 'big' ? ' big' : ''}" id="${fid}" name="${fid}" rows="${q.t === 'big' ? 8 : 3}" placeholder="${esc(q.ph || 'Your answer')}"></textarea></div>`;
-      } else {
-        const type = q.t === 'radio' ? 'radio' : 'checkbox';
-        html += `<div class="q" role="group" aria-labelledby="${fid}-l"><span class="ql" id="${fid}-l">${lab}</span>${hint}<div class="pills">`;
-        q.o.forEach((o, oi) => {
-          html += `<label class="pill"><input type="${type}" id="${fid}-${oi}" name="${fid}" value="${esc(o)}"><span>${esc(o)}</span></label>`;
-        });
-        html += `</div>`;
-        if (q.other) html += `<input class="field other" id="${fid}-other" name="${fid}-other" type="text" placeholder="Other: tell us" autocomplete="off">`;
-        html += `</div>`;
-      }
-    });
-    html += `</section>`;
-  });
-  form.innerHTML = html;
-  const cards = [...form.querySelectorAll('.bp-card')];
+  /* ---------------- Language ---------------- */
+  const LANG_KEY = 'ha-web-studio-lang';
+  let lang = 'en';
+  try { lang = localStorage.getItem(LANG_KEY) || ''; } catch (e) {}
+  if (lang !== 'en' && lang !== 'fr') lang = /^fr/i.test(navigator.language || '') ? 'fr' : 'en';
 
+  const T = {
+    en: {
+      caption: '<b>Tell us about your website, in every detail.</b> This questionnaire takes about fifteen minutes. Your answers help us understand your business, prepare an accurate quote and plan a site that brings you real customers. Not sure about an answer? Skip it, we will figure it out together.',
+      about: 'About', contact: '[ Contact ]', langBtn: '[ FR ]', langBar: 'FR',
+      coll: 'Website project<br><span>"Questionnaire"</span>', scrollhint: 'Scroll to begin', sections: 'Sections',
+      eyebrow: 'HA Web Studio · Web design &amp; development',
+      h1: 'Let’s plan the website <em>your business deserves.</em>',
+      lead: 'HA Web Studio designs fast, secure, mobile-first websites for businesses and brands, wherever they are. Before we quote, we want to understand you: who you serve, what you sell and what your site should achieve.',
+      step: 'STEP',
+      s1t: 'You answer', s1d: 'Give us every detail you can about the website you want. Your answers are kept on this device while you work.',
+      s2t: 'We send a quote', s2d: 'Within 48 hours you receive a detailed quote and timeline on WhatsApp or by email.',
+      s3t: 'We build', s3d: 'Design, build, security checks, Google setup, then launch and a handover session.',
+      galEyebrow: 'Directions', galH2: 'Sites with a <em>point of view.</em>',
+      galP: 'Showcase sites, online stores, booking pages, portfolios, digital menus. Each one designed for its owner, fast on a phone and secure from day one. Keep scrolling to tell us which one is yours.',
+      band1: ['Showcase sites', 'i:online stores', 'b:Booking', 'i:beauty stores', 'Portfolios', 'i:digital menus'],
+      band2: ['b:Worldwide', 'i:any industry', 'Fast on mobile', 'i:secure', 'b:Found on Google', 'i:made to sell'],
+      outroEyebrow: 'Last step', outroH2: 'Ready when <em>you are.</em>',
+      outroP: 'Before you send, check card 02: have you given every detail of the website you want? Then press <b>send</b> to review and send your answers. We reply with your quote within 48 hours.',
+      privacyLink: 'How we use your data',
+      sendPill: 'send', sendAria: 'Review and send your answers',
+      footer: 'HA Web Studio © 2026 · A HAVRE Group company',
+      close: 'Close', menuTitle: 'Jump to a section', review: 'Review and send',
+      startOver: 'Start over', startOverConfirm: 'Tap again to erase all your answers', erased: 'All answers erased.',
+      contactTitle: 'Talk to HA Web Studio', contactP: 'A question before you start? Write to us on WhatsApp or by email. We usually answer the same day.',
+      openWa: 'Open WhatsApp', copyNum: 'Copy number', writeMail: 'Write an email', copyMail: 'Copy email',
+      waHello: 'Hello HA Web Studio, I have a question about my website project.',
+      reviewEyebrow: 'Review', sendTitle: 'Send your answers',
+      sendIntro: 'Check the summary below, then send it to HA Web Studio. We reply with your quote within 48 hours.',
+      sendNow: 'Send my answers', sending: 'Sending…', tryAgain: 'Try again', waInstead: 'Send on WhatsApp instead',
+      copyAll: 'Copy my answers', byMail: 'Send by email', noWa: 'No WhatsApp? Copy your answers and email them to',
+      thanks: 'Thank you!', thanksP: 'Your answers are with HA Web Studio. We will contact you with your quote within 48 hours. Want to talk sooner? Message us on WhatsApp.',
+      waAfter: 'Message us on WhatsApp', waAfterText: 'Hello HA Web Studio, I just sent my website questionnaire for ',
+      fail: 'Your answers could not be sent online. Please send them on WhatsApp below, or copy them and email ',
+      copied: 'Copied.', copiedAll: 'Answers copied. Paste them into WhatsApp or an email.',
+      copyBlocked: 'Copy is blocked here. The text is selected: press Ctrl+C or long-press to copy.',
+      whTag: 'Your website, your words', whH2: 'Every detail <em>counts.</em>', whNext: 'Continue', whQuick: 'Send now (short version)',
+      answered: (d, n) => `${d} of ${n} answered`, nq: n => `${n} question${n > 1 ? 's' : ''}`,
+      yourAnswer: 'Your answer', other: 'Other: tell us', otherPrefix: 'Other: ',
+      consent: 'I agree that HA Web Studio uses my answers only to prepare my quote and contact me about my project.',
+      readPrivacy: 'Read the privacy notice',
+      missing: list => `Please complete in card 01: ${list}.`,
+      badEmail: 'This email address looks incorrect. Please check it in card 01.',
+      badPhone: 'Please enter your WhatsApp number with its country code in card 01.',
+      needConsent: 'Please accept the privacy notice in card 01.',
+      sumTitle: '*HA Web Studio · Website questionnaire*', lang: 'Language: English',
+      privacyTitle: 'Privacy notice',
+      privacyBody: `<p><b>What we collect.</b> The answers you give in this questionnaire, including your name, business name, WhatsApp number and email address.</p>
+        <p><b>Why.</b> Only to understand your project, prepare your quote and contact you about it.</p>
+        <p><b>Who receives it.</b> HA Web Studio, part of HAVRE Group. Your answers reach us by email through our form service (Formspree), or by WhatsApp if you choose it. We never sell your data or share it for advertising.</p>
+        <p><b>On your device.</b> Your draft is saved in this browser so you do not lose it. Use “Start over” in the section menu to erase it.</p>
+        <p><b>How long.</b> If no project starts, we delete your answers within 12 months.</p>
+        <p><b>Your rights.</b> You can ask us at any time to see, correct or delete your data: havregroup@gmail.com.</p>`,
+      caps: { arrival: 'Scene · Arrival', show: 'Showcase site', turn: 'Scene · Turn', store: 'Online store', book: 'Booking', detail: 'Scene · Detail', folio: 'Portfolio', stride: 'Scene · Stride', menu: 'Digital menu', beauty: 'Beauty store', way: 'Scene · This way' },
+    },
+    fr: {
+      caption: '<b>Parlez-nous de votre site, dans les moindres détails.</b> Ce questionnaire prend environ quinze minutes. Vos réponses nous aident à comprendre votre activité, à préparer un devis précis et à concevoir un site qui vous apporte de vrais clients. Pas sûr d’une réponse ? Passez-la, nous verrons ensemble.',
+      about: 'À propos', contact: '[ Contact ]', langBtn: '[ EN ]', langBar: 'EN',
+      coll: 'Projet de site<br><span>"Questionnaire"</span>', scrollhint: 'Faites défiler', sections: 'Sections',
+      eyebrow: 'HA Web Studio · Création de sites web',
+      h1: 'Créons le site <em>que votre entreprise mérite.</em>',
+      lead: 'HA Web Studio conçoit des sites rapides, sécurisés et pensés pour le mobile, pour les entreprises et les marques, où qu’elles soient. Avant de vous faire un devis, nous voulons vous comprendre : qui vous servez, ce que vous vendez et ce que votre site doit accomplir.',
+      step: 'ÉTAPE',
+      s1t: 'Vous répondez', s1d: 'Donnez-nous un maximum de détails sur le site que vous voulez. Vos réponses restent enregistrées sur cet appareil pendant que vous remplissez.',
+      s2t: 'Nous envoyons un devis', s2d: 'Sous 48 heures, vous recevez un devis détaillé et un calendrier sur WhatsApp ou par email.',
+      s3t: 'Nous créons', s3d: 'Design, développement, contrôles de sécurité, référencement Google, puis mise en ligne et séance de prise en main.',
+      galEyebrow: 'Inspirations', galH2: 'Des sites qui ont <em>du caractère.</em>',
+      galP: 'Sites vitrines, boutiques en ligne, pages de réservation, portfolios, menus digitaux. Chacun conçu pour son propriétaire, rapide sur téléphone et sécurisé dès le premier jour. Continuez à défiler pour nous dire lequel est le vôtre.',
+      band1: ['Sites vitrines', 'i:boutiques en ligne', 'b:Réservation', 'i:beauté', 'Portfolios', 'i:menus digitaux'],
+      band2: ['b:Partout', 'i:tous secteurs', 'Rapide sur mobile', 'i:sécurisé', 'b:Visible sur Google', 'i:fait pour vendre'],
+      outroEyebrow: 'Dernière étape', outroH2: 'Prêt <em>quand vous l’êtes.</em>',
+      outroP: 'Avant d’envoyer, vérifiez la carte 02 : avez-vous donné tous les détails du site que vous voulez ? Appuyez ensuite sur <b>envoyer</b> pour relire et envoyer vos réponses. Nous vous répondons avec votre devis sous 48 heures.',
+      privacyLink: 'Comment nous utilisons vos données',
+      sendPill: 'envoyer', sendAria: 'Relire et envoyer vos réponses',
+      footer: 'HA Web Studio © 2026 · Une entreprise du Groupe HAVRE',
+      close: 'Fermer', menuTitle: 'Aller à une section', review: 'Relire et envoyer',
+      startOver: 'Tout recommencer', startOverConfirm: 'Touchez encore pour effacer toutes vos réponses', erased: 'Toutes les réponses sont effacées.',
+      contactTitle: 'Parlez à HA Web Studio', contactP: 'Une question avant de commencer ? Écrivez-nous sur WhatsApp ou par email. Nous répondons en général le jour même.',
+      openWa: 'Ouvrir WhatsApp', copyNum: 'Copier le numéro', writeMail: 'Écrire un email', copyMail: 'Copier l’email',
+      waHello: 'Bonjour HA Web Studio, j’ai une question sur mon projet de site web.',
+      reviewEyebrow: 'Relecture', sendTitle: 'Envoyer vos réponses',
+      sendIntro: 'Vérifiez le résumé ci-dessous, puis envoyez-le à HA Web Studio. Nous vous répondons avec votre devis sous 48 heures.',
+      sendNow: 'Envoyer mes réponses', sending: 'Envoi…', tryAgain: 'Réessayer', waInstead: 'Envoyer plutôt sur WhatsApp',
+      copyAll: 'Copier mes réponses', byMail: 'Envoyer par email', noWa: 'Pas de WhatsApp ? Copiez vos réponses et envoyez-les à',
+      thanks: 'Merci !', thanksP: 'Vos réponses sont bien arrivées chez HA Web Studio. Nous vous contactons avec votre devis sous 48 heures. Envie d’en parler plus tôt ? Écrivez-nous sur WhatsApp.',
+      waAfter: 'Nous écrire sur WhatsApp', waAfterText: 'Bonjour HA Web Studio, je viens d’envoyer mon questionnaire de site web pour ',
+      fail: 'Vos réponses n’ont pas pu être envoyées en ligne. Envoyez-les sur WhatsApp ci-dessous, ou copiez-les et envoyez-les par email à ',
+      copied: 'Copié.', copiedAll: 'Réponses copiées. Collez-les dans WhatsApp ou un email.',
+      copyBlocked: 'La copie est bloquée ici. Le texte est sélectionné : faites Ctrl+C ou un appui long pour copier.',
+      whTag: 'Votre site, vos mots', whH2: 'Chaque détail <em>compte.</em>', whNext: 'Continuer', whQuick: 'Envoyer maintenant (version courte)',
+      answered: (d, n) => `${d} sur ${n} répondue${d > 1 ? 's' : ''}`, nq: n => `${n} question${n > 1 ? 's' : ''}`,
+      yourAnswer: 'Votre réponse', other: 'Autre : précisez', otherPrefix: 'Autre : ',
+      consent: 'J’accepte que HA Web Studio utilise mes réponses uniquement pour préparer mon devis et me contacter au sujet de mon projet.',
+      readPrivacy: 'Lire la note de confidentialité',
+      missing: list => `Merci de compléter dans la carte 01 : ${list}.`,
+      badEmail: 'Cette adresse email semble incorrecte. Vérifiez-la dans la carte 01.',
+      badPhone: 'Entrez votre numéro WhatsApp avec l’indicatif du pays dans la carte 01.',
+      needConsent: 'Merci d’accepter la note de confidentialité dans la carte 01.',
+      sumTitle: '*HA Web Studio · Questionnaire site web*', lang: 'Langue : français',
+      privacyTitle: 'Confidentialité',
+      privacyBody: `<p><b>Ce que nous collectons.</b> Les réponses que vous donnez dans ce questionnaire, dont votre nom, le nom de votre entreprise, votre numéro WhatsApp et votre adresse email.</p>
+        <p><b>Pourquoi.</b> Uniquement pour comprendre votre projet, préparer votre devis et vous contacter à ce sujet.</p>
+        <p><b>Qui les reçoit.</b> HA Web Studio, qui fait partie du Groupe HAVRE. Vos réponses nous parviennent par email via notre service de formulaires (Formspree), ou par WhatsApp si vous le choisissez. Nous ne vendons jamais vos données et ne les partageons pas à des fins publicitaires.</p>
+        <p><b>Sur votre appareil.</b> Votre brouillon est enregistré dans ce navigateur pour que vous ne le perdiez pas. Utilisez « Tout recommencer » dans le menu des sections pour l’effacer.</p>
+        <p><b>Combien de temps.</b> Si aucun projet ne démarre, nous supprimons vos réponses sous 12 mois.</p>
+        <p><b>Vos droits.</b> Vous pouvez à tout moment nous demander de voir, corriger ou supprimer vos données : havregroup@gmail.com.</p>`,
+      caps: { arrival: 'Scène · Arrivée', show: 'Site vitrine', turn: 'Scène · Demi-tour', store: 'Boutique en ligne', book: 'Réservation', detail: 'Scène · Détail', folio: 'Portfolio', stride: 'Scène · Allure', menu: 'Menu digital', beauty: 'Boutique beauté', way: 'Scène · Par ici' },
+    },
+  };
+  const t = k => T[lang][k];
+
+  /* French version of every section and question (English lives in S) */
+  const FR = {
+    'details': { title: 'Vos coordonnées', note: 'Pour savoir à qui envoyer le devis.' },
+    'details.name': { l: 'Votre nom complet', ph: 'Prénom et nom' },
+    'details.business': { l: 'Nom de l’entreprise', ph: 'Votre entreprise ou votre marque' },
+    'details.phone': { l: 'Numéro WhatsApp', ph: 'Avec l’indicatif du pays' },
+    'details.email': { l: 'Adresse email', ph: 'vous@exemple.com' },
+    'details.city': { l: 'Ville et pays', ph: 'Où votre entreprise est basée' },
+    'details.reachme': { l: 'Comment préférez-vous être contacté ?', o: ['Message WhatsApp', 'Appel téléphonique', 'Email'] },
+    'words': { title: 'Votre projet, avec vos mots', note: 'Plus vous donnez de détails, plus votre devis sera précis et plus le site final ressemblera à ce que vous imaginez. Aucun détail n’est trop petit.' },
+    'words.story': { l: 'Décrivez le site que vous voulez, dans les moindres détails', h: 'Les pages et ce qu’il y a sur chacune · couleurs, polices et ambiance · fonctionnalités · sites que vous aimez et pourquoi · ce qu’il faut éviter · vos clients · votre délai · tout ce qui compte pour vous.', ph: 'Écrivez ici tous les détails de votre site…' },
+    'business': { title: 'Votre activité' },
+    'business.what': { l: 'Que faites-vous ou que vendez-vous exactement ?' },
+    'business.reach': { l: 'Où sont vos clients ?', o: ['Dans ma ville', 'Dans tout le pays', 'À l’international', 'Surtout en ligne'] },
+    'business.ideal': { l: 'Qui est votre client idéal ?', h: 'Âge, genre, lieu, métier, budget…' },
+    'business.compet': { l: 'Qui sont vos principaux concurrents, et qu’est-ce qui vous distingue ?' },
+    'business.oldsite': { l: 'Avez-vous déjà un site ? Si oui, partagez le lien et dites-nous ce qui ne vous plaît pas.' },
+    'business.socials': { l: 'Liens vers vos réseaux sociaux', h: 'Instagram, TikTok, Facebook, LinkedIn…' },
+    'goals': { title: 'Objectifs du site' },
+    'goals.goal': { l: 'Que doit faire le site pour vous ?', o: ['Donner une image professionnelle', 'Recevoir plus d’appels et de messages WhatsApp', 'Vendre des produits en ligne', 'Prendre des réservations ou des rendez-vous', 'Montrer mon portfolio ou mes réalisations', 'Publier des actualités ou des articles'] },
+    'goals.action': { l: 'Quelle est LA chose que les visiteurs doivent faire sur votre site ?', ph: 'L’action principale attendue' },
+    'goals.success': { l: 'À quoi ressemblerait la réussite six mois après le lancement ?', ph: 'Votre objectif en chiffres ou en mots' },
+    'goals.future': { l: 'Où voyez-vous votre entreprise dans 1 à 2 ans ?', h: 'Nouveaux produits, deuxième adresse, autres pays, application mobile… pour construire un site qui grandit avec vous.' },
+    'type': { title: 'Type de site et pages' },
+    'type.kind': { l: 'De quel type de site avez-vous besoin ?', o: ['Site d’une page', 'Site d’entreprise (4 à 8 pages)', 'Petite boutique en ligne', 'Grande boutique multi-marques (comme Sephora ou Jumia)', 'Site de réservation', 'Portfolio ou site personnel', 'Site d’événement', 'Je ne sais pas, conseillez-moi'] },
+    'type.pages': { l: 'Quelles pages souhaitez-vous ?', o: ['Accueil', 'À propos', 'Services', 'Produits / Boutique', 'Galerie', 'Avis clients', 'Blog / Actualités', 'FAQ', 'Tarifs', 'Équipe', 'Contact', 'Politique de confidentialité'] },
+    'features': { title: 'Fonctionnalités' },
+    'features.feat': { l: 'De quelles fonctionnalités avez-vous besoin ?', o: ['Bouton WhatsApp', 'Formulaire de contact', 'Localisation Google Maps', 'Fil Instagram', 'Calendrier de réservation', 'Inscription à la newsletter', 'Comptes clients', 'Paiement en ligne', 'Chat en direct', 'Vidéos', 'Codes promo', 'Avis sur les produits', 'Liste d’envies', 'Points de fidélité', 'Brochure ou menu à télécharger'] },
+    'features.langs': { l: 'Dans quelles langues le site doit-il être ?', o: ['Anglais', 'Français', 'Anglais et français'] },
+    'features.tools': { l: 'Quels outils utilisez-vous déjà, à connecter au site ?', h: 'Réservation, livraison, paiement, comptabilité, tableurs, CRM ou tout autre outil.' },
+    'store': { title: 'Boutique en ligne', note: 'Uniquement si vous voulez vendre en ligne. Sinon, passez cette carte.' },
+    'store.products': { l: 'Combien de produits au lancement, et dans un an ?' },
+    'store.variants': { l: 'Vos produits ont-ils des tailles, des couleurs ou d’autres variantes ?' },
+    'store.pay': { l: 'Quels moyens de paiement voulez-vous ?', o: ['Mobile Money', 'Visa / Mastercard', 'Paiement à la livraison', 'Virement bancaire'] },
+    'store.payacct': { l: 'Avez-vous déjà un compte de paiement en ligne ? Lequel ? Votre entreprise est-elle enregistrée ?' },
+    'store.delivery': { l: 'Comment livrez-vous ?', h: 'Villes couvertes, frais de livraison, retrait sur place, envoi à l’international' },
+    'store.orders': { l: 'Qui gérera les commandes et mettra les produits à jour ?' },
+    'store.catalog': { l: 'Combien de catégories et de marques aurez-vous ?', ph: 'Nombre de catégories et de marques' },
+    'store.shopfx': { l: 'De quelles fonctionnalités de boutique avez-vous besoin ?', o: ['Filtres (prix, marque, catégorie)', 'Barre de recherche', 'Comptes clients et historique de commandes', 'Suivi de commande', 'Relance des paniers abandonnés', 'Alertes de stock (stock bas, retour en stock)', 'Coffrets et packs cadeaux', 'Cartes cadeaux', 'Codes promo et codes influenceurs', 'Plusieurs devises'] },
+    'store.zones': { l: 'Où livrerez-vous ?', o: ['Ma ville uniquement', 'Tout le pays', 'Les pays voisins', 'Toute ma région', 'Le monde entier'] },
+    'store.returns': { l: 'Quelle est votre politique de retour et d’échange ?', ph: 'Vos conditions de retour et d’échange' },
+    'store.shop': { l: 'Avez-vous aussi une boutique physique dont le stock doit correspondre au site ?', o: ['Oui, synchroniser le stock', 'Oui, mais je le gère séparément', 'Non, uniquement en ligne'] },
+    'beauty': { title: 'Boutiques beauté, soins et mode', note: 'Pour les marques et boutiques comme Sephora, les lignes de soins, cosmétiques, cheveux et mode. Passez cette carte si elle ne vous concerne pas.' },
+    'beauty.cat': { l: 'Que vendez-vous ?', o: ['Soins de la peau', 'Maquillage', 'Cheveux et perruques', 'Parfums', 'Soins du corps', 'Bien-être et compléments', 'Mode et accessoires', 'Outils et appareils'] },
+    'beauty.brandmix': { l: 'De qui sont les produits ?', o: ['Ma propre marque', 'D’autres marques que je revends', 'Les deux'] },
+    'beauty.pinfo': { l: 'Que doit montrer chaque fiche produit ?', o: ['Liste des ingrédients', 'Mode d’emploi', 'Type de peau ou de cheveux', 'Problèmes traités', 'Taille et contenance', 'Photos avant / après', 'Durée de conservation et date d’expiration', 'Labels (bio, non testé sur les animaux, vegan)'] },
+    'beauty.tools': { l: 'Quelles expériences d’achat souhaitez-vous ?', o: ['Quiz de peau avec recommandations de produits', 'Achat par problème (acné, taches, sécheresse…)', 'Outil pour trouver sa teinte de maquillage', 'Routines (matin, soir) et kits', 'Avis clients avec photos', 'Points de fidélité et statuts VIP', 'Échantillons offerts avec les commandes', 'Box mensuelle par abonnement', 'Réservation d’une consultation peau', 'Blog de conseils beauté'] },
+    'beauty.fda': { l: 'Vos produits sont-ils enregistrés auprès de l’autorité de sécurité des produits de votre pays ?', h: 'Certains prestataires de paiement et places de marché le demandent.', o: ['Oui', 'En cours', 'Non', 'Je ne sais pas'] },
+    'beauty.creators': { l: 'Travaillez-vous avec des influenceurs ou voulez-vous un programme d’affiliation ?', o: ['Oui, avec des codes promo personnels', 'Peut-être plus tard', 'Non'] },
+    'content': { title: 'Contenu' },
+    'content.have': { l: 'Qu’avez-vous déjà ?', o: ['Logo', 'Couleurs et polices de la marque', 'Textes sur l’entreprise', 'Photos professionnelles', 'Vidéos', 'Témoignages clients', 'Rien pour l’instant'] },
+    'content.copy': { l: 'Qui écrira les textes ?', o: ['Je les fournis', 'Écrivez-les pour moi', 'Un peu des deux'] },
+    'content.photos': { l: 'Avez-vous besoin d’aide pour les photos ?', o: ['Mes photos sont prêtes', 'J’ai besoin d’un photographe', 'Utiliser des photos libres de qualité pour l’instant'] },
+    'content.logo': { l: 'Avez-vous besoin d’un logo ou d’un rafraîchissement de marque ?', o: ['Non, mon logo est définitif', 'Oui, il me faut un nouveau logo', 'Mon logo a besoin d’être rafraîchi'] },
+    'design': { title: 'Design et style' },
+    'design.love': { l: 'Partagez 2 ou 3 sites que vous aimez et dites-nous pourquoi.', h: 'Tous secteurs confondus. Les pages Instagram marchent aussi.' },
+    'design.avoid': { l: 'Des styles ou des couleurs à éviter ?' },
+    'design.mood': { l: 'Quels mots décrivent l’ambiance que vous voulez ?', o: ['Luxe', 'Moderne', 'Épuré', 'Ludique et coloré', 'Chaleureux et accueillant', 'Corporate', 'Naturel', 'Féminin', 'Audacieux'] },
+    'domain': { title: 'Nom de domaine et email' },
+    'domain.dom': { l: 'Avez-vous un nom de domaine (votreentreprise.com) ? Sinon, quel nom aimeriez-vous ?' },
+    'domain.mails': { l: 'Avez-vous besoin d’adresses email professionnelles (contact@votreentreprise.com) ? Combien ?' },
+    'domain.owner': { l: 'Au nom de qui doivent être le domaine et l’hébergement ?', h: 'Nous recommandons votre nom, pour que le site vous appartienne toujours.', o: ['À mon nom ou au nom de mon entreprise', 'HA Web Studio les gère pour moi'] },
+    'domain.running': { l: 'Un site a des frais annuels (domaine, hébergement). Qu’est-ce qui vous convient ?', o: ['Je paie moi-même une fois par an', 'L’inclure dans un forfait mensuel', 'Je ne sais pas, expliquez-moi'] },
+    'security': { title: 'Sécurité et données', note: 'Chaque site HA Web Studio inclut le HTTPS, une protection anti-spam des formulaires et un accès administrateur sécurisé.' },
+    'security.data': { l: 'Le site collectera-t-il certaines de ces informations ?', o: ['Noms et numéros de téléphone', 'Adresses de livraison', 'Paiements (via un prestataire sécurisé)', 'Pièces d’identité', 'Aucune de ces informations'] },
+    'security.access': { l: 'Qui dans votre équipe doit pouvoir gérer le site ?' },
+    'security.secx': { l: 'Lesquels de ces points comptent pour vous ?', o: ['Sauvegardes régulières', 'Politique de confidentialité', 'Connexion en deux étapes pour les administrateurs', 'Comptes employés avec accès limité'] },
+    'google': { title: 'Visibilité sur Google' },
+    'google.kw': { l: 'Que taperaient les gens sur Google pour trouver une entreprise comme la vôtre ?', h: 'Listez 3 à 5 recherches que vos clients feraient.' },
+    'google.gbp': { l: 'Votre entreprise est-elle sur Google Maps (fiche Google Business) ?', o: ['Oui', 'Non', 'Je ne sais pas'] },
+    'google.grow': { l: 'Aimeriez-vous de l’aide pour l’un de ces points après le lancement ?', o: ['Mieux apparaître sur Google', 'Rédaction d’articles', 'Publicités en ligne', 'Rapport mensuel des visites'] },
+    'google.track': { l: 'Faut-il installer un suivi des visiteurs ?', o: ['Google Analytics', 'Pixel Meta (Facebook / Instagram)', 'Pixel TikTok', 'Je ne sais pas'] },
+    'budget': { title: 'Budget et délais' },
+    'budget.bud': { l: 'Quel budget avez-vous prévu ?', h: 'En dollars US, ou l’équivalent dans votre devise.', o: ['Moins de 200 $', '200 – 400 $', '400 – 700 $', '700 – 1 400 $', 'Plus de 1 400 $ (grande boutique ou plateforme)', 'Je ne sais pas, conseillez-moi'] },
+    'budget.when': { l: 'Quand le site doit-il être en ligne ? Un événement est-il lié à cette date ?' },
+    'budget.flex': { l: 'Cette date est-elle ferme ?', o: ['Fixe, elle ne peut pas bouger', 'Quelques semaines de marge', 'Pas d’urgence, la qualité d’abord'] },
+    'budget.decide': { l: 'Qui prend la décision finale sur le projet ?' },
+    'after': { title: 'Après le lancement' },
+    'after.care': { l: 'Une fois le site en ligne, souhaitez-vous…', o: ['Une maintenance mensuelle (mises à jour, sauvegardes, petites modifications)', 'Une formation pour le mettre à jour moi-même', 'Tout gérer moi-même', 'Je ne sais pas encore'] },
+    'after.heard': { l: 'Comment avez-vous connu HA Web Studio ?', o: ['Un ami ou un proche', 'Instagram', 'TikTok', 'Statut WhatsApp', 'Google', 'Groupe HAVRE'] },
+    'after.else': { l: 'Autre chose à nous dire ?', h: 'Des photos, logos ou exemples ? Envoyez-les-nous sur WhatsApp après l’envoi.' },
+  };
+  const secL = s => lang === 'fr' ? { ...s, ...(FR[s.id] || {}) } : s;
+  const qL = (s, q) => lang === 'fr' ? { ...q, ...(FR[s.id + '.' + q.id] || {}) } : q;
+
+  /* ---------------- Render the form (in the current language) ---------------- */
+  const form = document.getElementById('cards');
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const small = matchMedia('(max-width: 1023px)').matches || !!(navigator.connection && navigator.connection.saveData);
+  const SRC = {
+    R: small ? 'hero-m.mp4' : 'hero.mp4', L: small ? 'hero-l-m.mp4' : 'hero-l.mp4',
+    pR: small ? 'poster-m.jpg' : 'poster.jpg', pL: small ? 'poster-l-m.jpg' : 'poster-l.jpg',
+  };
+  let cards = [];
+  function renderForm() {
+    let html = '';
+    S.forEach((s0, si) => {
+      const s = secL(s0);
+      const num = `${String(si + 1).padStart(2, '0')} / ${String(S.length).padStart(2, '0')}`;
+      if (s.feature) {
+        const q = qL(s0, s0.qs[0]), fid = 'q-' + s.id + '-' + q.id;
+        html += `<section class="words-hero" id="sec-${s.id}" aria-labelledby="h-${s.id}">
+          <video class="wh-video" data-src="${SRC.L}" poster="${SRC.pL}" muted loop playsinline preload="none" aria-hidden="true"></video>
+          <div class="wh-inner">
+            <div class="wh-top"><span class="glass wh-tag"><span class="num">${num}</span><span>${t('whTag')}</span></span><span class="count" data-count="${s.id}"></span></div>
+            <div class="wh-main">
+              <div class="wh-left">
+                <h2 id="h-${s.id}">${t('whH2')}</h2>
+                <p class="wh-sub">${esc(s.note)}</p>
+                <div class="wh-box glass">
+                  <label for="${fid}" class="wh-label">${esc(q.l)}</label>
+                  <textarea class="wh-field" id="${fid}" name="${fid}" rows="9" placeholder="${esc(q.ph)}"></textarea>
+                  <div class="wh-actions">
+                    <button type="button" class="wh-quick" data-quick>${t('whQuick')}</button>
+                    <button type="button" class="wh-next" data-next>${t('whNext')}</button>
+                  </div>
+                </div>
+              </div>
+              <div class="wh-pills">${q.h.split(' · ').map(x => `<span class="glass wh-pill">${esc(x.charAt(0).toUpperCase() + x.slice(1))}</span>`).join('')}</div>
+            </div>
+          </div>
+        </section>`;
+        return;
+      }
+      html += `<section class="bp-card pos-${si % 3}" id="sec-${s.id}" aria-labelledby="h-${s.id}">
+        <div class="card-head"><span class="num">${num}</span><span class="count" data-count="${s.id}"></span></div>
+        <h2 id="h-${s.id}">${esc(s.title)}</h2>${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}`;
+      s0.qs.forEach(q0 => {
+        const q = qL(s0, q0), fid = 'q-' + s.id + '-' + q.id;
+        const lab = esc(q.l) + (q.req ? ' <span class="req">*</span>' : '');
+        const hint = q.h ? `<span class="hint">${esc(q.h)}</span>` : '';
+        if (q.t === 'text') {
+          html += `<div class="q"><label for="${fid}">${lab}</label>${hint}<input class="field" id="${fid}" name="${fid}" type="${q.type || 'text'}" ${q.type === 'tel' ? 'inputmode="tel"' : ''} ${q.req ? 'required' : ''} placeholder="${esc(q.ph || t('yourAnswer'))}" autocomplete="off"></div>`;
+        } else if (q.t === 'area') {
+          html += `<div class="q"><label for="${fid}">${lab}</label>${hint}<textarea class="field" id="${fid}" name="${fid}" rows="3" placeholder="${esc(q.ph || t('yourAnswer'))}"></textarea></div>`;
+        } else {
+          const type = q.t === 'radio' ? 'radio' : 'checkbox';
+          html += `<div class="q" role="group" aria-labelledby="${fid}-l"><span class="ql" id="${fid}-l">${lab}</span>${hint}<div class="pills">`;
+          q.o.forEach((o, oi) => { html += `<label class="pill"><input type="${type}" id="${fid}-${oi}" name="${fid}" value="${esc(o)}"><span>${esc(o)}</span></label>`; });
+          html += `</div>`;
+          if (q.other) html += `<input class="field other" id="${fid}-other" name="${fid}-other" type="text" placeholder="${t('other')}" autocomplete="off">`;
+          html += `</div>`;
+        }
+      });
+      if (s.id === 'details') {
+        html += `<div class="consent"><label class="consent-row"><input type="checkbox" id="consent"><span>${t('consent')}</span></label><button type="button" class="linkish" data-privacy>${t('readPrivacy')}</button></div>`;
+      }
+      html += `</section>`;
+    });
+    form.innerHTML = html;
+    cards = [...form.querySelectorAll('.bp-card')];
+    watchWordsVideo();
+  }
+
+  /* the looping video behind card 02 only loads and plays when it is on screen */
+  let whObs = null;
+  function watchWordsVideo() {
+    const v = form.querySelector('.wh-video'); if (!v) return;
+    if (whObs) whObs.disconnect();
+    if (!('IntersectionObserver' in window)) { v.src = v.dataset.src; return; }
+    whObs = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; if (!reduce) v.play().catch(() => {}); }
+      else v.pause();
+    }), { rootMargin: '200px' });
+    whObs.observe(v);
+  }
+
+  /* ---------------- Values / progress / draft ---------------- */
+  const KEY = 'ha-web-studio-questionnaire-v1';
+  function valueOf(s, q) {
+    const fid = 'q-' + s.id + '-' + q.id;
+    const el = document.getElementById(fid);
+    if (q.t === 'text' || q.t === 'area' || q.t === 'big') return el ? (el.value || '').trim() : '';
+    const vals = [...form.querySelectorAll(`input[name="${fid}"]:checked`)].map(i => i.value);
+    if (q.other) { const o = document.getElementById(fid + '-other'); if (o && o.value.trim()) vals.push(t('otherPrefix') + o.value.trim()); }
+    return vals.join(', ');
+  }
+  const total = S.reduce((n, s) => n + s.qs.length, 0);
+  const fill = document.getElementById('fill'), progtext = document.getElementById('progtext');
+  function updateProgress() {
+    let done = 0;
+    S.forEach(s => {
+      let d = 0; s.qs.forEach(q => { if (valueOf(s, q)) d++; });
+      done += d;
+      const c = form.querySelector(`[data-count="${s.id}"]`);
+      if (c) c.textContent = d ? t('answered')(d, s.qs.length) : t('nq')(s.qs.length);
+    });
+    fill.style.width = (done / total * 100) + '%';
+    progtext.textContent = `${done} / ${total}`;
+    return done;
+  }
+  function collect() {
+    const data = {};
+    form.querySelectorAll('input, textarea').forEach(el => {
+      if (el.type === 'checkbox' || el.type === 'radio') { if (el.checked) data[el.id] = 1; }
+      else if (el.value) data[el.id] = el.value;
+    });
+    return data;
+  }
+  function restore(data) {
+    Object.entries(data || {}).forEach(([id, v]) => {
+      const el = document.getElementById(id); if (!el) return;
+      if (el.type === 'checkbox' || el.type === 'radio') el.checked = true; else el.value = v;
+    });
+  }
+  function saveDraft() { try { localStorage.setItem(KEY, JSON.stringify(collect())); } catch (e) {} }
+  function loadDraft() { let d = null; try { d = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {} restore(d); }
+  function clearDraft() { try { localStorage.removeItem(KEY); } catch (e) {} }
+
+  let saveT;
+  form.addEventListener('input', e => { e.target.classList && e.target.classList.remove('invalid'); updateProgress(); clearTimeout(saveT); saveT = setTimeout(saveDraft, 300); });
+  form.addEventListener('change', () => { updateProgress(); saveDraft(); });
+  form.addEventListener('submit', e => e.preventDefault());
+  form.addEventListener('click', e => {
+    if (e.target.closest('[data-next]')) {
+      const next = document.getElementById('sec-' + S[2].id);
+      scrollTo({ top: next.getBoundingClientRect().top + scrollY - 90, behavior: reduce ? 'auto' : 'smooth' });
+    } else if (e.target.closest('[data-quick]')) startSend();
+  });
+  document.addEventListener('click', e => { if (e.target.closest('[data-privacy]')) openSheet('privacy'); });
+
+  /* ---------------- Summary ---------------- */
+  function buildSummary() {
+    let out = t('sumTitle') + '\n' + t('lang') + '\n';
+    S.forEach(s0 => {
+      const s = secL(s0), lines = [];
+      s0.qs.forEach(q0 => { const q = qL(s0, q0), v = valueOf(s0, q0); if (v) lines.push(q0.t === 'big' ? v : `• ${q.l.replace(/…$/, '')}: ${v}`); });
+      if (lines.length) out += `\n*${s.title}*\n` + lines.join('\n') + '\n';
+    });
+    return out.trim();
+  }
+
+  /* ---------------- Static text ---------------- */
+  const bandHTML = items => {
+    const one = items.map(x => x.startsWith('i:') ? `<i>${x.slice(2)}</i>` : x.startsWith('b:') ? `<b>${x.slice(2)}</b>` : x).join('<span class="dot"></span>') + '<span class="dot"></span>';
+    return one + one;
+  };
+  function applyStatic() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i]').forEach(el => { el.innerHTML = t(el.dataset.i); });
+    document.querySelectorAll('[data-i-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.iAria)));
+    const rows = document.querySelectorAll('.band .row');
+    rows[0].innerHTML = bandHTML(t('band1')); rows[1].innerHTML = bandHTML(t('band2'));
+    document.getElementById('wa-contact').href = `https://wa.me/${WA}?text=${encodeURIComponent(t('waHello'))}`;
+  }
+
+  /* ---------------- Sheets ---------------- */
+  const sheets = { menu: 'menu-sheet', contact: 'contact-sheet', send: 'send-sheet', privacy: 'privacy-sheet' };
+  Object.keys(sheets).forEach(k => sheets[k] = document.getElementById(sheets[k]));
+  let lastFocus = null;
+  function openSheet(name) {
+    if (!sheets[name].classList.contains('open')) lastFocus = document.activeElement;
+    Object.values(sheets).forEach(s => s.classList.remove('open'));
+    sheets[name].classList.add('open');
+    setTimeout(() => sheets[name].querySelector('.close').focus(), 50);
+  }
+  function closeSheets() { Object.values(sheets).forEach(s => s.classList.remove('open')); if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true }); }
+  Object.values(sheets).forEach(s => s.addEventListener('click', e => { if (e.target === s || e.target.hasAttribute('data-close')) closeSheets(); }));
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeSheets(); });
+
+  const menuList = document.getElementById('menu-list');
+  function renderMenu() {
+    menuList.innerHTML = S.map((s0, i) => {
+      const s = secL(s0); let d = 0; s0.qs.forEach(q => { if (valueOf(s0, q)) d++; });
+      return `<li class="${d === s0.qs.length ? 'done' : ''}"><button type="button" data-go="sec-${s0.id}"><span>${String(i + 1).padStart(2, '0')} · ${esc(s.title)}</span><small>${d}/${s0.qs.length}</small></button></li>`;
+    }).join('') + `<li><button type="button" data-go="outro"><span>${t('review')}</span><small>→</small></button></li>`;
+  }
+  menuList.addEventListener('click', e => {
+    const b = e.target.closest('[data-go]'); if (!b) return;
+    closeSheets();
+    const el = document.getElementById(b.dataset.go);
+    setTimeout(() => scrollTo({ top: el.getBoundingClientRect().top + scrollY - (b.dataset.go === 'outro' ? 0 : 90), behavior: reduce ? 'auto' : 'smooth' }), 120);
+  });
+  const openMenu = () => { renderMenu(); resetStartOver(); openSheet('menu'); };
+  document.getElementById('menu-btn').addEventListener('click', openMenu);
+  document.getElementById('menu-btn-2').addEventListener('click', openMenu);
+  document.getElementById('contact-btn').addEventListener('click', () => openSheet('contact'));
+  document.getElementById('about-btn').addEventListener('click', () => {
+    scrollTo({ top: document.getElementById('intro').getBoundingClientRect().top + scrollY - 120, behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+  /* Start over: two taps, so nobody erases by accident */
+  const startBtn = document.getElementById('start-over');
+  let armed = false;
+  function resetStartOver() { armed = false; startBtn.textContent = t('startOver'); startBtn.classList.remove('armed'); }
+  startBtn.addEventListener('click', () => {
+    if (!armed) { armed = true; startBtn.textContent = t('startOverConfirm'); startBtn.classList.add('armed'); return; }
+    clearDraft(); form.reset(); form.querySelectorAll('textarea').forEach(x => x.value = ''); updateProgress(); renderMenu();
+    resetStartOver(); toast(sheets.menu.querySelector('.inner'), t('erased'));
+  });
+
+  function toast(scope, msg) {
+    const el = scope.querySelector('[data-toast]'); if (!el) return;
+    el.textContent = msg; clearTimeout(el._t); el._t = setTimeout(() => el.textContent = '', 3500);
+  }
+  async function copyText(text, scope, okMsg, selectEl) {
+    try { await navigator.clipboard.writeText(text); toast(scope, okMsg); }
+    catch (e) {
+      if (selectEl) { const r = document.createRange(); r.selectNodeContents(selectEl); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+      toast(scope, t('copyBlocked'));
+    }
+  }
+  document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
+    copyText(b.dataset.copy, b.closest('.inner'), t('copied'), b.closest('.contact-row').querySelector('.val'));
+  }));
+
+  /* ---------------- Send ---------------- */
+  const miss = document.getElementById('miss');
+  const sendBtn = document.getElementById('outro-buy');
+  const netSend = document.getElementById('net-send'), sendTitle = document.getElementById('send-title'),
+        sendIntro = document.getElementById('send-intro'), waSend = document.getElementById('wa-send');
+  const fv = id => { const el = document.getElementById('q-details-' + id); return el ? el.value.trim() : ''; };
+  function goDetails(msg) {
+    miss.textContent = msg;
+    const el = document.getElementById('sec-details');
+    scrollTo({ top: el.getBoundingClientRect().top + scrollY - 90, behavior: reduce ? 'auto' : 'smooth' });
+    setTimeout(() => { const bad = form.querySelector('#sec-details .invalid, #sec-details .consent.invalid input'); if (bad) bad.focus({ preventScroll: true }); }, 600);
+  }
+  function validate() {
+    const s0 = S[0], missing = [];
+    ['name', 'business', 'phone'].forEach(id => {
+      const el = document.getElementById('q-details-' + id), bad = !el.value.trim();
+      el.classList.toggle('invalid', bad);
+      if (bad) { const l = qL(s0, s0.qs.find(q => q.id === id)).l; missing.push(l.charAt(0).toLowerCase() + l.slice(1)); }
+    });
+    if (missing.length) return t('missing')(missing.join(', '));
+    const phone = document.getElementById('q-details-phone'), digits = phone.value.replace(/\D/g, '');
+    if (!/^[+\d\s().-]+$/.test(phone.value.trim()) || digits.length < 8 || digits.length > 15) { phone.classList.add('invalid'); return t('badPhone'); }
+    const email = document.getElementById('q-details-email');
+    if (email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim())) { email.classList.add('invalid'); return t('badEmail'); }
+    const consent = document.getElementById('consent'), box = consent.closest('.consent');
+    box.classList.toggle('invalid', !consent.checked);
+    if (!consent.checked) return t('needConsent');
+    return '';
+  }
+  function resetSend() {
+    sendTitle.textContent = t('sendTitle'); sendIntro.textContent = t('sendIntro');
+    netSend.hidden = false; netSend.disabled = false; netSend.textContent = t('sendNow');
+    waSend.textContent = t('waInstead');
+  }
+  function startSend() {
+    const err = validate();
+    if (err) { goDetails(err); return; }
+    miss.textContent = '';
+    const text = buildSummary();
+    document.getElementById('summary').textContent = text;
+    waSend.href = `https://wa.me/${WA}?text=${encodeURIComponent(text)}`;
+    document.getElementById('mail-send').href = `mailto:${EMAIL}?subject=${encodeURIComponent('Website questionnaire · ' + fv('business'))}&body=${encodeURIComponent(text.replace(/\*/g, ''))}`;
+    resetSend();
+    openSheet('send');
+  }
+  sendBtn.addEventListener('click', startSend);
+  netSend.addEventListener('click', async () => {
+    const answers = document.getElementById('summary').textContent.replace(/\*/g, '');
+    netSend.disabled = true; netSend.textContent = t('sending');
+    let ok = false;
+    try {
+      if (FORMSPREE) {
+        const r = await fetch('https://formspree.io/f/' + FORMSPREE, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ name: fv('name'), email: fv('email'), business: fv('business'), phone: fv('phone'),
+            language: lang === 'fr' ? 'Français' : 'English',
+            _subject: 'New website questionnaire · ' + fv('business'), answers, _gotcha: '' }),
+        });
+        ok = r.ok;
+      }
+    } catch (e) {}
+    if (ok) {
+      clearDraft();
+      sendTitle.textContent = t('thanks'); sendIntro.textContent = t('thanksP');
+      netSend.hidden = true;
+      waSend.textContent = t('waAfter');
+      waSend.href = `https://wa.me/${WA}?text=${encodeURIComponent(t('waAfterText') + fv('business') + '.')}`;
+    } else {
+      netSend.disabled = false; netSend.textContent = t('tryAgain');
+      sendIntro.textContent = t('fail') + EMAIL + '.';
+    }
+  });
+  document.getElementById('copy-all').addEventListener('click', e => {
+    copyText(document.getElementById('summary').textContent, e.target.closest('.inner'), t('copiedAll'), document.getElementById('summary'));
+  });
+
+  /* ---------------- Language switch ---------------- */
+  function setLang(l, first) {
+    const data = first ? null : collect();
+    lang = l;
+    try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
+    applyStatic();
+    renderForm();
+    if (first) loadDraft(); else restore(data);
+    updateProgress();
+    if (!first) { gCols = 0; renderGallery(); buildReveals(); lastY = -1; }
+  }
+  document.getElementById('lang-btn').addEventListener('click', () => setLang(lang === 'fr' ? 'en' : 'fr'));
+  document.getElementById('lang-btn-2').addEventListener('click', () => setLang(lang === 'fr' ? 'en' : 'fr'));
+  setLang(lang, true);
 
   /* ---------------- Gallery: scattered grid ---------------- */
   const TILES = [
-    { img: 'g/s1.jpg', cap: 'Scene · Arrival' },
-    { m: 'show', cap: 'Showcase site' },
-    { img: 'g/s3.jpg', cap: 'Scene · Turn' },
-    { m: 'store', cap: 'Online store' },
-    { m: 'book', cap: 'Booking' },
-    { img: 'g/s5.jpg', cap: 'Scene · Detail' },
-    { m: 'folio', cap: 'Portfolio' },
-    { img: 'g/s2.jpg', cap: 'Scene · Stride' },
-    { m: 'menu', cap: 'Digital menu' },
-    { m: 'beauty', cap: 'Beauty store' },
-    { img: 'g/s4.jpg', cap: 'Scene · This way' },
+    { img: 'g/s1.jpg', cap: 'arrival' },
+    { m: 'show', cap: 'show' },
+    { img: 'g/s3.jpg', cap: 'turn' },
+    { m: 'store', cap: 'store' },
+    { m: 'book', cap: 'book' },
+    { img: 'g/s5.jpg', cap: 'detail' },
+    { m: 'folio', cap: 'folio' },
+    { img: 'g/s2.jpg', cap: 'stride' },
+    { m: 'menu', cap: 'menu' },
+    { m: 'beauty', cap: 'beauty' },
+    { img: 'g/s4.jpg', cap: 'way' },
   ];
   const MOCK = {
     show: `<div class="mock l"><div class="chrome"><i></i><i></i><i></i><u></u></div><div class="hl">Your brand,<br>online.</div><div class="bar f" style="width:70%"></div><div class="img"></div><span class="pill2">CONTACT ON WHATSAPP</span></div>`,
@@ -819,204 +1312,15 @@ textarea.field.big:focus { border-color: var(--merlot); }
     gallery.style.setProperty('--cols', cols);
     gallery.innerHTML = buildLayout(TILES.length, cols).map(row => `<div class="g-row">${row.map((idx, ci) => {
       if (idx < 0) return `<div class="g-cell" aria-hidden="true"></div>`;
-      const t = TILES[idx], origin = ci < cols / 2 ? 'right bottom' : 'left bottom';
-      const body = t.img ? `<img src="${t.img}" alt="" loading="lazy">` : MOCK[t.m];
-      return `<div class="g-cell"><figure class="g-tile" style="margin:0;transform-origin:${origin}">${body}<figcaption><span>${t.cap}</span><b>${String(idx + 1).padStart(2, '0')}</b></figcaption></figure></div>`;
+      const tile = TILES[idx], origin = ci < cols / 2 ? 'right bottom' : 'left bottom';
+      const body = tile.img ? `<img src="${tile.img}" alt="" loading="lazy">` : MOCK[tile.m];
+      return `<div class="g-cell"><figure class="g-tile" style="margin:0;transform-origin:${origin}">${body}<figcaption><span>${T[lang].caps[tile.cap]}</span><b>${String(idx + 1).padStart(2, '0')}</b></figcaption></figure></div>`;
     }).join('')}</div>`).join('');
     gTiles = [...gallery.querySelectorAll('.g-tile')];
     lastY = -1;
   }
   renderGallery();
   addEventListener('resize', renderGallery);
-
-  /* ---------------- Values / progress / draft ---------------- */
-  const KEY = 'ha-web-studio-questionnaire-v1';
-  function valueOf(s, q) {
-    const fid = 'q-' + s.id + '-' + q.id;
-    if (q.t === 'text' || q.t === 'area' || q.t === 'big') return (document.getElementById(fid).value || '').trim();
-    const vals = [...form.querySelectorAll(`input[name="${fid}"]:checked`)].map(i => i.value);
-    if (q.other) { const o = document.getElementById(fid + '-other').value.trim(); if (o) vals.push('Other: ' + o); }
-    return vals.join(', ');
-  }
-  const total = S.reduce((n, s) => n + s.qs.length, 0);
-  const fill = document.getElementById('fill'), progtext = document.getElementById('progtext');
-  function updateProgress() {
-    let done = 0;
-    S.forEach(s => {
-      let d = 0; s.qs.forEach(q => { if (valueOf(s, q)) d++; });
-      done += d;
-      const c = form.querySelector(`[data-count="${s.id}"]`);
-      c.textContent = d ? `${d} of ${s.qs.length} answered` : `${s.qs.length} question${s.qs.length > 1 ? 's' : ''}`;
-    });
-    fill.style.width = (done / total * 100) + '%';
-    progtext.textContent = `${done} / ${total}`;
-    return done;
-  }
-  function saveDraft() {
-    const data = {};
-    form.querySelectorAll('input, textarea').forEach(el => {
-      if (el.type === 'checkbox' || el.type === 'radio') { if (el.checked) data[el.id] = 1; }
-      else if (el.value) data[el.id] = el.value;
-    });
-    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
-  }
-  function loadDraft() {
-    let data = null;
-    try { data = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
-    if (!data) return;
-    Object.entries(data).forEach(([id, v]) => {
-      const el = document.getElementById(id); if (!el) return;
-      if (el.type === 'checkbox' || el.type === 'radio') el.checked = true; else el.value = v;
-    });
-  }
-  loadDraft();
-  updateProgress();
-  let saveT;
-  form.addEventListener('input', () => { updateProgress(); clearTimeout(saveT); saveT = setTimeout(saveDraft, 300); });
-  form.addEventListener('change', () => { updateProgress(); saveDraft(); });
-  form.addEventListener('submit', e => e.preventDefault());
-  form.addEventListener('click', e => {
-    if (!e.target.closest('[data-next]')) return;
-    const next = document.getElementById('sec-' + S[2].id);
-    scrollTo({ top: next.getBoundingClientRect().top + scrollY - 90, behavior: reduce ? 'auto' : 'smooth' });
-  });
-
-  /* ---------------- Summary ---------------- */
-  function buildSummary() {
-    let out = '*HA Web Studio · Website questionnaire*\n';
-    S.forEach(s => {
-      const lines = [];
-      s.qs.forEach(q => { const v = valueOf(s, q); if (v) lines.push(s.qs.length === 1 && q.t === 'big' ? v : `• ${q.l.replace(/…$/, '')}: ${v}`); });
-      if (lines.length) out += `\n*${s.title}*\n` + lines.join('\n') + '\n';
-    });
-    return out.trim();
-  }
-
-  /* ---------------- Sheets ---------------- */
-  const sheets = { menu: document.getElementById('menu-sheet'), contact: document.getElementById('contact-sheet'), send: document.getElementById('send-sheet') };
-  let lastFocus = null;
-  function openSheet(name) {
-    lastFocus = document.activeElement;
-    Object.values(sheets).forEach(s => s.classList.remove('open'));
-    sheets[name].classList.add('open');
-    setTimeout(() => sheets[name].querySelector('.close').focus(), 50);
-  }
-  function closeSheets() { Object.values(sheets).forEach(s => s.classList.remove('open')); if (lastFocus) lastFocus.focus({ preventScroll: true }); }
-  Object.values(sheets).forEach(s => {
-    s.addEventListener('click', e => { if (e.target === s || e.target.hasAttribute('data-close')) closeSheets(); });
-  });
-  addEventListener('keydown', e => { if (e.key === 'Escape') closeSheets(); });
-
-  const menuList = document.getElementById('menu-list');
-  function renderMenu() {
-    menuList.innerHTML = S.map((s, i) => {
-      let d = 0; s.qs.forEach(q => { if (valueOf(s, q)) d++; });
-      return `<li class="${d === s.qs.length ? 'done' : ''}"><button type="button" data-go="sec-${s.id}"><span>${String(i + 1).padStart(2, '0')} · ${esc(s.title)}</span><small>${d}/${s.qs.length}</small></button></li>`;
-    }).join('') + `<li><button type="button" data-go="outro"><span>Review and send</span><small>→</small></button></li>`;
-  }
-  menuList.addEventListener('click', e => {
-    const b = e.target.closest('[data-go]'); if (!b) return;
-    closeSheets();
-    const el = document.getElementById(b.dataset.go);
-    setTimeout(() => {
-      const y = el.getBoundingClientRect().top + scrollY - (b.dataset.go === 'outro' ? 0 : 90);
-      scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
-    }, 120);
-  });
-  const openMenu = () => { renderMenu(); openSheet('menu'); };
-  document.getElementById('menu-btn').addEventListener('click', openMenu);
-  document.getElementById('menu-btn-2').addEventListener('click', openMenu);
-  document.getElementById('contact-btn').addEventListener('click', () => openSheet('contact'));
-  document.getElementById('about-btn').addEventListener('click', () => {
-    const y = document.getElementById('intro').getBoundingClientRect().top + scrollY - 120;
-    scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
-  });
-
-  function toast(scope, msg) {
-    const t = scope.querySelector('[data-toast]'); if (!t) return;
-    t.textContent = msg; clearTimeout(t._t); t._t = setTimeout(() => t.textContent = '', 3500);
-  }
-  async function copyText(text, scope, okMsg, selectEl) {
-    try { await navigator.clipboard.writeText(text); toast(scope, okMsg); }
-    catch (e) {
-      if (selectEl) { const r = document.createRange(); r.selectNodeContents(selectEl); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
-      toast(scope, 'Copy is blocked here. The text is selected: press Ctrl+C or long-press to copy.');
-    }
-  }
-  document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
-    copyText(b.dataset.copy, b.closest('.inner'), 'Copied.', b.closest('.contact-row').querySelector('.val'));
-  }));
-
-  /* Send */
-  const miss = document.getElementById('miss');
-  const sendBtn = document.getElementById('outro-buy');
-  sendBtn.addEventListener('click', () => {
-    const req = [['details', 'name'], ['details', 'business'], ['details', 'phone']];
-    const missing = [];
-    req.forEach(([sid, qid]) => {
-      const el = document.getElementById(`q-${sid}-${qid}`);
-      const bad = !el.value.trim(); el.classList.toggle('invalid', bad);
-      if (bad) missing.push(S[0].qs.find(q => q.id === qid).l.toLowerCase());
-    });
-    if (missing.length) {
-      miss.textContent = `Please add your ${missing.join(', ')} in card 01 so we can reach you.`;
-      const el = document.getElementById('sec-details');
-      scrollTo({ top: el.getBoundingClientRect().top + scrollY - 90, behavior: reduce ? 'auto' : 'smooth' });
-      return;
-    }
-    miss.textContent = '';
-    const text = buildSummary();
-    document.getElementById('summary').textContent = text;
-    document.getElementById('wa-send').href = `https://wa.me/${WA}?text=${encodeURIComponent(text)}`;
-    const biz = document.getElementById('q-details-business').value.trim();
-    document.getElementById('mail-send').href = `mailto:${EMAIL}?subject=${encodeURIComponent('Website questionnaire · ' + biz)}&body=${encodeURIComponent(text.replace(/\*/g, ''))}`;
-    resetSend();
-    openSheet('send');
-  });
-
-  const netSend = document.getElementById('net-send'), sendTitle = document.getElementById('send-title'), sendIntro = document.getElementById('send-intro'), waSend = document.getElementById('wa-send');
-  function resetSend() {
-    sendTitle.textContent = 'Send your answers';
-    sendIntro.textContent = 'Check the summary below, then send it to HA Web Studio. We reply with your quote within 48 hours.';
-    netSend.hidden = false; netSend.disabled = false; netSend.textContent = 'Send my answers';
-    waSend.textContent = 'Send on WhatsApp instead';
-  }
-  netSend.addEventListener('click', async () => {
-    const v = id => document.getElementById('q-details-' + id).value.trim();
-    const body = new URLSearchParams({
-      'form-name': 'questionnaire', 'bot-field': '',
-      name: v('name'), business: v('business'), phone: v('phone'), email: v('email'),
-      subject: 'New website questionnaire · ' + v('business'),
-      answers: document.getElementById('summary').textContent.replace(/\*/g, ''),
-    });
-    netSend.disabled = true; netSend.textContent = 'Sending…';
-    let ok = false;
-    try {
-      if (FORMSPREE) {
-        const r = await fetch('https://formspree.io/f/' + FORMSPREE, {
-          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ name: v('name'), email: v('email'), business: v('business'), phone: v('phone'),
-            _subject: 'New website questionnaire · ' + v('business'), answers: body.get('answers'), _gotcha: '' }),
-        });
-        ok = r.ok;
-      } else {
-        const r = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
-        ok = r.ok;
-      }
-    } catch (e) {}
-    if (ok) {
-      sendTitle.textContent = 'Thank you!';
-      sendIntro.textContent = 'Your answers are with HA Web Studio. We will contact you with your quote within 48 hours.';
-      netSend.hidden = true;
-      waSend.textContent = 'Message us on WhatsApp';
-    } else {
-      netSend.disabled = false; netSend.textContent = 'Try again';
-      sendIntro.textContent = 'Your answers could not be sent online. Please send them on WhatsApp below, or copy them and email ' + EMAIL + '.';
-    }
-  });
-  document.getElementById('copy-all').addEventListener('click', e => {
-    copyText(document.getElementById('summary').textContent, e.target.closest('.inner'), 'Answers copied. Paste them into WhatsApp or an email.', document.getElementById('summary'));
-  });
 
   /* ---------------- Video: two scenes, a dead zone in the centre ---------------- */
   const vidL = document.getElementById('vidL'), vidR = document.getElementById('vidR');
@@ -1029,12 +1333,14 @@ textarea.field.big:focus { border-color: var(--merlot); }
     vidL.style.display = which === 'L' ? 'block' : 'none';
     vidR.style.display = which === 'R' ? 'block' : 'none';
   }
+  vidR.poster = SRC.pR; vidL.poster = SRC.pL; vidR.src = SRC.R;
+  if (!touch) vidL.src = SRC.L;
   vidR.addEventListener('loadeddata', () => { canvasEl.style.opacity = 1; });
   if (reduce) {
     vidR.addEventListener('loadedmetadata', () => { vidR.currentTime = Math.max(0, vidR.duration - 0.05); }, { once: true });
   } else if (touch) {
     // phones: the two scenes play one after the other, forever
-    const next = (from, to, w) => from.addEventListener('ended', () => { setTimeout(() => { show(w); to.currentTime = 0; to.play().catch(() => {}); }, 1200); });
+    const next = (from, to, w) => from.addEventListener('ended', () => { if (!to.getAttribute('src')) to.src = to === vidL ? SRC.L : SRC.R; setTimeout(() => { show(w); to.currentTime = 0; to.play().catch(() => {}); }, 1200); });
     next(vidR, vidL, 'L'); next(vidL, vidR, 'R');
     vidR.play().catch(() => {});
   } else {
@@ -1086,7 +1392,9 @@ textarea.field.big:focus { border-color: var(--merlot); }
     walk(el); el.classList.add('rv');
     return [...el.querySelectorAll('.w > span')];
   }
-  const reveals = [...document.querySelectorAll('.intro h1, .gal-head h2, #outro h2, .bp-card h2, .words-hero h2')].map(el => ({ el, words: splitWords(el) }));
+  let reveals = [];
+  function buildReveals() { reveals = [...document.querySelectorAll('.intro h1, .gal-head h2, #outro h2, .bp-card h2, .words-hero h2')].map(el => ({ el, words: splitWords(el) })); }
+  buildReveals();
   const bandRows = [...document.querySelectorAll('.band .row')];
 
   /* ---------------- Scroll engine (RAF) ---------------- */
@@ -1180,7 +1488,7 @@ textarea.field.big:focus { border-color: var(--merlot); }
       bar.style.background = po > 0.5 ? 'rgba(243,236,226,.92)' : '';
       bar.querySelector('.mark').style.color = po > 0.5 ? 'var(--wine)' : '';
       bar.querySelector('.prog').style.color = po > 0.5 ? 'var(--merlot)' : '';
-      bar.querySelector('#menu-btn-2').style.color = po > 0.5 ? 'var(--wine)' : 'var(--linen)';
+      bar.querySelectorAll('.barbtn').forEach(b => b.style.color = po > 0.5 ? 'var(--wine)' : 'var(--linen)');
       fill.style.background = po > 0.5 ? 'var(--merlot)' : '';
 
       lastY = y;
