@@ -778,7 +778,7 @@ html:lang(fr) #outro-buy { font-size: 70px; }
       band1: ['Showcase sites', 'i:online stores', 'b:Booking', 'i:beauty stores', 'Portfolios', 'i:digital menus'],
       band2: ['b:Worldwide', 'i:any industry', 'Fast on mobile', 'i:secure', 'b:Found on Google', 'i:made to sell'],
       outroEyebrow: 'Last step', outroH2: 'Ready when <em>you are.</em>',
-      outroP: 'Before you send, check card 02: have you given every detail of the website you want? Then press <b>send</b> to review and send your answers. We reply with your quote within 48 hours.',
+      outroP: 'Before you send, check card 02: have you given every detail of the website you want? Then press <b>send</b>: your answers go straight to HA Web Studio. We reply with your quote within 48 hours.',
       privacyLink: 'How we use your data',
       sendPill: 'send', sendAria: 'Review and send your answers',
       footer: 'HA Web Studio © 2026 · A HAVRE Group company',
@@ -787,8 +787,8 @@ html:lang(fr) #outro-buy { font-size: 70px; }
       contactTitle: 'Talk to HA Web Studio', contactP: 'A question before you start? Write to us on WhatsApp or by email. We usually answer the same day.',
       openWa: 'Open WhatsApp', copyNum: 'Copy number', writeMail: 'Write an email', copyMail: 'Copy email',
       waHello: 'Hello HA Web Studio, I have a question about my website project.',
-      reviewEyebrow: 'Review', sendTitle: 'Send your answers',
-      sendIntro: 'Check the summary below, then send it to HA Web Studio. We reply with your quote within 48 hours.',
+      reviewEyebrow: 'Sending', sendTitle: 'Sending your answers…', failTitle: 'Not sent yet',
+      sendIntro: 'One moment, we are sending your answers to HA Web Studio.',
       sendNow: 'Send my answers', sending: 'Sending…', tryAgain: 'Try again', waInstead: 'Send on WhatsApp instead',
       copyAll: 'Copy my answers', byMail: 'Send by email', noWa: 'No WhatsApp? Copy your answers and email them to',
       thanks: 'Thank you!', thanksP: 'Your answers are with HA Web Studio. We will contact you with your quote within 48 hours. Want to talk sooner? Message us on WhatsApp.',
@@ -831,7 +831,7 @@ html:lang(fr) #outro-buy { font-size: 70px; }
       band1: ['Sites vitrines', 'i:boutiques en ligne', 'b:Réservation', 'i:beauté', 'Portfolios', 'i:menus digitaux'],
       band2: ['b:Partout', 'i:tous secteurs', 'Rapide sur mobile', 'i:sécurisé', 'b:Visible sur Google', 'i:fait pour vendre'],
       outroEyebrow: 'Dernière étape', outroH2: 'Prêt <em>quand vous l’êtes.</em>',
-      outroP: 'Avant d’envoyer, vérifiez la carte 02 : avez-vous donné tous les détails du site que vous voulez ? Appuyez ensuite sur <b>envoyer</b> pour relire et envoyer vos réponses. Nous vous répondons avec votre devis sous 48 heures.',
+      outroP: 'Avant d’envoyer, vérifiez la carte 02 : avez-vous donné tous les détails du site que vous voulez ? Appuyez ensuite sur <b>envoyer</b> : vos réponses partent directement chez HA Web Studio. Nous vous répondons avec votre devis sous 48 heures.',
       privacyLink: 'Comment nous utilisons vos données',
       sendPill: 'envoyer', sendAria: 'Relire et envoyer vos réponses',
       footer: 'HA Web Studio © 2026 · Une entreprise du Groupe HAVRE',
@@ -840,8 +840,8 @@ html:lang(fr) #outro-buy { font-size: 70px; }
       contactTitle: 'Parlez à HA Web Studio', contactP: 'Une question avant de commencer ? Écrivez-nous sur WhatsApp ou par email. Nous répondons en général le jour même.',
       openWa: 'Ouvrir WhatsApp', copyNum: 'Copier le numéro', writeMail: 'Écrire un email', copyMail: 'Copier l’email',
       waHello: 'Bonjour HA Web Studio, j’ai une question sur mon projet de site web.',
-      reviewEyebrow: 'Relecture', sendTitle: 'Envoyer vos réponses',
-      sendIntro: 'Vérifiez le résumé ci-dessous, puis envoyez-le à HA Web Studio. Nous vous répondons avec votre devis sous 48 heures.',
+      reviewEyebrow: 'Envoi', sendTitle: 'Envoi de vos réponses…', failTitle: 'Pas encore envoyé',
+      sendIntro: 'Un instant, nous envoyons vos réponses à HA Web Studio.',
       sendNow: 'Envoyer mes réponses', sending: 'Envoi…', tryAgain: 'Réessayer', waInstead: 'Envoyer plutôt sur WhatsApp',
       copyAll: 'Copier mes réponses', byMail: 'Envoyer par email', noWa: 'Pas de WhatsApp ? Copiez vos réponses et envoyez-les à',
       thanks: 'Merci !', thanksP: 'Vos réponses sont bien arrivées chez HA Web Studio. Nous vous contactons avec votre devis sous 48 heures. Envie d’en parler plus tôt ? Écrivez-nous sur WhatsApp.',
@@ -1209,7 +1209,7 @@ html:lang(fr) #outro-buy { font-size: 70px; }
   function resetSend() {
     sendTitle.textContent = t('sendTitle'); sendIntro.textContent = t('sendIntro');
     netSend.hidden = false; netSend.disabled = false; netSend.textContent = t('sendNow');
-    waSend.textContent = t('waInstead');
+    waSend.textContent = t('waInstead'); waSend.classList.add('ghost');
   }
   function startSend() {
     const err = validate();
@@ -1221,9 +1221,11 @@ html:lang(fr) #outro-buy { font-size: 70px; }
     document.getElementById('mail-send').href = `mailto:${EMAIL}?subject=${encodeURIComponent('Website questionnaire · ' + fv('business'))}&body=${encodeURIComponent(text.replace(/\*/g, ''))}`;
     resetSend();
     openSheet('send');
+    doSend();
   }
   sendBtn.addEventListener('click', startSend);
-  netSend.addEventListener('click', async () => {
+  netSend.addEventListener('click', () => doSend());
+  async function doSend() {
     const answers = document.getElementById('summary').textContent.replace(/\*/g, '');
     netSend.disabled = true; netSend.textContent = t('sending');
     let ok = false;
@@ -1239,16 +1241,18 @@ html:lang(fr) #outro-buy { font-size: 70px; }
       }
     } catch (e) {}
     if (ok) {
-      clearDraft();
+      clearTimeout(saveT); clearDraft();
       sendTitle.textContent = t('thanks'); sendIntro.textContent = t('thanksP');
       netSend.hidden = true;
       waSend.textContent = t('waAfter');
       waSend.href = `https://wa.me/${WA}?text=${encodeURIComponent(t('waAfterText') + fv('business') + '.')}`;
     } else {
       netSend.disabled = false; netSend.textContent = t('tryAgain');
+      sendTitle.textContent = t('failTitle');
       sendIntro.textContent = t('fail') + EMAIL + '.';
+      waSend.classList.remove('ghost');
     }
-  });
+  }
   document.getElementById('copy-all').addEventListener('click', e => {
     copyText(document.getElementById('summary').textContent, e.target.closest('.inner'), t('copiedAll'), document.getElementById('summary'));
   });
