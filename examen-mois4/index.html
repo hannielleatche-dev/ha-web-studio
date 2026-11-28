@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HA LINGUA · Examen du Mois 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07142b;--bg2:#0d2347;--card:#0f2a52;--card2:#13325f;--line:#24467a;--gold:#c9a84c;--gold2:#e8cf86;--teal:#14a3b8;--txt:#eef3fb;--mut:#9fb3d1;--ok:#3ccf8e;--bad:#ff6b6b}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#173b73 0,transparent 60%),radial-gradient(900px 500px at -10% 110%,#0e3b4a 0,transparent 60%),var(--bg);color:var(--txt);font-family:Inter,system-ui,sans-serif;font-size:16px;line-height:1.55;min-height:100vh}
+header{position:sticky;top:0;z-index:20;background:rgba(7,20,43,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hw{max-width:1200px;margin:auto;display:flex;align-items:center;gap:14px;padding:10px 16px}
+.brand{font-weight:800;letter-spacing:1px;font-size:18px}.brand small{display:block;font-size:11px;color:var(--gold);letter-spacing:2px;font-weight:600}
+.sp{flex:1}
+.timer{font-variant-numeric:tabular-nums;font-weight:800;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+.timer.warn{color:#ffb4b4;border-color:#a33}
+.layout{max-width:1200px;margin:auto;display:grid;grid-template-columns:250px 1fr;gap:22px;padding:22px 16px 80px}
+nav.side{position:sticky;top:76px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px}
+nav.side h4{margin:4px 6px 10px;font-size:12px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+nav.side button{display:flex;width:100%;align-items:center;gap:10px;background:none;border:0;color:var(--txt);text-align:left;padding:10px;border-radius:12px;cursor:pointer;font:inherit;font-size:14px}
+nav.side button:hover{background:var(--card2)}nav.side button.on{background:linear-gradient(90deg,#1b4a8a,#13325f);box-shadow:inset 3px 0 0 var(--gold)}
+nav.side .ico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--bg2);flex:none}
+nav.side .pts{margin-left:auto;font-size:12px;color:var(--mut)}
+nav.side .prog{height:6px;background:var(--bg2);border-radius:9px;margin:12px 6px 4px;overflow:hidden}nav.side .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));width:0}
+nav.side .ptxt{font-size:12px;color:var(--mut);margin:0 6px}
+main{min-width:0}
+.card{background:linear-gradient(180deg,var(--card),#0c2449);border:1px solid var(--line);border-radius:20px;padding:24px;margin-bottom:18px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+h1{font-family:'Playfair Display',serif;font-size:38px;margin:.1em 0 .2em;line-height:1.15}
+h2{font-size:24px;margin:0 0 6px}h3{font-size:18px;margin:18px 0 6px;color:var(--gold2)}
+.kick{color:var(--gold);letter-spacing:3px;font-size:12px;font-weight:700;text-transform:uppercase}
+.mut{color:var(--mut)}.small{font-size:13px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--gold),#a8862f);color:#1a1405;border:0;border-radius:12px;padding:12px 20px;font:inherit;font-weight:800;cursor:pointer}
+.btn.sec{background:var(--card2);color:var(--txt);border:1px solid var(--line)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.red{background:#c0392b;color:#fff}
+input[type=text],select,textarea{width:100%;background:var(--bg2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:12px 14px;font:inherit}
+textarea{min-height:170px;resize:vertical;line-height:1.6}
+label.f{display:block;font-weight:600;margin:12px 0 6px}
+.q{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0}
+.q .qt{font-weight:600;margin-bottom:8px}.q .qt b{color:var(--gold2)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{border:1px solid var(--line);background:var(--bg2);color:var(--txt);border-radius:10px;padding:8px 14px;cursor:pointer;font:inherit;font-size:15px}
+.opt.sel{background:#1f5aa6;border-color:#5b9bff;box-shadow:0 0 0 2px rgba(91,155,255,.25)}
+.doc{background:#fbf7ec;color:#1d2433;border-radius:14px;padding:18px 20px;font-family:Georgia,serif;font-size:16px;line-height:1.7;margin:10px 0}
+.doc h4{margin:0 0 8px;font-family:Inter;color:#0d2e5c}
+.doc pre{font-family:'Courier New',monospace;font-size:14px;white-space:pre-wrap;margin:0}
+.wa{background:#e7ffdb;color:#13221a;border-radius:14px 14px 14px 4px;padding:14px 16px;max-width:560px;font-size:15px;box-shadow:0 2px 0 #b9d8a7}
+.wa small{display:block;text-align:right;color:#6b7f70;font-size:11px}
+.player{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:8px 0 6px}
+.player .left{font-size:13px;color:var(--mut)}
+.rec{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0}
+.dot{width:12px;height:12px;border-radius:50%;background:#555}.dot.on{background:#ff4d4d;animation:p 1s infinite}@keyframes p{50%{opacity:.3}}
+audio{max-width:100%}
+.count{font-size:13px;color:var(--mut);text-align:right;margin-top:4px}
+.box{border-left:4px solid var(--gold);background:rgba(201,168,76,.08);padding:12px 16px;border-radius:0 12px 12px 0;margin:12px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hide{display:none!important}
+.navb{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
+.intro{min-height:calc(100vh - 70px);display:grid;place-items:center;padding:20px}
+.intro .card{max-width:760px;width:100%}
+.story p{opacity:0;transform:translateY(10px);animation:in .8s forwards}
+@keyframes in{to{opacity:1;transform:none}}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;color:var(--mut);margin:2px}
+.bridge{height:120px;position:relative;margin:10px 0 18px;overflow:hidden;border-radius:14px;background:linear-gradient(180deg,#0e2a55,#0a1d3c)}
+.bridge .arc{position:absolute;left:8%;right:8%;bottom:26px;height:80px;border:4px solid var(--gold);border-bottom:0;border-radius:50% 50% 0 0/100% 100% 0 0}
+.bridge .deck{position:absolute;left:4%;right:4%;bottom:22px;height:6px;background:var(--gold2);border-radius:4px}
+.bridge .lbl{position:absolute;bottom:2px;font-size:12px;font-weight:800;color:var(--gold2)}
+.bridge .walker{position:absolute;bottom:28px;left:6%;font-size:24px;animation:walk 6s ease-in-out infinite alternate}
+@keyframes walk{to{left:88%}}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.side{position:static}.grid2{grid-template-columns:1fr}h1{font-size:30px}}
+</style>
+</head>
+<body>
+<header><div class="hw"><div class="brand">HA LINGUA<small>FRENCH PREMIUM · EXAMEN DU MOIS 4</small></div><div class="sp"></div><div id="who" class="mut small"></div><div class="timer hide" id="timer">--:--</div></div></header>
+<div id="root"></div>
+
+<script>
+/* ====================== CONFIG ====================== */
+const FORMSPREE="https://formspree.io/f/myekqwwl";
+const UPLOAD_URL="https://script.google.com/macros/s/AKfycbw-rEf-HkAzi8UOu-iC6tFo7FD2MWpu-s3QZA9uzWNuB9ju0aKtEBFmwZjuTxujOmZy/exec";
+const STORE="hal_exam_m4_v1";
+const DURATION_MIN=150;
+const MAX_PLAYS=2;
+
+/* ====================== CONTENT ====================== */
+const CO=[
+ {id:"co1",title:"Document 1 · Au maquis",instr:"You will hear a dialogue at a maquis. Read the questions first, then listen. You can listen 2 times.",
+  tts:"Bonsoir Madame, vous êtes combien ? ... Nous sommes trois. ... Installez-vous. Qu'est-ce que je vous sers ? ... Qu'est-ce qu'il y a ce soir ? ... Il y a du poulet braisé, du poisson et du garba. Mais il n'y a plus d'attiéké. ... Alors, deux poulets braisés avec de l'alloco, et un garba. ... Et comme boisson ? ... Une grande bouteille d'eau et trois jus de gingembre, s'il vous plaît. ... Très bien. Ça fait quatre-vingt-dix-huit cedis.",
+  qs:[["How many people are at the table?",["2","3","4"],1],["What is no longer available?",["le poulet","le poisson","l'attiéké"],2],["What do they order with the chicken?",["du riz","de l'alloco","des frites"],1],["Which juice do they order?",["bissap","gingembre (ginger)","orange"],1],["How much is the bill?",["88 cedis","98 cedis","78 cedis"],1]]},
+ {id:"co2",title:"Document 2 · Au marché",instr:"You will hear a dialogue at the market. Read the questions first, then listen. You can listen 2 times.",
+  tts:"Bonjour ma chérie ! Qu'est-ce que vous cherchez ? ... Bonjour ! Je voudrais un kilo de tomates et deux tas d'oignons. ... Voilà. Et avec ça ? ... Vous avez des avocats ? ... Non, désolée, je n'ai pas d'avocats aujourd'hui. Mais j'ai des mangues. ... D'accord, quatre mangues. C'est combien en tout ? ... Soixante-quinze cedis. ... C'est trop cher ! Vous pouvez faire un prix ? ... Bon... soixante-dix cedis. ... Merci beaucoup !",
+  qs:[["How many tomatoes does the customer buy?",["un kilo","deux kilos","un tas"],0],["What about the avocados?",["She buys four","The seller has none today","They are too expensive"],1],["How many mangoes does she buy?",["2","4","14"],1],["What is the first price?",["65 cedis","75 cedis","85 cedis"],1],["What is the final price?",["60 cedis","70 cedis","75 cedis"],1]]},
+ {id:"co3",title:"Document 3 · Un message vocal",instr:"Kofi leaves a voice message for his friend Ama. Read the questions first, then listen. You can listen 2 times.",
+  tts:"Salut Ama, c'est Kofi ! Tu n'as pas répondu à mon message, alors je t'appelle. Ce week-end, je suis allé à Cape Coast avec mon frère. On est partis samedi matin à six heures. On a visité le château et on a mangé du poisson au bord de la mer. Dimanche, je suis rentré à Accra très tard, vers vingt-trois heures. Je viens d'arriver au bureau et je suis en train de lire mes emails ! Rappelle-moi ce soir, d'accord ? Bisous !",
+  qs:[["Who did Kofi go to Cape Coast with?",["his sister","his brother","his colleague"],1],["When did they leave?",["Saturday at 6 am","Sunday at 6 am","Saturday at 6 pm"],0],["What did they eat by the sea?",["chicken","fish","rice"],1],["When did Kofi come back to Accra?",["Sunday around 11 pm","Monday morning","Sunday around 9 pm"],0],["What is Kofi doing right now?",["reading his emails","eating","driving to the office"],0]]},
+ {id:"co4",title:"Document 4 · Présent ou passé ? « du » ou « deux » ?",instr:"You will hear 5 short sentences. For each one, choose what you hear. You can listen 2 times.",
+  tts:"Phrase A. Je mange du riz. ... Phrase B. J'ai mangé du riz. ... Phrase C. Je voudrais deux pains. ... Phrase D. Elle est partie à huit heures. ... Phrase E. Il achète du poisson.",
+  qs:[["Phrase A",["Present (now)","Past (passé composé)"],0],["Phrase B",["Present (now)","Past (passé composé)"],1],["Phrase C",["du (some)","deux (two)"],1],["Phrase D",["Present (now)","Past (passé composé)"],1],["Phrase E",["du (some)","deux (two)"],0]]}
+];
+const CE=[
+ {id:"ce1",title:"Document 1 · Le menu et le ticket",doc:`<div class="grid2"><div class="doc"><h4>MAQUIS LE BON COIN · MENU</h4><pre>ENTRÉES
+Salade d'avocat ............ 20 cedis
+Soupe de poisson .......... 30 cedis
+
+PLATS
+Poulet braisé + attiéké .... 70 cedis
+Poisson grillé + alloco .... 85 cedis
+Garba ..................... 40 cedis
+Riz gras .................. 45 cedis
+
+BOISSONS
+Eau (50 cl) ................ 8 cedis
+Jus de bissap ............. 10 cedis
+Jus de gingembre .......... 12 cedis
+
+DESSERT
+Salade de fruits .......... 20 cedis
+
+Prix TTC · Service compris
+Fermé le lundi</pre></div><div class="doc"><h4>TICKET</h4><pre>Table 7 · 21/11/2026 · 13h40
+
+2 Riz gras .............. 90,00
+1 Garba ................. 40,00
+3 Jus de bissap ......... 30,00
+
+TOTAL ............... 160,00 GHS
+Payé : Mobile Money
+Merci et à bientôt !</pre></div></div>`,
+  qs:[["How much is a garba?",["40 cedis","45 cedis","70 cedis"],0],["Which day is the maquis closed?",["Sunday","Monday","Saturday"],1],["According to the receipt, how many people probably ate (one dish each)?",["2","3","4"],1],["What did they drink?",["water","bissap juice","ginger juice"],1],["« Service compris » means…",["the tip is included","the service is slow","you must pay the waiter"],0]]},
+ {id:"ce2",title:"Document 2 · Un message WhatsApp",doc:`<div class="wa"><b>Efua 🌸</b><br>Coucou Abena ! Tu es libre samedi ? Je vais au marché de Makola le matin pour acheter du tissu pour le mariage de ma cousine. Après, on peut aller manger au maquis « Chez Tanti » à Osu ? Ils ont du poisson braisé délicieux ! Mais attention, ils n'acceptent pas de carte bancaire, seulement le Mobile Money. On se retrouve à 10 h devant la banque ? Dis-moi avant vendredi soir ! Bisous 😘<small>Mercredi 18:42</small></div>`,
+  qs:[["Why is Efua going to the market?",["to buy fish","to buy fabric for a wedding","to buy a phone"],1],["Where does she want to eat after?",["at home","at a maquis in Osu","at Makola market"],1],["How can you pay at « Chez Tanti »?",["only by bank card","only by Mobile Money","by card or cash"],1],["Where and when do they meet?",["10 am in front of the bank","10 am at the maquis","10 pm in front of the bank"],0],["Before when must Abena answer?",["Wednesday evening","Friday evening","Saturday morning"],1]]},
+ {id:"ce3",title:"Document 3 · Le samedi d'Akosua",doc:`<div class="doc">Samedi dernier, Akosua s'est réveillée à six heures. Elle s'est douchée, elle s'est habillée et elle est partie au marché avec sa sœur Esi. Elles ont pris un tro-tro jusqu'à Kaneshie.<br><br>Au marché, Akosua a acheté deux kilos de riz, du poisson fumé et un peu de piment. Elle a voulu des avocats, mais il n'y avait plus d'avocats. Esi n'a rien acheté : elle a oublié son argent à la maison !<br><br>À midi, les deux sœurs sont allées dans un petit restaurant. Akosua a mangé du waakye et Esi a pris du jollof. Elles n'ont pas bu de soda, seulement de l'eau.<br><br>L'après-midi, Akosua est rentrée chez elle et elle a préparé une grande soupe pour sa famille. Le soir, elle s'est couchée très tôt, à vingt et une heures. Elle vient de m'envoyer un message : « Je suis en train de manger le reste de la soupe ! »</div>`,
+  qs:[["Akosua went to the market alone.",["Vrai","Faux","Pas dans le texte"],1],["They went to Kaneshie by tro-tro.",["Vrai","Faux","Pas dans le texte"],0],["Akosua bought avocados.",["Vrai","Faux","Pas dans le texte"],1],["Esi bought nothing because she forgot her money.",["Vrai","Faux","Pas dans le texte"],0],["The restaurant was very expensive.",["Vrai","Faux","Pas dans le texte"],2],["The sisters drank soda.",["Vrai","Faux","Pas dans le texte"],1],["What did Akosua eat at the restaurant?",["du jollof","du waakye","de la soupe"],1],["What did she cook in the afternoon?",["du riz","une soupe","du poisson fumé"],1],["What time did she go to bed?",["20 h","21 h","22 h"],1],["What is Akosua doing now?",["sending a message","eating the rest of the soup","cooking a new soup"],1]]}
+];
+const LG=[
+ ["___ homme est mon collègue.",["Ce","Cet","Cette"],1],
+ ["Les enfants font ___ devoirs. (their)",["leur","leurs","ses"],1],
+ ["— Tu viens avec ___ ? (me)",["je","moi","me"],1],
+ ["___ ma meilleure amie. Elle est infirmière.",["Elle est","C'est","Il est"],1],
+ ["___ heure est-il ?",["Quel","Quelle","Quels"],1],
+ ["Hier, nous ___ un taxi.",["avons pris","avons prendu","sommes pris"],0],
+ ["Elle ___ ses devoirs.",["a faite","a fait","est fait"],1],
+ ["Je n'ai vu ___ au bureau.",["rien","personne","jamais"],1],
+ ["Ama ___ à Kumasi samedi.",["a allé","est allé","est allée"],2],
+ ["Mes parents sont ___ hier soir.",["arrivé","arrivés","arrivées"],1],
+ ["Ce matin, je ___ à 6 h. (a woman)",["suis réveillée","me suis réveillée","m'ai réveillée"],1],
+ ["J'___ visité Cape Coast.",["ai","suis","me suis"],0],
+ ["Le client ___ appeler. (= has just called)",["vient d'","est en train d'","va"],0],
+ ["Je ne peux pas parler, je suis ___ conduire.",["venir de","en train de","allée"],1],
+ ["Je mange ___ riz tous les jours.",["le","du","de"],1],
+ ["J'adore ___ poulet braisé !",["le","du","de"],0],
+ ["Il n'y a pas ___ poisson aujourd'hui.",["du","de","des"],1],
+ ["Je voudrais un kilo ___ tomates.",["des","de","du"],1],
+ ["Ce n'est pas ___ problème !",["de","un","du"],1],
+ ["Le week-end ___, j'ai joué au foot.",["dernier","dernière","passé dernier"],0]
+];
+const PE=[
+ {id:"pe1",pts:10,min:60,title:"Task 1 · Un message WhatsApp : « Mon week-end » (10 points)",instr:"Write a WhatsApp message to a French-speaking friend (60 to 80 words). Tell your last weekend: where you went, what you did, what you ate and drank, and what you didn't do.",must:["the passé composé with AVOIR and ÊTRE (with the right agreement)","at least 2 partitive articles (du, de la, des)","1 « pas de » and 1 quantity (un kilo de, une bouteille de…)","1 time marker (samedi matin, le week-end dernier…)"]},
+ {id:"pe2",pts:6,min:40,title:"Task 2 · Une carte postale (6 points)",instr:"You are on holiday in Grand-Bassam (Côte d'Ivoire). Write a postcard to your friend Kofi (40 to 60 words).",must:["the place and the date in French","a greeting and a closing (Cher Kofi, … Gros bisous !)","what you did (passé composé) and what you ate"]}
+];
+const FORM=[["nom","Nom"],["prenom","Prénom"],["naissance","Date de naissance (in French: le … )"],["lieu","Lieu de naissance"],["nationalite","Nationalité"],["profession","Profession"],["arrivee","Date d'arrivée (you arrive on 20 December 2026)"],["personnes","Nombre de personnes (you travel with your sister)"]];
+const PO=[
+ {id:"po1",pts:8,max:180,title:"Task 1 · « Mon week-end » (8 points) · 2 minutes",instr:"Tell your last weekend for about 2 minutes. Prepare 5 KEY WORDS only (no sentences!), then record. Talk about: where you went, what you did, what you ate, what you didn't do."},
+ {id:"po2",pts:7,title:"Task 2 · Jeu de rôle au maquis (7 points)",instr:"You are at the maquis « Chez Tanti ». Listen to the waiter (or read his line), then record your answer. Be polite!",lines:[
+   ["po2a","Bonsoir ! Vous êtes combien ?"],["po2b","Qu'est-ce que je vous sers ? Il y a du poulet, du poisson et du garba."],["po2c","Et comme boisson ?"],["po2d","Voilà ! Ça vous a plu ? Vous voulez autre chose ?"]],max:45},
+ {id:"po3",pts:5,max:90,title:"Task 3 · Lecture à voix haute (5 points)",instr:"Read this text aloud, clearly, with the right pauses and intonation. You can read it silently first.",text:"Samedi dernier, je suis allée au marché avec ma sœur. Nous avons acheté du poisson, des tomates et un kilo de riz. Il n'y avait pas d'avocats, quel dommage ! À midi, nous sommes rentrées à la maison. J'ai préparé une sauce arachide, et ma sœur a fait du jus de bissap. Le soir, nous nous sommes reposées. Et vous, qu'est-ce que vous avez fait ce week-end ?"}
+];
+const SECTIONS=[["intro","📋","Instructions",""],["co","🎧","Listening","20"],["ce","📖","Reading","20"],["lg","🧩","Language","20"],["pe","✍️","Writing","20"],["po","🎙️","Speaking","20"],["end","✅","Submit",""]];
+
+/* ====================== STATE ====================== */
+const qs=new URLSearchParams(location.search);
+if(qs.has("new")){try{localStorage.removeItem(STORE)}catch(e){}}
+let S=load()||{started:false,ans:{},txt:{},form:{},plays:{},exits:0,sec:"intro",done:false,sent:false};
+function load(){try{return JSON.parse(localStorage.getItem(STORE))}catch(e){return null}}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(S))}catch(e){}}
+/* recordings in IndexedDB */
+const DB={db:null,open(){return new Promise(r=>{try{const q=indexedDB.open("hal_m4",1);q.onupgradeneeded=()=>q.result.createObjectStore("rec");q.onsuccess=()=>{this.db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})},
+ put(k,v){return new Promise(r=>{try{const t=this.db.transaction("rec","readwrite");t.objectStore("rec").put(v,k);t.oncomplete=r;t.onerror=r}catch(e){r()}})},
+ get(k){return new Promise(r=>{try{const q=this.db.transaction("rec").objectStore("rec").get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)}catch(e){r(null)}})},
+ clear(){return new Promise(r=>{try{const t=this.db.transaction("rec","readwrite");t.objectStore("rec").clear();t.oncomplete=r}catch(e){r()}})}};
+const REC={};
+
+/* ====================== HELPERS ====================== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const words=t=>(t||"").trim().split(/\s+/).filter(Boolean).length;
+function frVoice(){const v=speechSynthesis.getVoices();return v.find(x=>/fr[-_]FR/i.test(x.lang)&&/google|natural|neural|amelie|thomas|audrey/i.test(x.name))||v.find(x=>/^fr/i.test(x.lang))}
+function speak(text,rate=.85){return new Promise(res=>{try{speechSynthesis.cancel();const parts=text.split(/\s*\.\.\.\s*/);let i=0;const next=()=>{if(i>=parts.length)return res();const u=new SpeechSynthesisUtterance(parts[i++]);u.lang="fr-FR";const v=frVoice();if(v)u.voice=v;u.rate=rate;u.onend=()=>setTimeout(next,650);u.onerror=()=>next();speechSynthesis.speak(u)};next()}catch(e){res()}})}
+
+/* ====================== RENDER ====================== */
+function shell(){
+ $("#root").innerHTML=`<div class="layout"><nav class="side"><h4>Your exam</h4>${SECTIONS.map(s=>`<button data-s="${s[0]}"><span class="ico">${s[1]}</span>${s[2]}<span class="pts">${s[3]?"/"+s[3]:""}</span></button>`).join("")}<div class="prog"><i id="pbar"></i></div><div class="ptxt" id="ptxt"></div></nav><main id="main"></main></div>`;
+ document.querySelectorAll("nav.side button").forEach(b=>b.onclick=()=>go(b.dataset.s));
+ $("#who").textContent=S.name+" · "+S.session;
+ $("#timer").classList.remove("hide");tick();setInterval(tick,1000);
+ go(S.sec||"intro");
+}
+function go(s){if(s!=="co")speechSynthesis.cancel();S.sec=s;save();document.querySelectorAll("nav.side button").forEach(b=>b.classList.toggle("on",b.dataset.s===s));
+ const m=$("#main");m.innerHTML=({intro:vIntro,co:vCO,ce:vCE,lg:vLG,pe:vPE,po:vPO,end:vEnd})[s]();bind(s);window.scrollTo(0,0);progress()}
+function navb(prev,next){return `<div class="navb">${prev?`<button class="btn sec" onclick="go('${prev}')">← Back</button>`:"<span></span>"}${next?`<button class="btn" onclick="go('${next}')">Next part →</button>`:""}</div>`}
+function mcq(id,q,opts){return `<div class="q"><div class="qt">${q}</div><div class="opts">${opts.map((o,i)=>`<button class="opt ${S.ans[id]===i?"sel":""}" data-q="${id}" data-i="${i}">${esc(o)}</button>`).join("")}</div></div>`}
+
+function vIntro(){return `<div class="card"><div class="kick">Month 4 · Le pont vers l'A2</div><h1>Your exam: how it works</h1>
+<div class="box">You do the exam <b>in one sitting of 2 h 30</b>.</div><p>For the first time, your exam follows the format of the official <b>DELF</b>: the 4 skills, plus the language. Total: <b>100 points</b>. Time: <b>2 h 30</b>.</p>
+<div class="q">🎧 <b>Listening (20)</b> · 4 recordings, max 2 listens each<br>📖 <b>Reading (20)</b> · a menu, a receipt, a WhatsApp message, a story<br>🧩 <b>Language (20)</b> · grammar and vocabulary of Months 1 to 4<br>✍️ <b>Writing (20)</b> · a WhatsApp message, a postcard, a form<br>🎙️ <b>Speaking (20)</b> · « Mon week-end », a role play at the maquis, reading aloud</div>
+<div class="box"><b>Rules</b><br>• You can move freely between the parts (left menu). Your answers are saved automatically.<br>• Use headphones for the Listening part. Allow the microphone for the Speaking part.<br>• Work alone, without notes, dictionary or translator. Each time you leave this page, it is counted.<br>• At the end, go to <b>Submit</b> and wait for the confirmation. Do not close the page before.</div>
+<p class="mut small">Your answers are saved in this browser. If something goes wrong, reopen the same link on the same device: you continue where you stopped.</p>${navb(null,"co")}</div>`}
+
+function vCO(){return `<div class="card"><div class="kick">Part 1 · /20</div><h2>🎧 Listening · Compréhension orale</h2><p class="mut">Put your headphones on. Read the questions <b>before</b> you listen. Each recording can be played <b>${MAX_PLAYS} times</b> only.</p></div>`+
+ CO.map(d=>{const n=S.plays[d.id]||0;return `<div class="card"><h3>${d.title}</h3><p class="mut">${d.instr}</p><div class="player"><button class="btn" data-play="${d.id}" ${n>=MAX_PLAYS?"disabled":""}>▶ Play</button><span class="left" id="pl_${d.id}">${n>=MAX_PLAYS?"No more listens":"Listens left: "+(MAX_PLAYS-n)}</span></div>
+ ${d.qs.map((q,i)=>mcq(d.id+"_"+i,(i+1)+". "+q[0],q[1])).join("")}</div>`}).join("")+navb("intro","ce")}
+
+function vCE(){return `<div class="card"><div class="kick">Part 2 · /20</div><h2>📖 Reading · Compréhension écrite</h2><p class="mut">Read each document, then answer. « Pas dans le texte » = the text does not say it.</p></div>`+
+ CE.map(d=>`<div class="card"><h3>${d.title}</h3>${d.doc}${d.qs.map((q,i)=>mcq(d.id+"_"+i,(i+1)+". "+q[0],q[1])).join("")}</div>`).join("")+navb("co","lg")}
+
+function vLG(){return `<div class="card"><div class="kick">Part 3 · /20</div><h2>🧩 Language · Grammaire et vocabulaire</h2><p class="mut">Choose the correct answer. 1 point each.</p>${LG.map((q,i)=>mcq("lg_"+i,`<b>${i+1}.</b> `+esc(q[0]).replace("___","<b>_____</b>"),q[1])).join("")}</div>`+navb("ce","pe")}
+
+function vPE(){return `<div class="card"><div class="kick">Part 4 · /20</div><h2>✍️ Writing · Production écrite</h2><p class="mut">Write in French only. Check your accents, your agreements with ÊTRE and « pas de » before you go on.</p></div>`+
+ PE.map(t=>`<div class="card"><h3>${t.title}</h3><p>${t.instr}</p><div class="box"><b>You must use:</b><br>${t.must.map(m=>"• "+m).join("<br>")}</div><textarea data-t="${t.id}" placeholder="Écrivez ici…">${esc(S.txt[t.id]||"")}</textarea><div class="count" id="wc_${t.id}">${words(S.txt[t.id])} words · minimum ${t.min}</div></div>`).join("")+
+ `<div class="card"><h3>Task 3 · Le formulaire (4 points)</h3><p>You are booking a room at the Hôtel Ivoire in Abidjan. Fill in the form <b>in French</b>, with your real information.</p><div class="grid2">${FORM.map(f=>`<div><label class="f">${f[1]}</label><input type="text" data-f="${f[0]}" value="${esc(S.form[f[0]]||"")}"></div>`).join("")}</div></div>`+navb("lg","po")}
+
+function recUI(id,max){return `<div class="rec" id="rw_${id}"><button class="btn" data-rec="${id}" data-max="${max}">● Record</button><span class="dot" id="dot_${id}"></span><span class="mut small" id="rs_${id}">${REC[id]?"Recorded ✔ · you can record again":"Not recorded yet"} · max ${Math.round(max/60*10)/10} min</span></div><div id="ra_${id}"></div>`}
+function vPO(){return `<div class="card"><div class="kick">Part 5 · /20</div><h2>🎙️ Speaking · Production orale</h2><p class="mut">Allow the microphone when your browser asks. Speak clearly, close to your phone or computer. You can record again if you are not happy: only the last recording is kept.</p><div class="box">⚠ No script! Prepare <b>key words</b> only. A small mistake is OK; reading a written text is not (except in Task 3).</div></div>`+
+ `<div class="card"><h3>${PO[0].title}</h3><p>${PO[0].instr}</p>${recUI("po1",PO[0].max)}</div>`+
+ `<div class="card"><h3>${PO[1].title}</h3><p>${PO[1].instr}</p>${PO[1].lines.map((l,i)=>`<div class="q"><div class="qt">🧑🏾‍🍳 <b>Serveur ${i+1} :</b> « ${esc(l[1])} » <button class="btn sec" style="padding:6px 12px" data-say="${esc(l[1])}">🔊</button></div>${recUI(l[0],PO[1].max)}</div>`).join("")}</div>`+
+ `<div class="card"><h3>${PO[2].title}</h3><p>${PO[2].instr}</p><div class="doc">${esc(PO[2].text)}</div>${recUI("po3",PO[2].max)}</div>`+navb("pe","end")}
+
+function vEnd(){const c=checklist();return `<div class="card"><div class="kick">Last step</div><h2>✅ Submit your exam</h2><p>Check that everything is done. You can still go back to any part.</p>
+ ${c.map(x=>`<div class="q">${x[1]?"✅":"⚠️"} ${x[0]}</div>`).join("")}
+ <label class="f">A word for your coach (optional)</label><textarea data-t="comment" style="min-height:80px" placeholder="How did you find the exam?">${esc(S.txt.comment||"")}</textarea>
+ <div class="navb"><button class="btn sec" onclick="go('po')">← Back</button><button class="btn" id="submit">Submit my exam</button></div><div id="sendlog" class="mut small" style="margin-top:12px"></div></div>`}
+
+function checklist(){const all=[...CO.flatMap(d=>d.qs.map((q,i)=>d.id+"_"+i)),...CE.flatMap(d=>d.qs.map((q,i)=>d.id+"_"+i)),...LG.map((q,i)=>"lg_"+i)];
+ const miss=all.filter(k=>S.ans[k]===undefined).length;
+ const recs=["po1","po2a","po2b","po2c","po2d","po3"];const rmiss=recs.filter(r=>!REC[r]).length;
+ return [[`Questions answered: ${all.length-miss} / ${all.length}`,miss===0],[`Writing task 1: ${words(S.txt.pe1)} words (min. 60)`,words(S.txt.pe1)>=60],[`Writing task 2: ${words(S.txt.pe2)} words (min. 40)`,words(S.txt.pe2)>=40],[`Form: ${FORM.filter(f=>(S.form[f[0]]||"").trim()).length} / ${FORM.length} fields`,FORM.every(f=>(S.form[f[0]]||"").trim())],[`Recordings: ${recs.length-rmiss} / ${recs.length}`,rmiss===0]]}
+
+function progress(){const all=CO.reduce((a,d)=>a+d.qs.length,0)+CE.reduce((a,d)=>a+d.qs.length,0)+LG.length+2+FORM.length+6;
+ let n=Object.keys(S.ans).length+(words(S.txt.pe1)>=60)+(words(S.txt.pe2)>=40)+FORM.filter(f=>(S.form[f[0]]||"").trim()).length+Object.keys(REC).length;
+ const p=Math.min(100,Math.round(n/all*100));const b=$("#pbar");if(b){b.style.width=p+"%";$("#ptxt").textContent=p+"% completed"}}
+
+/* ====================== BINDINGS ====================== */
+function bind(s){
+ document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{S.ans[b.dataset.q]=+b.dataset.i;save();document.querySelectorAll(`.opt[data-q="${b.dataset.q}"]`).forEach(x=>x.classList.toggle("sel",x===b));progress()});
+ document.querySelectorAll("textarea[data-t]").forEach(t=>t.oninput=()=>{S.txt[t.dataset.t]=t.value;save();const w=$("#wc_"+t.dataset.t);if(w){const pe=PE.find(p=>p.id===t.dataset.t);w.textContent=words(t.value)+" words · minimum "+pe.min}progress()});
+ document.querySelectorAll("input[data-f]").forEach(t=>t.oninput=()=>{S.form[t.dataset.f]=t.value;save();progress()});
+ document.querySelectorAll("[data-play]").forEach(b=>b.onclick=()=>play(b.dataset.play,b));
+ document.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>playLine(b));
+ document.querySelectorAll("[data-rec]").forEach(b=>b.onclick=()=>record(b.dataset.rec,+b.dataset.max,b));
+ document.querySelectorAll("[id^=ra_]").forEach(d=>{const id=d.id.slice(3);if(REC[id])d.innerHTML=`<audio controls src="${URL.createObjectURL(REC[id])}"></audio>`});
+ if(s==="end")$("#submit").onclick=submit;
+}
+
+/* listening: real recording audio/<id>.mp3 if it exists, otherwise French synthetic voice */
+let playing=false;
+async function play(id,btn){if(playing)return;const n=S.plays[id]||0;if(n>=MAX_PLAYS)return;
+ playing=true;document.querySelectorAll("[data-play]").forEach(b=>b.disabled=true);$("#pl_"+id).textContent="Playing…";
+ S.plays[id]=n+1;save();
+ const d=CO.find(x=>x.id===id);
+ const ok=await new Promise(res=>{const a=new Audio("audio/"+id+".mp3");a.onended=()=>res(true);a.onerror=()=>res(false);a.play().catch(()=>res(false))});
+ if(!ok)await speak(d.tts);
+ playing=false;const left=MAX_PLAYS-S.plays[id];
+ document.querySelectorAll("[data-play]").forEach(b=>b.disabled=(S.plays[b.dataset.play]||0)>=MAX_PLAYS);
+ $("#pl_"+id).textContent=left>0?"Listens left: "+left:"No more listens"}
+async function playLine(b){const t=b.dataset.say;const k=PO[1].lines.find(l=>l[1]===t)[0];
+ const ok=await new Promise(res=>{const a=new Audio("audio/"+k+".mp3");a.onended=()=>res(true);a.onerror=()=>res(false);a.play().catch(()=>res(false))});if(!ok)speak(t,.9)}
+
+/* recording */
+let MR=null,chunks=[],recTimer=null,curId=null;
+async function record(id,max,btn){
+ if(MR&&MR.state==="recording"){MR.stop();return}
+ try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  const mime=MediaRecorder.isTypeSupported("audio/webm")?"audio/webm":(MediaRecorder.isTypeSupported("audio/mp4")?"audio/mp4":"");
+  MR=new MediaRecorder(stream,mime?{mimeType:mime}:{});chunks=[];curId=id;
+  MR.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+  MR.onstop=async()=>{clearInterval(recTimer);stream.getTracks().forEach(t=>t.stop());const blob=new Blob(chunks,{type:MR.mimeType||"audio/webm"});REC[id]=blob;await DB.put(id,blob);
+   $("#dot_"+id).classList.remove("on");btn.textContent="● Record again";$("#rs_"+id).textContent="Recorded ✔ · "+Math.round(blob.size/1024)+" KB";$("#ra_"+id).innerHTML=`<audio controls src="${URL.createObjectURL(blob)}"></audio>`;progress();
+   document.querySelectorAll("[data-rec]").forEach(b=>b.disabled=false)};
+  MR.start(1000);$("#dot_"+id).classList.add("on");btn.textContent="■ Stop";document.querySelectorAll("[data-rec]").forEach(b=>{if(b!==btn)b.disabled=true});
+  let s=0;recTimer=setInterval(()=>{s++;$("#rs_"+id).textContent="Recording… "+Math.floor(s/60)+":"+String(s%60).padStart(2,"0");if(s>=max)MR.stop()},1000);
+ }catch(e){alert("The microphone is blocked. Please allow the microphone for this page (click the 🔒 icon next to the address) and try again.")}}
+
+/* timer + page exits */
+function tick(){if(!S.start)return;const left=S.start+DURATION_MIN*60000-Date.now();const t=$("#timer");
+ if(left<=0){t.textContent="Time is up";t.classList.add("warn");if(!S.done&&!S.timeUp){S.timeUp=true;save();alert("Time is up! Please go to Submit now.");go("end")}return}
+ const m=Math.floor(left/60000),s=Math.floor(left%60000/1000);t.textContent=(m>=60?Math.floor(m/60)+"h"+String(m%60).padStart(2,"0"):m)+":"+String(s).padStart(2,"0");t.classList.toggle("warn",left<15*60000)}
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&S.started&&!S.done){S.exits=(S.exits||0)+1;save()}});
+
+/* ====================== SCORING + REPORT ====================== */
+function scores(){let co=0,ce=0,lg=0;
+ CO.forEach(d=>d.qs.forEach((q,i)=>{if(S.ans[d.id+"_"+i]===q[2])co++}));
+ CE.forEach(d=>d.qs.forEach((q,i)=>{if(S.ans[d.id+"_"+i]===q[2])ce+=d.id==="ce3"?1:1}));
+ LG.forEach((q,i)=>{if(S.ans["lg_"+i]===q[2])lg++});return {co,ce,lg,total:co+ce+lg}}
+function report(links){const sc=scores();const L=[];
+ L.push("HA LINGUA — EXAMEN DU MOIS 4 · LE PONT VERS L'A2");L.push("Élève : "+S.name);L.push("Session : "+S.session);
+ L.push("Début : "+new Date(S.start).toLocaleString("fr-FR"));L.push("Durée utilisée : "+Math.round((Date.now()-S.start)/60000)+" min / "+DURATION_MIN+" min");L.push("Sorties de la page : "+(S.exits||0));L.push("");
+ L.push("SCORES AUTOMATIQUES");L.push("CO Compréhension orale : "+sc.co+" / 20");L.push("CE Compréhension écrite : "+sc.ce+" / 20");L.push("Langue : "+sc.lg+" / 20");L.push("TOTAL AUTO : "+sc.total+" / 60");
+ L.push("PE Production écrite : ___ / 20 (message ___/10 · carte postale ___/6 · formulaire ___/4)");L.push("PO Production orale : ___ / 20 (mon week-end ___/8 · jeu de rôle ___/7 · lecture ___/5)");L.push("");
+ const sect=(t,arr,pref)=>{L.push("=== "+t+" ===");arr.forEach(d=>{L.push("— "+d.title);d.qs.forEach((q,i)=>{const a=S.ans[(pref||d.id)+"_"+i];L.push(`${a===q[2]?"✔":"✘"} ${q[0]} → « ${a===undefined?"(pas de réponse)":q[1][a]} »${a===q[2]?"":" | attendu : « "+q[1][q[2]]+" »"}`)})});L.push("")};
+ sect("CO · ÉCOUTE (écoutes : "+CO.map(d=>(S.plays[d.id]||0)).join("/")+")",CO);sect("CE · LECTURE",CE);
+ L.push("=== LANGUE ===");LG.forEach((q,i)=>{const a=S.ans["lg_"+i];L.push(`${a===q[2]?"✔":"✘"} ${i+1}. ${q[0]} → « ${a===undefined?"(pas de réponse)":q[1][a]} »${a===q[2]?"":" | attendu : « "+q[1][q[2]]+" »"}`)});L.push("");
+ L.push("=== PE1 · MESSAGE « MON WEEK-END » (/10) — "+words(S.txt.pe1)+" mots ===");L.push(S.txt.pe1||"(vide)");L.push("");
+ L.push("=== PE2 · CARTE POSTALE (/6) — "+words(S.txt.pe2)+" mots ===");L.push(S.txt.pe2||"(vide)");L.push("");
+ L.push("=== PE3 · FORMULAIRE (/4) ===");FORM.forEach(f=>L.push(f[1]+" : "+(S.form[f[0]]||"—")));L.push("");
+ L.push("=== PO · ENREGISTREMENTS ===");["po1","po2a","po2b","po2c","po2d","po3"].forEach(k=>L.push(k+" : "+(links&&links[k]?links[k]:(REC[k]?"(envoi en cours ou échoué : voir l'envoi suivant)":"non enregistré"))));L.push("");
+ if(S.txt.comment)L.push("Commentaire de l'élève : "+S.txt.comment);return L.join("\n")}
+async function fs(payload){const r=await fetch(FORMSPREE,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload)});if(!r.ok)throw new Error("Formspree "+r.status);return true}
+function b64(blob){return new Promise(r=>{const f=new FileReader();f.onload=()=>r(String(f.result).split(",")[1]);f.readAsDataURL(blob)})}
+async function upload(key,blob){const ext=(blob.type.includes("mp4")?"m4a":"webm");const name=`M4_${S.name.replace(/[^\w]+/g,"_")}_${key}.${ext}`;const data=await b64(blob);
+ const body={name,filename:name,fileName:name,mimeType:blob.type,type:blob.type,data,file:data,base64:data,student:S.name,exam:"Mois 4"};
+ const tryOnce=async(opts)=>{const ac=new AbortController();const t=setTimeout(()=>ac.abort(),45000);try{const r=await fetch(UPLOAD_URL,{method:"POST",...opts,signal:ac.signal});const txt=await r.text();clearTimeout(t);const m=txt.match(/https:\/\/(drive|docs)\.google\.com\/[^"'\s\\]+/);return m?m[0]:null}catch(e){clearTimeout(t);return null}};
+ return (await tryOnce({headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)}))||(await tryOnce({headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams(body).toString()}))}
+async function submit(){const btn=$("#submit");const log=$("#sendlog");btn.disabled=true;const out=m=>log.innerHTML+=m+"<br>";
+ S.done=true;save();const sc=scores();
+ try{out("1/3 · Sending your answers…");await fs({eleve:S.name,session:S.session,CO:sc.co+"/20",CE:sc.ce+"/20",Langue:sc.lg+"/20",total_auto:sc.total+"/60",sorties_de_page:S.exits||0,_subject:"Examen Mois 4 — "+S.name+" — "+sc.total+"/60",rapport:report(null)});out("✅ Answers received.")}
+ catch(e){out("⚠️ Sending failed. Check your internet connection and click Submit again.");btn.disabled=false;return}
+ out("2/3 · Sending your recordings (this can take a few minutes, do not close the page)…");const links={};
+ for(const k of ["po1","po2a","po2b","po2c","po2d","po3"]){if(!REC[k])continue;const u=await upload(k,REC[k]);links[k]=u||"ÉCHEC";out((u?"✅ ":"⚠️ ")+k)}
+ out("3/3 · Final confirmation…");
+ try{await fs({eleve:S.name,session:S.session,_subject:"Examen Mois 4 — "+S.name+" — enregistrements",speaking:JSON.stringify(links)});}catch(e){}
+ S.sent=true;save();
+ const failed=Object.values(links).some(v=>v==="ÉCHEC");
+ $("#main").innerHTML=`<div class="card"><div class="kick">Done</div><h1>Merci, ${esc(S.name.split(" ")[0])} ! 🎉</h1><p>Your exam has been sent to Hannielle. Your results will come with your Month 4 report.</p>${failed?`<div class="box">⚠️ Some recordings could not be sent automatically. Please download them below and send them to <b>hannielleatche@gmail.com</b>.</div>`:""}<div id="dl"></div><p class="mut small">Bonne fin de semaine, et à samedi pour le Mois 5 !</p></div>`;
+ $("#dl").innerHTML=Object.keys(REC).map(k=>`<a class="btn sec" style="margin:4px" download="M4_${esc(S.name)}_${k}.${REC[k].type.includes("mp4")?"m4a":"webm"}" href="${URL.createObjectURL(REC[k])}">⬇ ${k}</a>`).join("")}
+
+/* ====================== START ====================== */
+function startScreen(){
+ $("#root").innerHTML=`<div class="intro"><div class="card"><div class="kick">HA LINGUA · French Premium Live Group</div><h1>Le pont vers l'A2</h1>
+ <div class="bridge"><div class="arc"></div><div class="deck"></div><span class="lbl" style="left:3%">A1</span><span class="lbl" style="right:3%">A2</span><span class="walker">🚶🏾‍♀️</span></div>
+ <div class="story"><p style="animation-delay:.2s">Four weeks ago, you could only talk about <b>today</b>.</p><p style="animation-delay:1.4s">Then you learned to ask any question, to tell what you <b>did</b>, where you <b>went</b>, what you <b>ate</b> and what you <b>bought</b>.</p><p style="animation-delay:2.6s">Today, you cross the bridge. Show what you can do.</p></div>
+ <label class="f">Your full name</label><input type="text" id="nm" placeholder="e.g. Akua Serwaa Mensah">
+ <label class="f">Your group</label><select id="ss"><option value="">Choose…</option><option>Saturday morning (9AM)</option><option>Saturday evening (7PM)</option><option>Other</option></select>
+ <p class="mut small">The exam lasts 2 h 30. The timer starts when you click « Start ». Make sure you have headphones, a microphone and a quiet place.</p>
+ <button class="btn" id="go">Start the exam →</button></div></div>`;
+ $("#go").onclick=()=>{const n=$("#nm").value.trim(),s=$("#ss").value;if(n.split(/\s+/).length<2||!s){alert("Please write your full name and choose your group.");return}
+  S={...S,started:true,name:n,session:s,start:Date.now(),sec:"intro"};save();shell()}}
+
+(async()=>{await DB.open();
+ if(qs.has("new"))await DB.clear();
+ for(const k of ["po1","po2a","po2b","po2c","po2d","po3"]){const b=await DB.get(k);if(b)REC[k]=b}
+ if(S.started&&S.done&&qs.has("recover")){shell();go("end");return}
+ if(S.started&&S.done){$("#root").innerHTML=`<div class="intro"><div class="card"><h1>Exam already submitted ✔</h1><p>Thank you, ${esc(S.name)}. Your exam was sent.</p><p class="mut small">If Hannielle asks you to send it again, open this link with <b>?recover</b> at the end.</p></div></div>`;return}
+ if(S.started)shell();else startScreen()})();
+if("speechSynthesis" in window)speechSynthesis.onvoiceschanged=()=>{};
+</script>
+</body>
+</html>
